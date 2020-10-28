@@ -2,7 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+<<<<<<< HEAD
     android:id="@+id/textView1"
+=======
+>>>>>>> db6b8ec (kommentar)
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
