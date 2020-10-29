@@ -24,6 +24,7 @@ public class Register extends AppCompatActivity {
     TextView mLoginButton;
     FirebaseAuth fireAuth;
     ProgressBar ladebalken;
+    TextView zurAnmeldung;
 
 
     @Override
@@ -36,7 +37,8 @@ public class Register extends AppCompatActivity {
         mPasswort=findViewById(R.id.editPassword);
         mPasswort1=findViewById(R.id.editPasswortKontrolle);
         mRegistrierenButton =findViewById(R.id.button);
-        mLoginButton= findViewById(R.id.textView4);
+        zurAnmeldung= findViewById(R.id.zurAnmeldung);
+
 
         fireAuth =FirebaseAuth.getInstance();
         ladebalken = findViewById(R.id.ladebalken);
@@ -50,6 +52,7 @@ public class Register extends AppCompatActivity {
             public void onClick(View v) {
                 String email = mEMail.getText().toString().trim();
                 String passwort= mPasswort.getText().toString().trim();
+                String passwort1= mPasswort1.getText().toString().trim();
 
                 if(TextUtils.isEmpty(email)){
                     mEMail.setError("EMail wird benötigt.");
@@ -87,4 +90,4 @@ public class Register extends AppCompatActivity {
 
 
     }
-}
+}//
