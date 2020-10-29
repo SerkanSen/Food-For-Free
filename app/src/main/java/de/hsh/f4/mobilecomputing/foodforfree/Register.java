@@ -24,7 +24,6 @@ public class Register extends AppCompatActivity {
     TextView mLoginButton;
     FirebaseAuth fireAuth;
     ProgressBar ladebalken;
-    TextView zurAnmeldung;
 
 
     @Override
@@ -37,8 +36,8 @@ public class Register extends AppCompatActivity {
         mPasswort=findViewById(R.id.editPassword);
         mPasswort1=findViewById(R.id.editPasswortKontrolle);
         mRegistrierenButton =findViewById(R.id.button);
-        zurAnmeldung= findViewById(R.id.zurAnmeldung);
-
+        mLoginButton= findViewById(R.id.zurAnmeldung);
+        mLoginButton.setText("Bereits registriert? Hier geht es zur Anmeldung!");
 
         fireAuth =FirebaseAuth.getInstance();
         ladebalken = findViewById(R.id.ladebalken);
@@ -57,7 +56,7 @@ public class Register extends AppCompatActivity {
                 if(TextUtils.isEmpty(email)){
                     mEMail.setError("EMail wird benötigt.");
                     return;
-            }
+                }
                 if(TextUtils.isEmpty(passwort)){
                     mPasswort.setError("Passwort wird benötigt.");
                     return;
@@ -66,10 +65,11 @@ public class Register extends AppCompatActivity {
                     mPasswort.setError("Passwort muss 6 Zeichen lang sein");
                     return;
                 }
-                if (!mPasswort.equals(mPasswort1)){
-                    mPasswort.setError("Die Passwörter stimmen nicht überein.");
-                     return;
+                if (!passwort.equals(passwort1)){
+                    mPasswort1.setError("Die Passwörter stimmen nicht überein.");
+                    return;
                 }
+
                 ladebalken.setVisibility(View.VISIBLE);
 
                 fireAuth.createUserWithEmailAndPassword(email,passwort).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -90,4 +90,4 @@ public class Register extends AppCompatActivity {
 
 
     }
-}//
+}
