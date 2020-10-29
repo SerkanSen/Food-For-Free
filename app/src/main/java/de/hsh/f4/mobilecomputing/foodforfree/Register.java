@@ -72,22 +72,25 @@ public class Register extends AppCompatActivity {
 
                 ladebalken.setVisibility(View.VISIBLE);
 
-                fireAuth.createUserWithEmailAndPassword(email,passwort).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            Toast.makeText(Register.this, "Benutzer wurde erstellt.", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(),MainActivity.class));
-                        }else{
-                            Toast.makeText(Register.this, "Fehler!"+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                fireAuth.createUserWithEmailAndPassword(email,passwort).addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        Toast.makeText(Register.this, "Benutzer wurde erstellt.", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                    }else{
+                        Toast.makeText(Register.this, "Fehler!"+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
             }
 
-        });
 
+        });
+        mLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),Login.class));
+            }
+        });
 
     }
 }
