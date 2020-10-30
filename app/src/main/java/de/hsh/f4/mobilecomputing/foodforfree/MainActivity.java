@@ -15,8 +15,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
-
-    //abmelden
     
     public void logout(View view) {
         FirebaseAuth.getInstance().signOut();

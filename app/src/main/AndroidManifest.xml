@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodForFree">
         <activity android:name=".Login"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity> //
         <activity android:name=".Register"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>

@@ -32,6 +32,7 @@
         android:layout_marginTop="13dp"
         android:text="Erstelle ein neues Konto"
         android:textColor="#FFFEFC"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titel" />
@@ -130,7 +131,7 @@
         android:layout_marginTop="8dp"
         android:text="Bereits registriert? Hier geht's zur Anmeldung!"
         android:textColor="#FFFFFF"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/ladebalken"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
