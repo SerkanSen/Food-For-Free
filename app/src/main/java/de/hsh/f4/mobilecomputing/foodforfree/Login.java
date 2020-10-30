@@ -62,7 +62,7 @@ public class Login extends AppCompatActivity {
 
                 progressBar.setVisibility(View.VISIBLE);
 
-                //authenticate
+                //authentifizieren
 
                 fireAuth.signInWithEmailAndPassword(email, passwort).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override

@@ -15,7 +15,7 @@
         android:text="Food For Free"
         android:textAllCaps="false"
         android:textColor="#F3B04D"
-        android:textSize="48sp"
+        android:textSize="52sp"
         android:textStyle="bold"
         android:typeface="normal"
         app:layout_constraintBottom_toBottomOf="parent"
