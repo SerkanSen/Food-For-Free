@@ -20,11 +20,10 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class Register extends AppCompatActivity {
     EditText mName,mEMail,mPasswort,mPasswort1;
-    Button mRegistrierenButton;
-    TextView mLoginButton;
+    Button mRegistrierenBtn;
+    TextView mLoginBtn;
     FirebaseAuth fireAuth;
-    ProgressBar ladebalken;
-    TextView zurAnmeldung;
+    ProgressBar progressBar;
 
 
     @Override
@@ -33,21 +32,20 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         mName =findViewById(R.id.editName);
-        mEMail=findViewById(R.id.editEMail);
-        mPasswort=findViewById(R.id.editPassword);
+        mEMail=findViewById(R.id.email);
+        mPasswort=findViewById(R.id.passwort);
         mPasswort1=findViewById(R.id.editPasswortKontrolle);
-        mRegistrierenButton =findViewById(R.id.button);
-        zurAnmeldung= findViewById(R.id.zurAnmeldung);
-
+        mRegistrierenBtn =findViewById(R.id.loginBtn);
+        mLoginBtn= findViewById(R.id.anmeldenTextView);
 
         fireAuth =FirebaseAuth.getInstance();
-        ladebalken = findViewById(R.id.ladebalken);
+        progressBar = findViewById(R.id.progressBar);
 
         if(fireAuth.getCurrentUser() != null){
             startActivity(new Intent(getApplicationContext(),MainActivity.class));
             finish();
         }
-        mRegistrierenButton.setOnClickListener(new View.OnClickListener(){
+        mRegistrierenBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 String email = mEMail.getText().toString().trim();
@@ -55,7 +53,7 @@ public class Register extends AppCompatActivity {
                 String passwort1= mPasswort1.getText().toString().trim();
 
                 if(TextUtils.isEmpty(email)){
-                    mEMail.setError("EMail wird benötigt.");
+                    mEMail.setError("Email wird benötigt.");
                     return;
             }
                 if(TextUtils.isEmpty(passwort)){
@@ -66,20 +64,22 @@ public class Register extends AppCompatActivity {
                     mPasswort.setError("Passwort muss 6 Zeichen lang sein");
                     return;
                 }
-                if (!mPasswort.equals(mPasswort1)){
-                    mPasswort.setError("Die Passwörter stimmen nicht überein.");
+                if (!passwort.equals(passwort1)){
+                    mPasswort1.setError("Die Passwörter stimmen nicht überein.");
                      return;
                 }
-                ladebalken.setVisibility(View.VISIBLE);
+
+                progressBar.setVisibility(View.VISIBLE);
 
                 fireAuth.createUserWithEmailAndPassword(email,passwort).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            Toast.makeText(Register.this, "Benutzer wurde erstellt.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Register.this, "Neues Konto wurde erstellt.", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(getApplicationContext(),MainActivity.class));
                         }else{
                             Toast.makeText(Register.this, "Fehler!"+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
                         }
                     }
                 });
@@ -88,6 +88,13 @@ public class Register extends AppCompatActivity {
 
         });
 
+        mLoginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), Login.class));
+            }
+        });
+
 
     }
-}//
+}
