@@ -78,12 +78,17 @@ public class Register extends AppCompatActivity {
                     mPasswort.setError("Passwort muss 6 Zeichen lang sein");
                     return;
                 }
+
                 if (!passwort.equals(passwort1)){
                     mPasswort1.setError("Die Passwörter stimmen nicht überein.");
                     return;
                 }
 
-                progressBar.setVisibility(View.VISIBLE);
+                try {
+                    progressBar.setVisibility(View.VISIBLE);
+                }catch(NullPointerException e){
+                    System.out.print(" Ein Fehler ist aufgetreten");
+                }
 
                 fireAuth.createUserWithEmailAndPassword(email,passwort).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
