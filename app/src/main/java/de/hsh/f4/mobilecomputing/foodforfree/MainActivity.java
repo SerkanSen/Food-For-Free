@@ -70,6 +70,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragmentTransaction.commit();
         }
 
+
+        if(menuItem.getItemId() == R.id.favoriten) {
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container_fragment,new FragmentFavoriten());
+        fragmentTransaction.commit();
+        }
+
+        if(menuItem.getItemId() == R.id.meineAnzeigen) {
+            fragmentManager = getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.container_fragment,new FragmentMeineAnzeigen());
+            fragmentTransaction.commit();
+        }
+
+        if(menuItem.getItemId() == R.id.einstellungen) {
+            fragmentManager = getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.container_fragment,new FragmentEinstellungen());
+            fragmentTransaction.commit();
+        }
+
+        if(menuItem.getItemId() == R.id.hilfe) {
+            fragmentManager = getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.container_fragment,new FragmentHilfe());
+            fragmentTransaction.commit();
+        }
+
+
         if(menuItem.getItemId() == R.id.logout) {
             FirebaseAuth.getInstance().signOut(); //logout
             startActivity(new Intent(getApplicationContext(), Login.class));

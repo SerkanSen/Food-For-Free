@@ -7,11 +7,11 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/fragment_nachrichten"
+        android:id="@+id/fragment_hilfe"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/teal_700"
-        android:text="Nachrichten"
+        android:text="Hilfe"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="30sp"
@@ -21,10 +21,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/textView12"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="in Nachrichten"
+        android:text="Menü: Hilfe"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
