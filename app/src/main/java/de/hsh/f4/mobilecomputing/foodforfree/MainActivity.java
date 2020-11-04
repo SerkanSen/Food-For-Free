@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -16,7 +17,9 @@ import android.view.View;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import static androidx.core.view.GravityCompat.*;
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MainFragment.onFragmentBtnSelected {
 
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
@@ -52,10 +55,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        drawerLayout.closeDrawer(GravityCompat.START);
         if(menuItem.getItemId() == R.id.home) {
-
+            fragmentManager = getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.container_fragment,new MainFragment());
+            fragmentTransaction.commit();
         }
+
+        if(menuItem.getItemId() == R.id.nachrichten) {
+            fragmentManager = getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.container_fragment,new FragmentNachrichten());
+            fragmentTransaction.commit();
+        }
+
+        if(menuItem.getItemId() == R.id.logout) {
+            FirebaseAuth.getInstance().signOut(); //logout
+            startActivity(new Intent(getApplicationContext(), Login.class));
+            finish();
+        }
+
         return true;
+    }
+
+    @Override
+    public void onButtonSelected() {
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container_fragment,new FragmentNachrichten());
+        fragmentTransaction.commit();
     }
 
     /*public void logout(View view) {
