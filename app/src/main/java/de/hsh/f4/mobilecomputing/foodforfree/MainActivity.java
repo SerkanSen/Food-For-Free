@@ -1,6 +1,7 @@
 package de.hsh.f4.mobilecomputing.foodforfree;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -16,9 +17,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+
+import java.util.concurrent.Executor;
 
 import static androidx.core.view.GravityCompat.*;
 
@@ -51,12 +60,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //actionBarDrawerToggle.syncState();
 
         //load default fragment
-        fragmentManager = getSupportFragmentManager();
+
+        /*fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.container_fragment,new MainFragment());
-        fragmentTransaction.commit();
+        fragmentTransaction.commit();*/
+
     }
-    
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -65,6 +76,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.container_fragment, new MainFragment());
+            fragmentTransaction.commit();
+        }
+
+        if (menuItem.getItemId() == R.id.profil) {
+
+            fragmentManager = getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.container_fragment, new FragmentProfil());
             fragmentTransaction.commit();
         }
 
@@ -104,19 +123,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragmentTransaction.commit();
         }
 
-
-        /*if(menuItem.getItemId() == R.id.logout) {
-            FirebaseAuth.getInstance().signOut(); //logout
-            startActivity(new Intent(getApplicationContext(), Login.class));
-            finish();
-        }*/
         if (menuItem.getItemId() == R.id.logout) {
-
             ausloggen(this);
-            /*fragmentManager = getSupportFragmentManager();
-            fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container_fragment, new FragmentLogout());
-            fragmentTransaction.commit();*/
         }
         return true;
     }
@@ -127,24 +135,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void logout(Activity activity) {
         AlertDialog.Builder builder =new AlertDialog.Builder(activity);
-        builder.setTitle("Food For Free beenden");
-        builder.setMessage("Bist du sicher, dass du die App beenden willst?");
+        builder.setTitle("Abmelden");
+        builder.setMessage("Bist Du sicher, dass Du Dich abmelden willst?");
         builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                activity.finishAffinity();
-                System.exit(0);
-            }
-        });
-
-
-        builder.setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        builder.setNeutralButton("Ausloggen", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 FirebaseAuth.getInstance().signOut();
@@ -152,7 +145,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 finish();
             }
         });
-
+        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
         builder.show();
     }
 
@@ -164,10 +162,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction.commit();
     }
     
-
-    /*public void logout(View view) {
-        FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getApplicationContext(), Login.class));
-        finish();
-    }*/
 }

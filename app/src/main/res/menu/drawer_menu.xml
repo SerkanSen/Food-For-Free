@@ -8,6 +8,14 @@
         android:icon="@drawable/ic_baseline_home_24"
         android:title="Home" />
     <item
+        android:id="@+id/profil"
+        android:icon="@drawable/ic_baseline_profile"
+        android:title="Profil" />
+    <item
+        android:id="@+id/meineAnzeigen"
+        android:icon="@drawable/ic_baseline_article_24"
+        android:title="Meine Anzeigen" />
+    <item
         android:id="@+id/nachrichten"
         android:icon="@drawable/ic_baseline_message_24"
         android:title="Nachrichten" />
@@ -17,10 +25,6 @@
         android:icon="@drawable/ic_baseline_favorite_24"
         android:title="Favoriten" />
 
-    <item
-        android:id="@+id/meineAnzeigen"
-        android:icon="@drawable/ic_baseline_article_24"
-        android:title="Meine Anzeigen" />
     <item
         android:id="@+id/einstellungen"
         android:icon="@drawable/ic_baseline_settings_24"

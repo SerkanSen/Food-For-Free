@@ -7,6 +7,8 @@
     tools:context=".MainActivity"
     android:id="@+id/drawer">
 
+
+
     <include
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
