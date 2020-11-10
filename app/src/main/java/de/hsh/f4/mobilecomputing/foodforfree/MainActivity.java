@@ -15,11 +15,11 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -34,6 +34,8 @@ import static androidx.core.view.GravityCompat.*;
 public class MainActivity extends AppCompatActivity {
     //Initialize variable
     DrawerLayout drawerLayout;
+    FloatingActionButton newAdBtn;
+    TextView name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +44,19 @@ public class MainActivity extends AppCompatActivity {
 
         //Assign variabe
         drawerLayout = findViewById(R.id.drawer_layout);
+        newAdBtn = findViewById(R.id.newAdBtn);
+        name = findViewById(R.id.name);
 
+        final MainActivity mainActivity = this;
+
+        //newAdBtn -> new activity PlacingAd
+        newAdBtn.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mainActivity, PlacingAd.class);
+                startActivity(intent);
+            }
+        }));
     }
 
     public void ClickMenu(View view) {
