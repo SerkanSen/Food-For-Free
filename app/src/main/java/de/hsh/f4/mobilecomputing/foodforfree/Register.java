@@ -98,7 +98,7 @@ public class Register extends AppCompatActivity {
                             userID = fireAuth.getCurrentUser().getUid();
                             DocumentReference documentReference = fStore.collection("users").document(userID);
                             Map<String, Object> user = new HashMap<>();
-                            user.put("Name", name);
+                            user.put("name", name);
                             user.put("email", email);
                             documentReference.set(user).addOnSuccessListener((OnSuccessListener) (aVoid) -> {
                                     Log.d(TAG, "onSuccess: user Profile is created for " + userID);

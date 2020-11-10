@@ -1,25 +1,17 @@
 package de.hsh.f4.mobilecomputing.foodforfree;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -27,65 +19,69 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
-import java.util.concurrent.Executor;
-
-import static androidx.core.view.GravityCompat.*;
-
-public class MainActivity extends AppCompatActivity {
+public class Profile extends AppCompatActivity {
     //Initialize variable
     DrawerLayout drawerLayout;
+    TextView name, email, adresse, tName, tEmail, tAdresse;
+    FirebaseAuth fAuth;
+    FirebaseFirestore fStore;
+    String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_profile);
 
-        //Assign variabe
+        //Assign variable
         drawerLayout = findViewById(R.id.drawer_layout);
+        tName = findViewById(R.id.tName);
+        tEmail = findViewById(R.id.tEmail);
+        tAdresse = findViewById(R.id.tAdresse);
+        name = findViewById(R.id.profileName);
+        email = findViewById(R.id.profileMail);
+
+        fAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+
+        userId = fAuth.getCurrentUser().getUid();
+
+        DocumentReference documentReference = fStore.collection("users").document(userId);
+        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                name.setText(documentSnapshot.getString("Name"));
+                email.setText(documentSnapshot.getString("email"));
+            }
+        });
+
 
     }
-
     public void ClickMenu(View view) {
-        //Open drawer
-        openDrawer(drawerLayout);
-    }
-
-    public static void openDrawer(DrawerLayout drawerLayout) {
-        //Open drawer layout
-        drawerLayout.openDrawer(GravityCompat.START);
+        //Open Drawer
+        MainActivity.openDrawer(drawerLayout);
     }
 
     public void ClickLogo(View view) {
-        //close Drawer
-        closeDrawer(drawerLayout);
+        //Close Drawer
+        MainActivity.closeDrawer(drawerLayout);
     }
 
-    public static void closeDrawer(DrawerLayout drawerLayout) {
-        //close drawer layout
-        //Check condition
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)){
-            //When drawer is open
-            //Close drawer
-            drawerLayout.closeDrawer(GravityCompat.START);
-        }
+    public void ClickHome(View view) {
+        //Redirect activity to home
+        MainActivity.redirectActivity(this, MainActivity.class);
     }
 
-    public void ClickHome(View view){
-        //recreate activity
+    public void ClickProfile(View view) {
+        //Recreate activity
         recreate();
     }
 
-    public void ClickProfile(View view){
-        //redirect activity to Profile
-        redirectActivity(this,Profile.class);
+    public void ClickAds(View view) {
+        //Redirect activity to Ads
+        MainActivity.redirectActivity(this, Ads.class);
     }
 
-    public void ClickAds(View view){
-        //redirect activity to Ads
-        redirectActivity(this,Ads.class);
-    }
-
-    public void ClickLogout(View view){
+    public void ClickLogout(View view) {
         //logout
         logout(this);
     }
@@ -117,19 +113,11 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
-    public static void redirectActivity(Activity activity, Class aClass) {
-        //Initialize intent
-        Intent intent = new Intent(activity, aClass);
-        //Set Flag
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        //Start activity
-        activity.startActivity(intent);
-    }
-
     @Override
-    protected void onPause() {
+    protected void onPause(){
         super.onPause();
         //close drawer
-        closeDrawer(drawerLayout);
+        MainActivity.closeDrawer(drawerLayout);
     }
+
 }
