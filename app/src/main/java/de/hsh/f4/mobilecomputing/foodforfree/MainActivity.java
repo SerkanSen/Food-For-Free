@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         newAdBtn = findViewById(R.id.newAdBtn);
         name = findViewById(R.id.name);
+        final Button standort= (Button) findViewById(R.id.standort);
 
         final MainActivity mainActivity = this;
 
@@ -54,6 +55,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mainActivity, PlacingAd.class);
+                startActivity(intent);
+            }
+        }));
+
+        standort.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mainActivity, MapsActivity.class);
                 startActivity(intent);
             }
         }));

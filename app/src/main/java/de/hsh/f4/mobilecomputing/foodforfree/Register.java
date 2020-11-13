@@ -101,7 +101,7 @@ public class Register extends AppCompatActivity {
                             user.put("name", name);
                             user.put("email", email);
                             documentReference.set(user).addOnSuccessListener((OnSuccessListener) (aVoid) -> {
-                                    Log.d(TAG, "onSuccess: user Profile is created for " + userID);
+                                Log.d(TAG, "onSuccess: user Profile is created for " + userID);
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
