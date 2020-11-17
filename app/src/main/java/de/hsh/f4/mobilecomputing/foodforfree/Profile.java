@@ -77,7 +77,7 @@ public class Profile extends AppCompatActivity {
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-                name.setText(documentSnapshot.getString("Name"));
+                name.setText(documentSnapshot.getString("name"));
                 email.setText(documentSnapshot.getString("email"));
             }
         });
@@ -112,7 +112,7 @@ public class Profile extends AppCompatActivity {
         fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                //Toast.makeText(Profile.this, "Profilbild erfolgreich hochgeladen.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Profile.this, "Profilbild erfolgreich hochgeladen.", Toast.LENGTH_SHORT).show();
                 fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {

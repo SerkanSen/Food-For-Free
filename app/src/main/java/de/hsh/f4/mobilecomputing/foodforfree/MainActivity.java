@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     //Initialize variable
     DrawerLayout drawerLayout;
     FloatingActionButton newAdBtn;
-    TextView name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         //Assign variabe
         drawerLayout = findViewById(R.id.drawer_layout);
         newAdBtn = findViewById(R.id.newAdBtn);
-        name = findViewById(R.id.name);
         final Button standort= (Button) findViewById(R.id.standort);
 
         final MainActivity mainActivity = this;

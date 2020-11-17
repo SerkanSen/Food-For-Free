@@ -25,7 +25,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/adPhoto"
             android:layout_width="138dp"
             android:layout_height="126dp"
             android:layout_marginStart="16dp"
@@ -35,14 +35,14 @@
             app:srcCompat="@mipmap/ic_launcher" />
 
         <Button
-            android:id="@+id/uploadPhotoBtn"
+            android:id="@+id/uploadAdPhotoBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="32dp"
             android:text="Bild hochladen"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toTopOf="@+id/imageView" />
+            app:layout_constraintStart_toEndOf="@+id/adPhoto"
+            app:layout_constraintTop_toTopOf="@+id/adPhoto" />
 
         <EditText
             android:id="@+id/editTitle"
@@ -58,7 +58,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintTop_toBottomOf="@+id/adPhoto" />
 
         <TextView
             android:id="@+id/ingredients"
@@ -101,7 +101,8 @@
             android:text="Vegetarisch"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/filterOptionsTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/filterOptionsTitle"
+            android:onClick="selectItem"/>
 
         <CheckBox
             android:id="@+id/chBoxVegan"
@@ -111,7 +112,8 @@
             android:text="Vegan"
             android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/chBoxVeggie"
-            app:layout_constraintTop_toBottomOf="@+id/filterOptionsTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/filterOptionsTitle"
+            android:onClick="selectItem"/>
 
         <CheckBox
             android:id="@+id/chBoxFruitsVegs"
@@ -121,7 +123,8 @@
             android:text="Obst/Gemüse"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chBoxVeggie" />
+            app:layout_constraintTop_toBottomOf="@+id/chBoxVeggie"
+            android:onClick="selectItem"/>
 
         <CheckBox
             android:id="@+id/chBoxCans"
@@ -131,17 +134,19 @@
             android:text="Konserven"
             android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/chBoxFruitsVegs"
-            app:layout_constraintTop_toBottomOf="@+id/chBoxVegan" />
+            app:layout_constraintTop_toBottomOf="@+id/chBoxVegan"
+            android:onClick="selectItem"/>
 
         <CheckBox
-            android:id="@+id/chBoxDish"
+            android:id="@+id/chBoxMeal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="Gericht"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chBoxFruitsVegs" />
+            app:layout_constraintTop_toBottomOf="@+id/chBoxFruitsVegs"
+            android:onClick="selectItem"/>
 
         <EditText
             android:id="@+id/editDescription"
@@ -225,7 +230,8 @@
             android:text="Knabberzeug"
             android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/chBoxCans"
-            app:layout_constraintTop_toTopOf="@+id/chBoxCans" />
+            app:layout_constraintTop_toTopOf="@+id/chBoxCans"
+            android:onClick="selectItem"/>
 
         <Button
             android:id="@+id/placeAdBtn"
@@ -236,7 +242,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chBoxDish" />
+            app:layout_constraintTop_toBottomOf="@+id/chBoxMeal" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
