@@ -12,13 +12,21 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -27,6 +35,8 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.Executor;
 
 import static androidx.core.view.GravityCompat.*;
@@ -36,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     FloatingActionButton newAdBtn;
     TextView name;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         newAdBtn = findViewById(R.id.newAdBtn);
         name = findViewById(R.id.name);
         final Button standort= (Button) findViewById(R.id.standort);
-
+        final SearchView searchView= findViewById(R.id.sv_location);
         final MainActivity mainActivity = this;
 
         //newAdBtn -> new activity PlacingAd
@@ -66,6 +77,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         }));
+
+
+
+
     }
 
     public void ClickMenu(View view) {
