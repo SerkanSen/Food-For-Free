@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
     //Initialize variable
     DrawerLayout drawerLayout;
     FloatingActionButton newAdBtn;
-    TextView name;
 
 
     @Override
@@ -56,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         //Assign variabe
         drawerLayout = findViewById(R.id.drawer_layout);
         newAdBtn = findViewById(R.id.newAdBtn);
-        name = findViewById(R.id.name);
         final Button standort= (Button) findViewById(R.id.standort);
         final SearchView searchView= findViewById(R.id.sv_location);
         final MainActivity mainActivity = this;
