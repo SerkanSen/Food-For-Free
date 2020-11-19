@@ -28,7 +28,7 @@ import java.util.Map;
 
 
 public class Register extends AppCompatActivity {
-    EditText mName,mEMail,mPasswort,mPasswort1;
+    EditText mName,mEMail,mPasswort,mPasswort1,mStadtteil;
     Button mRegistrierenBtn;
     TextView mLoginBtn;
     FirebaseAuth fireAuth;
@@ -49,6 +49,7 @@ public class Register extends AppCompatActivity {
         mPasswort1=findViewById(R.id.editPasswortKontrolle);
         mRegistrierenBtn =findViewById(R.id.registrierenBtn);
         mLoginBtn= findViewById(R.id.anmeldenTextView);
+        mStadtteil= findViewById(R.id.stadtteil);
 
         fireAuth =FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
@@ -65,6 +66,7 @@ public class Register extends AppCompatActivity {
                 String passwort= mPasswort.getText().toString().trim();
                 String passwort1= mPasswort1.getText().toString().trim();
                 String name = mName.getText().toString();
+                String stadtteil = mStadtteil.getText().toString();
 
                 if(TextUtils.isEmpty(email)){
                     mEMail.setError("Email wird benötigt.");
@@ -84,6 +86,11 @@ public class Register extends AppCompatActivity {
                     return;
                 }
 
+                if(TextUtils.isEmpty(stadtteil)) {
+                    mStadtteil.setError("Stadtteil wird benötigt.");
+                    return;
+                }
+
                 try {
                     progressBar.setVisibility(View.VISIBLE);
                 }catch(NullPointerException e){
@@ -100,6 +107,7 @@ public class Register extends AppCompatActivity {
                             Map<String, Object> user = new HashMap<>();
                             user.put("name", name);
                             user.put("email", email);
+                            user.put("stadtteil", stadtteil);
                             documentReference.set(user).addOnSuccessListener((OnSuccessListener) (aVoid) -> {
                                 Log.d(TAG, "onSuccess: user Profile is created for " + userID);
                             }).addOnFailureListener(new OnFailureListener() {

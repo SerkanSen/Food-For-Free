@@ -94,9 +94,9 @@ public class Profile extends AppCompatActivity {
         fStore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
 
-        bestätigen = findViewById(R.id.bestätigen);
+        //bestätigen = findViewById(R.id.bestätigen);
         final Profile profile = this;
-        standort = (EditText) findViewById(R.id.standort);
+       // standort = (EditText) findViewById(R.id.standort);
         profileAdress = (TextView) findViewById(R.id.profileAdress);
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
@@ -116,6 +116,7 @@ public class Profile extends AppCompatActivity {
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                 name.setText(documentSnapshot.getString("name"));
                 email.setText(documentSnapshot.getString("email"));
+                profileAdress.setText(documentSnapshot.getString("stadtteil"));
             }
         });
 
@@ -127,7 +128,8 @@ public class Profile extends AppCompatActivity {
                 startActivityForResult(openGalleryIntent, 1000);
             }
         });
-
+/*  //Button bestätigen der schaut ob eine Ort eingegeben wurde, wenn ja wird das Textfeld gefüll
+    //sonst wird die exakte Adresse via GPS ermittelt->wird aber noch nicht gespeichert
         bestätigen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,7 +152,7 @@ public class Profile extends AppCompatActivity {
 
         });
         checkLocationPermission();
-
+*/
     }
 
     @Override
@@ -290,8 +292,8 @@ public class Profile extends AppCompatActivity {
 
         }
     }
-
-
+/*
+//berechtnet längen/breitengrad aus angegebenen ort(steil)
     private class GeoHandler extends Handler {
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -307,7 +309,7 @@ public class Profile extends AppCompatActivity {
             profileAdress.setText(address);
         }
     }
-
+//standortbestimmung via gps und längenbreitengrad angabe
     public void getMyLocation() {
         try {
             gps_enable = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -356,7 +358,7 @@ public class Profile extends AppCompatActivity {
         return true;
 
 
-    }
+    }*/
 
 
 }

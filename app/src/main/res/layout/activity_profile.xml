@@ -115,16 +115,17 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="Wohnort/Adresse:"
+            android:text="Dein Stadtteil"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profileMail" />
-
+<!--
         <EditText
             android:id="@+id/standort"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:inputType="textShortMessage"
             android:layout_marginTop="169dp"
             android:hint="Standort eingeben oder \nleerlassen für Ortung"
             android:textSize="18sp"
@@ -144,7 +145,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
+-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
