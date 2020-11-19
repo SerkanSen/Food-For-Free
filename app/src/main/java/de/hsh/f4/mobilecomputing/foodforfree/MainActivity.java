@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
     //Initialize variable
     DrawerLayout drawerLayout;
     FloatingActionButton newAdBtn;
+    FirebaseAuth fAuth;
+    String userId;
 
     //Firestore for recyclerView
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -66,6 +68,10 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         newAdBtn = findViewById(R.id.newAdBtn);
         final Button standort= (Button) findViewById(R.id.standort);
+
+        fAuth = FirebaseAuth.getInstance();
+        userId = fAuth.getCurrentUser().getUid();
+
 
         final MainActivity mainActivity = this;
 
@@ -89,7 +95,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUpRecyclerView() {
-        Query query = adRef.orderBy("timestamp", Query.Direction.DESCENDING);
+        Query query = adRef.orderBy("timestamp", Query.Direction.DESCENDING );
+                //adRef.orderBy("timestamp", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Ad> options = new FirestoreRecyclerOptions.Builder<Ad>().setQuery(query, Ad.class).build();
 
@@ -174,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
                 //activity.finishAffinity();
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(getApplicationContext(), Login.class));
-                finish();
+                //finish();
             }
         });
         //negative button

@@ -12,14 +12,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.api.Distribution;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 public class MyAds extends AppCompatActivity {
     //Initialize variable
     DrawerLayout drawerLayout;
-    RecyclerView recyclerView;
-    String s1[];
+    FirebaseAuth fAuth;
+    String userId;
+
+    //Firestore for recyclerView
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference adRef = db.collection("ads");
+
+    private AdAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,15 +38,42 @@ public class MyAds extends AppCompatActivity {
 
         //assign variable
         drawerLayout = findViewById(R.id.drawer_layout);
-        recyclerView = findViewById(R.id.RecylerViewMyAds);
 
-        s1 = getResources().getStringArray(R.array.adsID);
+        fAuth = FirebaseAuth.getInstance();
+        userId = fAuth.getCurrentUser().getUid();
 
-        MyAdapter myAdapter = new MyAdapter(this, s1);
-        recyclerView.setAdapter(myAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        setUpRecyclerView();
     }
+
+    private void setUpRecyclerView() {
+        Query query = adRef.whereEqualTo("userID", userId).orderBy("timestamp", Query.Direction.DESCENDING);
+        //adRef.orderBy("timestamp", Query.Direction.DESCENDING);
+        //.orderBy("timestamp", Query.Direction.DESCENDING)
+
+        FirestoreRecyclerOptions<Ad> options = new FirestoreRecyclerOptions.Builder<Ad>().setQuery(query, Ad.class).build();
+
+        adapter = new AdAdapter(options);
+
+        RecyclerView recyclerView = findViewById(R.id.recycler_view_myAds);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+    }
+
+    //when app updates new data from firestore
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+
+    //does not update, when app is in the background, saves ressources
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adapter.startListening();
+    }
+
     public void ClickMenu(View view) {
         //Open Drawer
         MainActivity.openDrawer(drawerLayout);
@@ -81,7 +118,7 @@ public class MyAds extends AppCompatActivity {
                 //activity.finishAffinity();
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(getApplicationContext(), Login.class));
-                finish();
+                //finish();
             }
         });
         //negative button

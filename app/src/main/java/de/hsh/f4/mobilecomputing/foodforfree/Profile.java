@@ -234,7 +234,7 @@ public class Profile extends AppCompatActivity {
                 //activity.finishAffinity();
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(getApplicationContext(), Login.class));
-                finish();
+                //finish();
             }
         });
         //negative button

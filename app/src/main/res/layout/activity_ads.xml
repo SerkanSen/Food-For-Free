@@ -16,9 +16,9 @@
             layout="@layout/main_toolbar" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/RecylerViewMyAds"
+            android:id="@+id/recycler_view_myAds"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="610dp" />
 
     </LinearLayout>
 
