@@ -20,10 +20,10 @@
         android:typeface="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.543"
+        app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.193" />
+        app:layout_constraintVertical_bias="0.169" />
 
     <TextView
         android:id="@+id/aktivitaet"
@@ -115,7 +115,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:ems="10"
-        android:hint="Deinen Stadtteil"
+        android:hint="Dein Stadtteil"
         android:inputType="textPersonName"
         android:textColor="@color/white"
         android:textColorHint="#FFFFFF"

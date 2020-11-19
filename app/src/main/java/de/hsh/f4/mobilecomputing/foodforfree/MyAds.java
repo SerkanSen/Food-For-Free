@@ -2,6 +2,8 @@ package de.hsh.f4.mobilecomputing.foodforfree;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -10,11 +12,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.api.Distribution;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class Ads extends AppCompatActivity {
+public class MyAds extends AppCompatActivity {
     //Initialize variable
     DrawerLayout drawerLayout;
+    RecyclerView recyclerView;
+    String s1[];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +28,14 @@ public class Ads extends AppCompatActivity {
 
         //assign variable
         drawerLayout = findViewById(R.id.drawer_layout);
+        recyclerView = findViewById(R.id.RecylerViewMyAds);
+
+        s1 = getResources().getStringArray(R.array.adsID);
+
+        MyAdapter myAdapter = new MyAdapter(this, s1);
+        recyclerView.setAdapter(myAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
     }
     public void ClickMenu(View view) {
         //Open Drawer

@@ -38,7 +38,7 @@
             android:name=".PlacingAd"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".Ads"
+            android:name=".MyAds"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".Profile"

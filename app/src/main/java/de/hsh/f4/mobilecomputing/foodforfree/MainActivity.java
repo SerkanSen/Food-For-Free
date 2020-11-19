@@ -9,6 +9,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -23,16 +25,19 @@ import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.io.IOException;
@@ -46,6 +51,11 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     FloatingActionButton newAdBtn;
 
+    //Firestore for recyclerView
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference adRef = db.collection("ads");
+
+    private AdAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         newAdBtn = findViewById(R.id.newAdBtn);
         final Button standort= (Button) findViewById(R.id.standort);
-        final SearchView searchView= findViewById(R.id.sv_location);
+
         final MainActivity mainActivity = this;
 
         //newAdBtn -> new activity PlacingAd
@@ -75,10 +85,34 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         }));
+        setUpRecyclerView();
+    }
 
+    private void setUpRecyclerView() {
+        Query query = adRef.orderBy("timestamp", Query.Direction.DESCENDING);
 
+        FirestoreRecyclerOptions<Ad> options = new FirestoreRecyclerOptions.Builder<Ad>().setQuery(query, Ad.class).build();
 
+        adapter = new AdAdapter(options);
 
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+    }
+
+    //when app updates new data from firestore
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+
+    //does not update, when app is in the background, saves ressources
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adapter.startListening();
     }
 
     public void ClickMenu(View view) {
@@ -118,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void ClickAds(View view){
         //redirect activity to Ads
-        redirectActivity(this,Ads.class);
+        redirectActivity(this,MyAds.class);
     }
 
     public void ClickLogout(View view){

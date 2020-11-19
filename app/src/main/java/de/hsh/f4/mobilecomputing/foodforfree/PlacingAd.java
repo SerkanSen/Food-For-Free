@@ -23,19 +23,26 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
 public class PlacingAd extends AppCompatActivity {
-    EditText pTitle, pDescription, pIngredient1, pIngredient2, pIngredient3, pIngredient4, pAmount;
+    EditText pTitle, pDescription, pIngredients, pAmount;
+    TextView pPickupLocation;
     CheckBox veggie, vegan, fruitsveggie, cans, meal, sweets;
     Button pPlaceAdBtn, pUploadAdPhotoBtn;
+    Calendar calendar;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     String userId, adId;
@@ -51,11 +58,9 @@ public class PlacingAd extends AppCompatActivity {
 
         pTitle = findViewById(R.id.editTitle);
         pDescription = findViewById(R.id.editDescription);
-        pIngredient1 = findViewById(R.id.editIngredient1);
-        pIngredient2 = findViewById(R.id.editIngredient2);
-        pIngredient3 = findViewById(R.id.editIngredient3);
-        pIngredient4 = findViewById(R.id.editIngredient4);
+        pIngredients = findViewById(R.id.editIngredients);
         pAmount = findViewById(R.id.editAmount);
+        pPickupLocation = findViewById(R.id.pickupLocation);
         veggie = findViewById(R.id.chBoxVeggie);
         vegan = findViewById(R.id.chBoxVegan);
         fruitsveggie = findViewById(R.id.chBoxFruitsVegs);
@@ -63,13 +68,23 @@ public class PlacingAd extends AppCompatActivity {
         meal = findViewById(R.id.chBoxMeal);
         sweets = findViewById(R.id.chBoxSweets);
 
-        pPlaceAdBtn = findViewById(R.id.placeAdBtn);
-        pAdPhoto = findViewById(R.id.adPhoto);
-        pUploadAdPhotoBtn = findViewById(R.id.uploadAdPhotoBtn);
-
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
+
+        userId = fAuth.getCurrentUser().getUid();
+
+        DocumentReference userRef = fStore.collection("users").document(userId);
+        userRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                pPickupLocation.setText(documentSnapshot.getString("stadtteil"));
+            }
+        });
+
+        pPlaceAdBtn = findViewById(R.id.placeAdBtn);
+        pAdPhoto = findViewById(R.id.adPhoto);
+        pUploadAdPhotoBtn = findViewById(R.id.uploadAdPhotoBtn);
 
         pUploadAdPhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,20 +99,22 @@ public class PlacingAd extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String title = pTitle.getText().toString();
-                String description = pDescription.getText().toString();
-                String ingredient1 = pIngredient1.getText().toString();
-                String ingredient2 = pIngredient2.getText().toString();
-                String ingredient3 = pIngredient3.getText().toString();
-                String ingredient4 = pIngredient4.getText().toString();
+                String description = pDescription.getText().toString().trim();
+                String ingredients = pIngredients.getText().toString().trim();
                 String amount = pAmount.getText().toString();
+                String pickupLocation = pPickupLocation.getText().toString();
+
+                calendar = Calendar.getInstance();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");
+                String timestamp = simpleDateFormat.format(calendar.getTime());
 
 
                 if(TextUtils.isEmpty(title)){
                     pTitle.setError("Titel wird benötigt.");
                     return;
                 }
-                if(TextUtils.isEmpty(ingredient1)){
-                    pIngredient1.setError("Min. eine Zutat wird benötigt.");
+                if(TextUtils.isEmpty(description)){
+                    pDescription.setError("Bitte gib eine kurze Beschreibung ein.");
                     return;
                 }
                 if(TextUtils.isEmpty(amount)){
@@ -108,6 +125,11 @@ public class PlacingAd extends AppCompatActivity {
                     pAmount.setError("Min. eine Portion (1)");
                     return;
                 }
+                if(TextUtils.isEmpty(ingredients)){
+                    pIngredients.setError("Min. eine Zutat wird benötigt. Bitte gib für Allergiker relevante Zutaten unbedingt an!");
+                    return;
+                }
+
                 userId = fAuth.getCurrentUser().getUid();
 
                 DocumentReference documentReference = fStore.collection("ads").document();
@@ -115,21 +137,18 @@ public class PlacingAd extends AppCompatActivity {
                 Map<String, Object> ad = new HashMap<>();
                 ad.put("title", title);
                 ad.put("description", description);
-                ad.put("ingredient1", ingredient1);
-                if(ingredient2!= null)
-                    ad.put("ingredient2", ingredient2);
-                if(ingredient3!= null)
-                    ad.put("ingredient3", ingredient3);
-                if(ingredient4!= null)
-                    ad.put("ingredient4", ingredient4);
+                ad.put("ingredients", ingredients);
                 ad.put("amount", amount);
                 ad.put("userID", userId);
                 ad.put("adID", adId);
+                ad.put("timestamp", timestamp);
+                ad.put("pickupLocation", pickupLocation);
                 if(imageUri!=null){
                     uploadImageToFirebase(imageUri);
                 }
                 documentReference.set(ad).addOnSuccessListener((OnSuccessListener) (aVoid) -> {
-                    Log.d(TAG, "onSuccess: Anzeige erfolgreich erstellt!");
+                    Toast.makeText(PlacingAd.this,"Anzeige erfolgreich erstellt", Toast.LENGTH_SHORT).show();
+                    //Log.d(TAG, "onSuccess: Anzeige erfolgreich erstellt!");
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
@@ -160,7 +179,7 @@ public class PlacingAd extends AppCompatActivity {
         fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(PlacingAd.this, "Foto erfolgreich hochgeladen.", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(PlacingAd.this, "Foto erfolgreich hochgeladen.", Toast.LENGTH_SHORT).show();
                 fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {

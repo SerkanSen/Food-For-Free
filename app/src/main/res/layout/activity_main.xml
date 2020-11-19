@@ -24,16 +24,7 @@
             app:layout_constraintTop_toBottomOf="@+id/sv_location"
             tools:layout_editor_absoluteX="-16dp" />
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Home"
-            android:textSize="50dp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/standort" />
+
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/newAdBtn"
@@ -48,15 +39,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="TextView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
         <SearchView
             android:id="@+id/sv_location"
             android:layout_width="match_parent"
@@ -68,6 +50,14 @@
             android:queryHint="Suche..."
             app:layout_constraintTop_toBottomOf="@+id/include"
             tools:layout_editor_absoluteX="-1dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="580dp"
+            app:layout_constraintStart_toStartOf="@+id/sv_location"
+            app:layout_constraintTop_toBottomOf="@+id/standort" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <RelativeLayout

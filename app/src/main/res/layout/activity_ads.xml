@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawer_layout"
-    tools:context=".Ads">
+    tools:context=".MyAds">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,15 +13,12 @@
         android:orientation="vertical">
 
         <include
-            layout="@layout/main_toolbar"/>
+            layout="@layout/main_toolbar" />
 
-        <TextView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/RecylerViewMyAds"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Meine Anzeigen"
-            android:textSize="50dp"
-            android:textStyle="bold"
-            android:gravity="center"/>
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 

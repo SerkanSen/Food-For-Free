@@ -212,7 +212,7 @@ public class Profile extends AppCompatActivity {
 
     public void ClickAds(View view) {
         //Redirect activity to Ads
-        MainActivity.redirectActivity(this, Ads.class);
+        MainActivity.redirectActivity(this, MyAds.class);
     }
 
     public void ClickLogout(View view) {
