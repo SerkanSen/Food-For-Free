@@ -115,11 +115,36 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="Adresse"
+            android:text="Wohnort/Adresse:"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profileMail" />
+
+        <EditText
+            android:id="@+id/standort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="169dp"
+            android:hint="Standort eingeben oder \nleerlassen für Ortung"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/tAdresse"
+            app:layout_constraintTop_toBottomOf="@+id/uploadProfilePhotoBtn" />
+
+        <Button
+            android:id="@+id/bestätigen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="146dp"
+            android:layout_marginEnd="177dp"
+            android:layout_marginBottom="37dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:text="Änderungen bestätigen"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

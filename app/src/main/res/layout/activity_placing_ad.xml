@@ -156,7 +156,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:ems="10"
-            android:hint="Erzähle etwas, über das Essen, das gerettet werden soll..."
+            android:hint="Erzähle etwas über das zu rettende Essen..."
             android:inputType="textPersonName"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"

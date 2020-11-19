@@ -1,4 +1,4 @@
-package de.hsh.f4.mobilecomputing.foodforfree;
+ package de.hsh.f4.mobilecomputing.foodforfree;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
