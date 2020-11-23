@@ -33,14 +33,21 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PlacingAd extends AppCompatActivity {
     EditText pTitle, pDescription, pIngredients, pAmount;
     TextView pPickupLocation;
-    CheckBox veggie, vegan, fruitsveggie, cans, meal, sweets;
+    CheckBox chBoxVeggie, chBoxVegan, chBoxFruitsVegs, chBoxCans, chBoxMeal, chBoxSweets;
+    //Boolean veggie, vegan, fruitsvegs, cans, meal, sweets;
+    //ArrayList<String> pFilterOptions = new ArrayList<>();
+    String [] pFilterOptions;
+    //int n;
     Button pPlaceAdBtn, pUploadAdPhotoBtn;
     Calendar calendar;
     FirebaseAuth fAuth;
@@ -56,17 +63,19 @@ public class PlacingAd extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_placing_ad);
 
+        //n = 0;
         pTitle = findViewById(R.id.editTitle);
         pDescription = findViewById(R.id.editDescription);
         pIngredients = findViewById(R.id.editIngredients);
         pAmount = findViewById(R.id.editAmount);
         pPickupLocation = findViewById(R.id.pickupLocation);
-        veggie = findViewById(R.id.chBoxVeggie);
-        vegan = findViewById(R.id.chBoxVegan);
-        fruitsveggie = findViewById(R.id.chBoxFruitsVegs);
-        cans = findViewById(R.id.chBoxCans);
-        meal = findViewById(R.id.chBoxMeal);
-        sweets = findViewById(R.id.chBoxSweets);
+        chBoxVeggie = findViewById(R.id.chBoxVeggie);
+        chBoxVegan = findViewById(R.id.chBoxVegan);
+        chBoxFruitsVegs = findViewById(R.id.chBoxFruitsVegs);
+        chBoxCans = findViewById(R.id.chBoxCans);
+        chBoxMeal = findViewById(R.id.chBoxMeal);
+        chBoxSweets = findViewById(R.id.chBoxSweets);
+        pFilterOptions = new String [6];
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
@@ -103,11 +112,12 @@ public class PlacingAd extends AppCompatActivity {
                 String ingredients = pIngredients.getText().toString().trim();
                 String amount = pAmount.getText().toString();
                 String pickupLocation = pPickupLocation.getText().toString();
+                //n = pFilterOptions.length;
+                List<String> filterOptions = Arrays.asList(pFilterOptions);
 
                 calendar = Calendar.getInstance();
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");
                 String timestamp = simpleDateFormat.format(calendar.getTime());
-
 
                 if(TextUtils.isEmpty(title)){
                     pTitle.setError("Titel wird benötigt.");
@@ -143,6 +153,8 @@ public class PlacingAd extends AppCompatActivity {
                 ad.put("adID", adId);
                 ad.put("timestamp", timestamp);
                 ad.put("pickupLocation", pickupLocation);
+                ad.put("filterOptions", filterOptions);
+                //ad.put("n", n);
                 if(imageUri!=null){
                     uploadImageToFirebase(imageUri);
                 }
@@ -173,6 +185,7 @@ public class PlacingAd extends AppCompatActivity {
         }
     }
 
+    //uploads image to Firebase Storage "ads/adId/adPhoto"
     private void uploadImageToFirebase(Uri imageUri) {
         //upload image to firebase storage
         StorageReference fileRef = storageReference.child("ads/"+ adId +"/adPhoto.jpg");
@@ -195,15 +208,58 @@ public class PlacingAd extends AppCompatActivity {
         });
     }
 
+    //include checkboxes
     public void selectItem(View view) {
         boolean checked = ((CheckBox) view).isChecked();
             switch (view.getId()){
                 case R.id.chBoxVeggie:
                     if(checked){
-
+                        pFilterOptions[0] = ("Vegetarisch");
                     }
+                    else {
+                        pFilterOptions[0] = ("");
+                    }
+                    break;
+                case R.id.chBoxVegan:
+                    if(checked){
+                        pFilterOptions[1] = ("Vegan");
+                    }
+                    else {
+                        pFilterOptions[1] = ("");
+                    }
+                    break;
+                case R.id.chBoxFruitsVegs:
+                    if(checked){
+                        pFilterOptions[2] = ("Obst/Gemüse");
+                    }
+                    else {
+                        pFilterOptions[2] = ("");
+                    }
+                    break;
+                case R.id.chBoxCans:
+                    if(checked){
+                        pFilterOptions[3] = ("Konserven");
+                    }
+                    else {
+                        pFilterOptions[3] = ("");
+                    }
+                    break;
+                case R.id.chBoxMeal:
+                    if(checked){
+                        pFilterOptions[4] = ("Gericht");
+                    }
+                    else {
+                        pFilterOptions[4] = ("");
+                    }
+                    break;
+                case R.id.chBoxSweets:
+                    if(checked){
+                        pFilterOptions[5] = ("Knabberzeug");
+                    }
+                    else {
+                        pFilterOptions[5] = ("");
+                    }
+                    break;
             }
     }
-
-
 }

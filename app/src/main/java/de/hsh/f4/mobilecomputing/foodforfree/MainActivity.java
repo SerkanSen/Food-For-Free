@@ -48,6 +48,7 @@ import static androidx.core.view.GravityCompat.*;
 
 public class MainActivity extends AppCompatActivity {
     //Initialize variable
+    protected static final String EXTRA_ADID = "de.hsh.mobilecomputing.foodforfree.ADID";
     DrawerLayout drawerLayout;
     FloatingActionButton newAdBtn;
     FirebaseAuth fAuth;
@@ -106,7 +107,19 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new AdAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                Intent intent = new Intent(MainActivity.this, AdDetails.class);
+                String adId = documentSnapshot.getId();
+                intent.putExtra(EXTRA_ADID, adId);
+                startActivity(intent);
+                //startActivity(new Intent(getApplicationContext(), AdDetails.class));
+            }
+        });
     }
+
 
     //when app updates new data from firestore
     @Override
@@ -209,4 +222,5 @@ public class MainActivity extends AppCompatActivity {
         //close drawer
         closeDrawer(drawerLayout);
     }
+
 }
