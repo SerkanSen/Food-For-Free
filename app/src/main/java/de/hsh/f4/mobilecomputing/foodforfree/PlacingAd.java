@@ -196,7 +196,7 @@ public class PlacingAd extends AppCompatActivity {
                 fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        Picasso.get().load(uri).into(pAdPhoto);
+                        Picasso.get().load(uri).resize(200,200).into(pAdPhoto);
                     }
                 });
             }

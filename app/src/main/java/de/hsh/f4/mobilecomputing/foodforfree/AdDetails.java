@@ -53,7 +53,7 @@ public class AdDetails extends AppCompatActivity {
         adsRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).into(image);
+                Picasso.get().load(uri).resize(500,500).onlyScaleDown().into(image);
             }
         });
 

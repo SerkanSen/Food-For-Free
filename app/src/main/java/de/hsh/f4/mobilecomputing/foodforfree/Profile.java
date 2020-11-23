@@ -104,7 +104,7 @@ public class Profile extends AppCompatActivity {
         profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).into(profilePhoto);
+                Picasso.get().load(uri).resize(100,100).into(profilePhoto);
             }
         });
 
@@ -178,7 +178,7 @@ public class Profile extends AppCompatActivity {
                 fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        Picasso.get().load(uri).into(profilePhoto);
+                        Picasso.get().load(uri).resize(200,200).into(profilePhoto);
                     }
                 });
             }
