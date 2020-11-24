@@ -28,7 +28,8 @@ public class AdAdapter extends FirestoreRecyclerAdapter<Ad, AdAdapter.AdHolder> 
         holder.textViewTitle.setText(model.getTitle());
         holder.textViewAmount.setText(model.getAmount());
         holder.textViewPickupLocation.setText(model.getPickupLocation());
-        List<String> filterOptions = model.getFilterOptions();
+        holder.textViewFilter.setText(model.getFilterOptions());
+        //List<String> filterOptions = model.getFilterOptions();
         
     }
 

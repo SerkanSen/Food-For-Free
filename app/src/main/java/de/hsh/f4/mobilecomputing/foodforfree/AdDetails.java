@@ -20,12 +20,15 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 public class AdDetails extends AppCompatActivity {
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     StorageReference storageReference;
     TextView title, pickupLocation, description, amount, ingredients, filterOptions;
     ImageView image;
+    //List <String> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +70,8 @@ public class AdDetails extends AppCompatActivity {
                 description.setText(documentSnapshot.getString("description"));
                 amount.setText(documentSnapshot.getString("amount"));
                 ingredients.setText(documentSnapshot.getString("ingredients"));
-                //filterOptions.setText(documentSnapshot.getString("filterOptions)); List zu String
+                //(documentSnapshot.getString("filterOptions"));
+                filterOptions.setText(documentSnapshot.getString("filterOptions")); //List zu String
             }
         });
 

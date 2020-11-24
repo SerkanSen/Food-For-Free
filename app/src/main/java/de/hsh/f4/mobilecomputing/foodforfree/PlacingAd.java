@@ -31,6 +31,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,10 +46,10 @@ public class PlacingAd extends AppCompatActivity {
     EditText pTitle, pDescription, pIngredients, pAmount;
     TextView pPickupLocation;
     CheckBox chBoxVeggie, chBoxVegan, chBoxFruitsVegs, chBoxCans, chBoxMeal, chBoxSweets;
-    //Boolean veggie, vegan, fruitsvegs, cans, meal, sweets;
     //ArrayList<String> pFilterOptions = new ArrayList<>();
-    String [] pFilterOptions;
-    //int n;
+    //String [] pFilterOptions;
+    //String pFilterOptions;
+    ArrayList <String> sFilterOptions = new ArrayList<>();
     Button pPlaceAdBtn, pUploadAdPhotoBtn;
     Calendar calendar;
     FirebaseAuth fAuth;
@@ -75,7 +77,7 @@ public class PlacingAd extends AppCompatActivity {
         chBoxCans = findViewById(R.id.chBoxCans);
         chBoxMeal = findViewById(R.id.chBoxMeal);
         chBoxSweets = findViewById(R.id.chBoxSweets);
-        pFilterOptions = new String [6];
+        //pFilterOptions = new String [6];
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
@@ -112,8 +114,8 @@ public class PlacingAd extends AppCompatActivity {
                 String ingredients = pIngredients.getText().toString().trim();
                 String amount = pAmount.getText().toString();
                 String pickupLocation = pPickupLocation.getText().toString();
-                //n = pFilterOptions.length;
-                List<String> filterOptions = Arrays.asList(pFilterOptions);
+                //List<String> filterOptions = Arrays.asList(pFilterOptions);
+                String filterOptions;
 
                 calendar = Calendar.getInstance();
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");
@@ -140,6 +142,12 @@ public class PlacingAd extends AppCompatActivity {
                     return;
                 }
 
+                //filterOptions as String
+                StringBuilder stringBuilder = new StringBuilder();
+                for (String s : sFilterOptions)
+                    stringBuilder.append("- ").append(s).append("\n");
+                filterOptions = stringBuilder.toString();
+
                 userId = fAuth.getCurrentUser().getUid();
 
                 DocumentReference documentReference = fStore.collection("ads").document();
@@ -154,7 +162,6 @@ public class PlacingAd extends AppCompatActivity {
                 ad.put("timestamp", timestamp);
                 ad.put("pickupLocation", pickupLocation);
                 ad.put("filterOptions", filterOptions);
-                //ad.put("n", n);
                 if(imageUri!=null){
                     uploadImageToFirebase(imageUri);
                 }
@@ -178,11 +185,19 @@ public class PlacingAd extends AppCompatActivity {
         if(requestCode == 1000) {
             if(resultCode == Activity.RESULT_OK){
                 imageUri = data.getData();
+                //CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(1,1).start(this);
                 pAdPhoto.setImageURI(imageUri);
-
-                //uploadImageToFirebase(imageUri);
             }
         }
+        /*if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+            if(requestCode == RESULT_OK){
+                Uri resultUri = result.getUri();
+                imageUri = result.getUri();
+                pAdPhoto.setImageURI(imageUri);
+            }
+        }*/
     }
 
     //uploads image to Firebase Storage "ads/adId/adPhoto"
@@ -210,6 +225,59 @@ public class PlacingAd extends AppCompatActivity {
 
     //include checkboxes
     public void selectItem(View view) {
+        boolean checked = ((CheckBox) view).isChecked();
+        switch (view.getId()){
+            case R.id.chBoxVeggie:
+                if(checked){
+                    sFilterOptions.add("Vegetarisch");
+                }
+                else {
+                    sFilterOptions.remove("Vegetarisch");
+                }
+                break;
+            case R.id.chBoxVegan:
+                if(checked){
+                    sFilterOptions.add("Vegan");
+                }
+                else {
+                    sFilterOptions.remove("Vegan");
+                }
+                break;
+            case R.id.chBoxFruitsVegs:
+                if(checked){
+                    sFilterOptions.add("Obst/Gemüse");
+                }
+                else {
+                    sFilterOptions.remove("Obst/Gemüse");
+                }
+                break;
+            case R.id.chBoxCans:
+                if(checked){
+                    sFilterOptions.add("Konserven");
+                }
+                else {
+                    sFilterOptions.remove("Konserven");
+                }
+                break;
+            case R.id.chBoxMeal:
+                if(checked){
+                    sFilterOptions.add("Gericht");
+                }
+                else {
+                    sFilterOptions.remove("Gericht");
+                }
+                break;
+            case R.id.chBoxSweets:
+                if(checked){
+                    sFilterOptions.add("Knabberzeug");
+                }
+                else {
+                    sFilterOptions.remove("Knabberzeug");
+                }
+                break;
+        }
+    }
+    /*public void selectItem(View view) {
         boolean checked = ((CheckBox) view).isChecked();
             switch (view.getId()){
                 case R.id.chBoxVeggie:
@@ -261,5 +329,5 @@ public class PlacingAd extends AppCompatActivity {
                     }
                     break;
             }
-    }
+    }*/
 }
