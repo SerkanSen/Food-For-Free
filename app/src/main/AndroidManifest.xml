@@ -46,6 +46,11 @@
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat"/>
         <activity
+            android:name=".EditAd"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:parentActivityName=".MyAds" />
+
+        <activity
             android:name=".MyAds"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity

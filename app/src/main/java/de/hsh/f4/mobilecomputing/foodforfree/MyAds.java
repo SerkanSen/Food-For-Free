@@ -16,8 +16,11 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.api.Distribution;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+
+import static de.hsh.f4.mobilecomputing.foodforfree.MainActivity.EXTRA_ADID;
 
 public class MyAds extends AppCompatActivity {
     //Initialize variable
@@ -58,6 +61,17 @@ public class MyAds extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new AdAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                Intent intent = new Intent(MyAds.this, EditAd.class);
+                String adId = documentSnapshot.getId();
+                intent.putExtra(EXTRA_ADID, adId);
+                startActivity(intent);
+                //startActivity(new Intent(getApplicationContext(), AdDetails.class));
+            }
+        });
     }
 
     //when app updates new data from firestore

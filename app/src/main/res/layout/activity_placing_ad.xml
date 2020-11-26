@@ -234,7 +234,18 @@
             app:layout_constraintStart_toStartOf="@+id/pickupLocationTitle"
             app:layout_constraintTop_toBottomOf="@+id/pickupLocationTitle" />
 
+        <Button
+            android:id="@+id/makePic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="5dp"
+            android:text="Kamera benutzen"
+            app:layout_constraintStart_toEndOf="@+id/adPhoto"
+            app:layout_constraintTop_toBottomOf="@+id/uploadAdPhotoBtn" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
+
 

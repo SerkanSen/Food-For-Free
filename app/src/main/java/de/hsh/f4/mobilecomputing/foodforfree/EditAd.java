@@ -32,40 +32,43 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PlacingAd extends AppCompatActivity {
-    EditText pTitle, pDescription, pIngredients, pAmount;
-    TextView pPickupLocation;
-    CheckBox chBoxVeggie, chBoxVegan, chBoxFruitsVegs, chBoxCans, chBoxMeal, chBoxSweets;
+public class EditAd extends AppCompatActivity {
+    private static final String EXTRA_ADID = "de.hsh.mobilecomputing.foodforfree.ADID";
+    FirebaseAuth fAuth;
+    FirebaseFirestore fStore;
+    StorageReference storageReference;
+    //TextView title, pickupLocation, description, amount, ingredients, filterOptions;
+    //ImageView image;
+    //List <String> list;
     //ArrayList<String> pFilterOptions = new ArrayList<>();
     //String [] pFilterOptions;
     //String pFilterOptions;
-    ArrayList <String> sFilterOptions = new ArrayList<>();
-    Button pPlaceAdBtn, pUploadAdPhotoBtn, pMakePic;
+    ArrayList<String> sFilterOptions = new ArrayList<>();
+    Button pUpdateAdBtn, pUploadAdPhotoBtn, pMakePic;
     Calendar calendar;
-    FirebaseAuth fAuth;
-    FirebaseFirestore fStore;
+
     String userId, adId;
     ImageView pAdPhoto;
     Uri imageUri;
-    StorageReference storageReference;
     public static final String TAG = "TAG";
+
+
+    EditText pTitle, pDescription, pIngredients, pAmount;
+    TextView pPickupLocation;
+    CheckBox chBoxVeggie, chBoxVegan, chBoxFruitsVegs, chBoxCans, chBoxMeal, chBoxSweets;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_placing_ad);
-
         //n = 0;
         pTitle = findViewById(R.id.editTitle);
         pDescription = findViewById(R.id.editDescription);
@@ -78,26 +81,53 @@ public class PlacingAd extends AppCompatActivity {
         chBoxCans = findViewById(R.id.chBoxCans);
         chBoxMeal = findViewById(R.id.chBoxMeal);
         chBoxSweets = findViewById(R.id.chBoxSweets);
+        pUpdateAdBtn = findViewById(R.id.placeAdBtn);
+        pAdPhoto = findViewById(R.id.adPhoto);
+        pUploadAdPhotoBtn = findViewById(R.id.uploadAdPhotoBtn);
+        pMakePic = findViewById(R.id.makePic);
         //pFilterOptions = new String [6];
+/*
+        title = findViewById(R.id.adDetails_title);
+        pickupLocation = findViewById(R.id.adDetails_pickupLocation);
+        description = findViewById(R.id.adDetails_description);
+        amount = findViewById(R.id.adDetails_amount);
+        ingredients = findViewById(R.id.adDetails_ingredients);
+        filterOptions = findViewById(R.id.adDetails_filterOptions);*/
+        //image = findViewById(R.id.adDetails_image);
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
-
         userId = fAuth.getCurrentUser().getUid();
 
-        DocumentReference userRef = fStore.collection("users").document(userId);
-        userRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+        //get Intent and adId from clicked itemview
+        Intent intent = getIntent();
+        String adId = intent.getStringExtra(EditAd.EXTRA_ADID);
+
+        //get Image from storage/ads
+        StorageReference adsRef = storageReference.child("ads/"+adId+"/adPhoto.jpg");
+        adsRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-                pPickupLocation.setText(documentSnapshot.getString("stadtteil"));
+            public void onSuccess(Uri uri) {
+               Picasso.get().load(uri).resize(500,500).onlyScaleDown().into(pAdPhoto);
+                imageUri= uri;
             }
         });
 
-        pPlaceAdBtn = findViewById(R.id.placeAdBtn);
-        pAdPhoto = findViewById(R.id.adPhoto);
-        pUploadAdPhotoBtn = findViewById(R.id.uploadAdPhotoBtn);
-        pMakePic = findViewById(R.id.makePic);
+        //get document information
+        DocumentReference documentReference = fStore.collection("ads").document(adId);
+        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                pTitle.setText(documentSnapshot.getString("title"));
+                pPickupLocation.setText(documentSnapshot.getString("pickupLocation"));
+                pDescription.setText(documentSnapshot.getString("description"));
+                pAmount.setText(documentSnapshot.getString("amount"));
+                pIngredients.setText(documentSnapshot.getString("ingredients"));
+                //(documentSnapshot.getString("filterOptions"));
+         //       filterOptions.setText(documentSnapshot.getString("filterOptions")); //List zu String
+            }
+        });
 
         pUploadAdPhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +147,7 @@ public class PlacingAd extends AppCompatActivity {
 
 
 
-        pPlaceAdBtn.setOnClickListener(new View.OnClickListener() {
+        pUpdateAdBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String title = pTitle.getText().toString();
@@ -161,9 +191,12 @@ public class PlacingAd extends AppCompatActivity {
 
                 userId = fAuth.getCurrentUser().getUid();
 
-                DocumentReference documentReference = fStore.collection("ads").document();
-                adId = documentReference.getId();
+                DocumentReference documentReference = fStore.collection("ads").document(adId);
+                //adId = documentReference.getId();
                 Map<String, Object> ad = new HashMap<>();
+
+                documentReference.set(ad);
+                //fStore.collection("ads").document("adId").update(ad);
                 ad.put("title", title);
                 ad.put("description", description);
                 ad.put("ingredients", ingredients);
@@ -173,11 +206,13 @@ public class PlacingAd extends AppCompatActivity {
                 ad.put("timestamp", timestamp);
                 ad.put("pickupLocation", pickupLocation);
                 ad.put("filterOptions", filterOptions);
+
+
                 if(imageUri!=null){
                     uploadImageToFirebase(imageUri);
                 }
                 documentReference.set(ad).addOnSuccessListener((OnSuccessListener) (aVoid) -> {
-                    Toast.makeText(PlacingAd.this,"Anzeige erfolgreich erstellt", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditAd.this,"Anzeige aktualisiert", Toast.LENGTH_SHORT).show();
                     //Log.d(TAG, "onSuccess: Anzeige erfolgreich erstellt!");
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -188,6 +223,8 @@ public class PlacingAd extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
             }
         });
+
+
     }
 
     @Override
@@ -210,7 +247,7 @@ public class PlacingAd extends AppCompatActivity {
     }
 
 
-        //uploads image to Firebase Storage "ads/adId/adPhoto"
+    //uploads image to Firebase Storage "ads/adId/adPhoto"
     private void uploadImageToFirebase(Uri imageUri) {
         //upload image to firebase storage
         StorageReference fileRef = storageReference.child("ads/"+ adId +"/adPhoto.jpg");
@@ -228,7 +265,7 @@ public class PlacingAd extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(PlacingAd.this, "Fehlgeschlagen.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditAd.this, "Fehlgeschlagen.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -287,57 +324,4 @@ public class PlacingAd extends AppCompatActivity {
                 break;
         }
     }
-    /*public void selectItem(View view) {
-        boolean checked = ((CheckBox) view).isChecked();
-            switch (view.getId()){
-                case R.id.chBoxVeggie:
-                    if(checked){
-                        pFilterOptions[0] = ("Vegetarisch");
-                    }
-                    else {
-                        pFilterOptions[0] = ("");
-                    }
-                    break;
-                case R.id.chBoxVegan:
-                    if(checked){
-                        pFilterOptions[1] = ("Vegan");
-                    }
-                    else {
-                        pFilterOptions[1] = ("");
-                    }
-                    break;
-                case R.id.chBoxFruitsVegs:
-                    if(checked){
-                        pFilterOptions[2] = ("Obst/Gemüse");
-                    }
-                    else {
-                        pFilterOptions[2] = ("");
-                    }
-                    break;
-                case R.id.chBoxCans:
-                    if(checked){
-                        pFilterOptions[3] = ("Konserven");
-                    }
-                    else {
-                        pFilterOptions[3] = ("");
-                    }
-                    break;
-                case R.id.chBoxMeal:
-                    if(checked){
-                        pFilterOptions[4] = ("Gericht");
-                    }
-                    else {
-                        pFilterOptions[4] = ("");
-                    }
-                    break;
-                case R.id.chBoxSweets:
-                    if(checked){
-                        pFilterOptions[5] = ("Knabberzeug");
-                    }
-                    else {
-                        pFilterOptions[5] = ("");
-                    }
-                    break;
-            }
-    }*/
 }
