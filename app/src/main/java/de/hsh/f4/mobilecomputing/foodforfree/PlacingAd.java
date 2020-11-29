@@ -228,7 +228,7 @@ public class PlacingAd extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(PlacingAd.this, "Fehlgeschlagen.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PlacingAd.this, "Bild hochladen fehlgeschlagen.", Toast.LENGTH_SHORT).show();
             }
         });
     }

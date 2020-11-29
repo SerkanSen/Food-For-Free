@@ -65,13 +65,14 @@ public class MyAds extends AppCompatActivity {
         adapter.setOnItemClickListener(new AdAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                Intent intent = new Intent(MyAds.this, EditAd.class);
+                Intent intent = new Intent(MyAds.this, EditDetail.class);
                 String adId = documentSnapshot.getId();
                 intent.putExtra(EXTRA_ADID, adId);
                 startActivity(intent);
                 //startActivity(new Intent(getApplicationContext(), AdDetails.class));
             }
         });
+
     }
 
     //when app updates new data from firestore
@@ -144,6 +145,8 @@ public class MyAds extends AppCompatActivity {
         });
         builder.show();
     }
+
+
 
     @Override
     protected void onPause(){

@@ -102,7 +102,7 @@ public class EditAd extends AppCompatActivity {
 
         //get Intent and adId from clicked itemview
         Intent intent = getIntent();
-        String adId = intent.getStringExtra(EditAd.EXTRA_ADID);
+        String adId = intent.getStringExtra(EditDetail.EXTRA_ADID);
 
         //get Image from storage/ads
         StorageReference adsRef = storageReference.child("ads/"+adId+"/adPhoto.jpg");
@@ -265,7 +265,7 @@ public class EditAd extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(EditAd.this, "Fehlgeschlagen.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditAd.this, "Bild hochladen fehlgeschlagen.", Toast.LENGTH_SHORT).show();
             }
         });
     }
