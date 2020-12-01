@@ -48,7 +48,7 @@ public class EditAd extends AppCompatActivity {
     ArrayList<String> sFilterOptions = new ArrayList<>();
     Button pUpdateAdBtn, pUploadAdPhotoBtn, pMakePic;
     Calendar calendar;
-    String userId, adId;
+    String userId, adId, imageAdPhotoUrl;
     ImageView pAdPhoto;
     Uri imageUri;
     public static final String TAG = "TAG";
@@ -196,6 +196,7 @@ public class EditAd extends AppCompatActivity {
 
                 if(imageUri!=null){
                     uploadImageToFirebase(imageUri);
+                    ad.put("imageUrl", imageAdPhotoUrl);
                 }
                 documentReference.set(ad).addOnSuccessListener((OnSuccessListener) (aVoid) -> {
                     Toast.makeText(EditAd.this,"Anzeige aktualisiert", Toast.LENGTH_SHORT).show();
@@ -241,6 +242,7 @@ public class EditAd extends AppCompatActivity {
                     @Override
                     public void onSuccess(Uri uri) {
                         Picasso.get().load(uri).resize(200,200).into(pAdPhoto);
+                        imageAdPhotoUrl = fileRef.getDownloadUrl().toString();
                     }
                 });
             }
