@@ -110,9 +110,12 @@ public class EditDetail extends AppCompatActivity {
 
 
                         try {Intent intent = getIntent();
+                            //Löschen des Dokuments und des Fotos
                             String adId = intent.getStringExtra(EditDetail.EXTRA_ADID);
                             documentReference= fStore.collection("ads").document(adId);
+                            StorageReference fileRef = storageReference.child("ads/"+adId+"/adPhoto.jpg");
                             documentReference.delete();
+                            fileRef.delete();
 
                         }catch (Exception e) {
                             Toast.makeText(EditDetail.this, "Anzeige nicht vorhanden", Toast.LENGTH_SHORT).show();

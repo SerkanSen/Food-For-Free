@@ -47,15 +47,12 @@ public class PlacingAd extends AppCompatActivity {
     EditText pTitle, pDescription, pIngredients, pAmount;
     TextView pPickupLocation;
     CheckBox chBoxVeggie, chBoxVegan, chBoxFruitsVegs, chBoxCans, chBoxMeal, chBoxSweets;
-    //ArrayList<String> pFilterOptions = new ArrayList<>();
-    //String [] pFilterOptions;
-    //String pFilterOptions;
     ArrayList <String> sFilterOptions = new ArrayList<>();
     Button pPlaceAdBtn, pUploadAdPhotoBtn, pMakePic;
     Calendar calendar;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
-    String userId, adId;
+    String userId, adId, imageAdPhotoUrl;
     ImageView pAdPhoto;
     Uri imageUri;
     StorageReference storageReference;
@@ -66,7 +63,6 @@ public class PlacingAd extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_placing_ad);
 
-        //n = 0;
         pTitle = findViewById(R.id.editTitle);
         pDescription = findViewById(R.id.editDescription);
         pIngredients = findViewById(R.id.editIngredients);
@@ -78,7 +74,6 @@ public class PlacingAd extends AppCompatActivity {
         chBoxCans = findViewById(R.id.chBoxCans);
         chBoxMeal = findViewById(R.id.chBoxMeal);
         chBoxSweets = findViewById(R.id.chBoxSweets);
-        //pFilterOptions = new String [6];
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
@@ -125,7 +120,6 @@ public class PlacingAd extends AppCompatActivity {
                 String ingredients = pIngredients.getText().toString().trim();
                 String amount = pAmount.getText().toString();
                 String pickupLocation = pPickupLocation.getText().toString();
-                //List<String> filterOptions = Arrays.asList(pFilterOptions);
                 String filterOptions;
 
                 calendar = Calendar.getInstance();
@@ -159,6 +153,7 @@ public class PlacingAd extends AppCompatActivity {
                     stringBuilder.append("- ").append(s).append("\n");
                 filterOptions = stringBuilder.toString();
 
+
                 userId = fAuth.getCurrentUser().getUid();
 
                 DocumentReference documentReference = fStore.collection("ads").document();
@@ -175,6 +170,30 @@ public class PlacingAd extends AppCompatActivity {
                 ad.put("filterOptions", filterOptions);
                 if(imageUri!=null){
                     uploadImageToFirebase(imageUri);
+
+                    /*StorageReference fileRef = storageReference.child("ads/"+ adId +"/adPhoto.jpg");
+                    fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    Picasso.get().load(uri).resize(200,200).into(pAdPhoto);
+                                    //uri ist downloadUrl des Bildes
+                                    //imageAdPhotoUrl = uri.toString();
+                                    ad.put("imageUrl", uri.toString());
+                                }
+                            });
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(PlacingAd.this, "Fehlgeschlagen.", Toast.LENGTH_SHORT).show();
+                        }
+                    });*/
+
+                    ad.put("imageUrl", imageAdPhotoUrl);
+                    //ad.put("imageUrl", Picasso.get().load(uri));
                 }
                 documentReference.set(ad).addOnSuccessListener((OnSuccessListener) (aVoid) -> {
                     Toast.makeText(PlacingAd.this,"Anzeige erfolgreich erstellt", Toast.LENGTH_SHORT).show();
@@ -197,8 +216,6 @@ public class PlacingAd extends AppCompatActivity {
             if (resultCode == Activity.RESULT_OK) {
                 imageUri = data.getData();
                 pAdPhoto.setImageURI(imageUri);
-
-                //uploadImageToFirebase(imageUri);
             }
         } else if (requestCode == 61 && resultCode == Activity.RESULT_OK) {          //Übergabe Foto an pAdPhoto
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");                   //habe viele Variationen mit dieser und in kombbination deiner variante drüber probiert, Casting in Uri,direkt als Uri
@@ -210,18 +227,19 @@ public class PlacingAd extends AppCompatActivity {
     }
 
 
-        //uploads image to Firebase Storage "ads/adId/adPhoto"
+    //uploads image to Firebase Storage "ads/adId/adPhoto"
     private void uploadImageToFirebase(Uri imageUri) {
-        //upload image to firebase storage
         StorageReference fileRef = storageReference.child("ads/"+ adId +"/adPhoto.jpg");
         fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                //Toast.makeText(PlacingAd.this, "Foto erfolgreich hochgeladen.", Toast.LENGTH_SHORT).show();
                 fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
                         Picasso.get().load(uri).resize(200,200).into(pAdPhoto);
+                        //uri ist downloadUrl des Bildes
+                        imageAdPhotoUrl = fileRef.getDownloadUrl().toString();
+                                //uri.toString();
                     }
                 });
             }

@@ -1,23 +1,23 @@
 package de.hsh.f4.mobilecomputing.foodforfree;
 
-import java.util.List;
 
 public class Ad {
-    private String title, description, ingredients, pickupLocation, amount, filterOptions;
-    //List<String> filterOptions;
+    private String title, description, ingredients, pickupLocation, amount, filterOptions, adID, imageUrl;
 
 
     public Ad(){
         //empty constructor needed
     }
 
-    public Ad(String title, String description, String ingredients, String amount, String pickupLocation, String filterOptions) {
+    public Ad(String title, String description, String ingredients, String amount, String pickupLocation, String filterOptions, String adID, String imageUrl) {
         this.title = title;
         this.description = description;
         this.ingredients = ingredients;
         this.amount = amount;
         this.pickupLocation = pickupLocation;
         this.filterOptions = filterOptions;
+        this.adID = adID;
+        this.imageUrl = imageUrl;
     }
 
     public String getTitle() {
@@ -43,4 +43,8 @@ public class Ad {
     public String getFilterOptions() {
         return filterOptions;
     }
+
+    public String getAdID() { return adID; }
+
+    public String getImageUrl() { return imageUrl; }
 }

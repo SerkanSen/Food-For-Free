@@ -28,7 +28,6 @@ public class AdDetails extends AppCompatActivity {
     StorageReference storageReference;
     TextView title, pickupLocation, description, amount, ingredients, filterOptions;
     ImageView image;
-    //List <String> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

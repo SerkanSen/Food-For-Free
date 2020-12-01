@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     //Initialize variable
     protected static final String EXTRA_ADID = "de.hsh.mobilecomputing.foodforfree.ADID";
     DrawerLayout drawerLayout;
+    SearchView searchView;
     FloatingActionButton newAdBtn;
     FirebaseAuth fAuth;
     String userId;
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         //Assign variabe
         drawerLayout = findViewById(R.id.drawer_layout);
         newAdBtn = findViewById(R.id.newAdBtn);
+        searchView = findViewById(R.id.searchView);
         final Button standort= (Button) findViewById(R.id.standort);
 
         fAuth = FirebaseAuth.getInstance();
@@ -97,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpRecyclerView() {
         Query query = adRef.orderBy("timestamp", Query.Direction.DESCENDING );
-                //adRef.orderBy("timestamp", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Ad> options = new FirestoreRecyclerOptions.Builder<Ad>().setQuery(query, Ad.class).build();
 
@@ -113,9 +114,9 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 Intent intent = new Intent(MainActivity.this, AdDetails.class);
                 String adId = documentSnapshot.getId();
+                //übergeben der adId
                 intent.putExtra(EXTRA_ADID, adId);
                 startActivity(intent);
-                //startActivity(new Intent(getApplicationContext(), AdDetails.class));
             }
         });
     }

@@ -45,21 +45,13 @@ public class EditAd extends AppCompatActivity {
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     StorageReference storageReference;
-    //TextView title, pickupLocation, description, amount, ingredients, filterOptions;
-    //ImageView image;
-    //List <String> list;
-    //ArrayList<String> pFilterOptions = new ArrayList<>();
-    //String [] pFilterOptions;
-    //String pFilterOptions;
     ArrayList<String> sFilterOptions = new ArrayList<>();
     Button pUpdateAdBtn, pUploadAdPhotoBtn, pMakePic;
     Calendar calendar;
-
     String userId, adId;
     ImageView pAdPhoto;
     Uri imageUri;
     public static final String TAG = "TAG";
-
 
     EditText pTitle, pDescription, pIngredients, pAmount;
     TextView pPickupLocation;
@@ -69,7 +61,7 @@ public class EditAd extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_placing_ad);
-        //n = 0;
+
         pTitle = findViewById(R.id.editTitle);
         pDescription = findViewById(R.id.editDescription);
         pIngredients = findViewById(R.id.editIngredients);
@@ -85,7 +77,6 @@ public class EditAd extends AppCompatActivity {
         pAdPhoto = findViewById(R.id.adPhoto);
         pUploadAdPhotoBtn = findViewById(R.id.uploadAdPhotoBtn);
         pMakePic = findViewById(R.id.makePic);
-        //pFilterOptions = new String [6];
 /*
         title = findViewById(R.id.adDetails_title);
         pickupLocation = findViewById(R.id.adDetails_pickupLocation);
@@ -110,7 +101,7 @@ public class EditAd extends AppCompatActivity {
             @Override
             public void onSuccess(Uri uri) {
                Picasso.get().load(uri).resize(500,500).onlyScaleDown().into(pAdPhoto);
-                imageUri= uri;
+               //imageUri= uri;
             }
         });
 
@@ -125,7 +116,7 @@ public class EditAd extends AppCompatActivity {
                 pAmount.setText(documentSnapshot.getString("amount"));
                 pIngredients.setText(documentSnapshot.getString("ingredients"));
                 //(documentSnapshot.getString("filterOptions"));
-         //       filterOptions.setText(documentSnapshot.getString("filterOptions")); //List zu String
+         //       filterOptions.setText(documentSnapshot.getString("filterOptions")); //Checkboxen, die bereits angegklickt wurden
             }
         });
 
@@ -155,7 +146,6 @@ public class EditAd extends AppCompatActivity {
                 String ingredients = pIngredients.getText().toString().trim();
                 String amount = pAmount.getText().toString();
                 String pickupLocation = pPickupLocation.getText().toString();
-                //List<String> filterOptions = Arrays.asList(pFilterOptions);
                 String filterOptions;
 
                 calendar = Calendar.getInstance();
@@ -191,22 +181,18 @@ public class EditAd extends AppCompatActivity {
 
                 userId = fAuth.getCurrentUser().getUid();
 
+                //überschreiben/updaten des bisherigen Dokumentes über die übergebene adId
                 DocumentReference documentReference = fStore.collection("ads").document(adId);
-                //adId = documentReference.getId();
                 Map<String, Object> ad = new HashMap<>();
 
                 documentReference.set(ad);
-                //fStore.collection("ads").document("adId").update(ad);
                 ad.put("title", title);
                 ad.put("description", description);
                 ad.put("ingredients", ingredients);
                 ad.put("amount", amount);
-                ad.put("userID", userId);
-                ad.put("adID", adId);
                 ad.put("timestamp", timestamp);
                 ad.put("pickupLocation", pickupLocation);
                 ad.put("filterOptions", filterOptions);
-
 
                 if(imageUri!=null){
                     uploadImageToFirebase(imageUri);
@@ -234,8 +220,6 @@ public class EditAd extends AppCompatActivity {
             if (resultCode == Activity.RESULT_OK) {
                 imageUri = data.getData();
                 pAdPhoto.setImageURI(imageUri);
-
-                //uploadImageToFirebase(imageUri);
             }
         } else if (requestCode == 61 && resultCode == Activity.RESULT_OK) {          //Übergabe Foto an pAdPhoto
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");                   //habe viele Variationen mit dieser und in kombbination deiner variante drüber probiert, Casting in Uri,direkt als Uri
@@ -249,12 +233,10 @@ public class EditAd extends AppCompatActivity {
 
     //uploads image to Firebase Storage "ads/adId/adPhoto"
     private void uploadImageToFirebase(Uri imageUri) {
-        //upload image to firebase storage
         StorageReference fileRef = storageReference.child("ads/"+ adId +"/adPhoto.jpg");
         fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                //Toast.makeText(PlacingAd.this, "Foto erfolgreich hochgeladen.", Toast.LENGTH_SHORT).show();
                 fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
