@@ -35,6 +35,7 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -123,7 +124,8 @@ public class PlacingAd extends AppCompatActivity {
                 String filterOptions;
 
                 calendar = Calendar.getInstance();
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");
+                //String timestamp = DateFormat.getDateInstance().format(calendar.getTime());
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
                 String timestamp = simpleDateFormat.format(calendar.getTime());
 
                 if(TextUtils.isEmpty(title)){

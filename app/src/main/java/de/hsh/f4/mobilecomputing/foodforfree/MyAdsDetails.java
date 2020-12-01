@@ -14,26 +14,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
 
-import static de.hsh.f4.mobilecomputing.foodforfree.MainActivity.EXTRA_ADID;
-
-
-public class EditDetail extends AppCompatActivity {
+public class MyAdsDetails extends AppCompatActivity {
     public static final String EXTRA_ADID = "de.hsh.mobilecomputing.foodforfree.ADID" ;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
@@ -48,7 +41,7 @@ public class EditDetail extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_detail);
+        setContentView(R.layout.activity_my_ads_details);
 
         title = findViewById(R.id.adDetails_title);
         pickupLocation = findViewById(R.id.adDetails_pickupLocation);
@@ -66,34 +59,30 @@ public class EditDetail extends AppCompatActivity {
 
         editAd.setOnClickListener(new View.OnClickListener() {
             @Override
-              public void onClick(View v) {
-
+            public void onClick(View v) {
 
                 Intent intent = getIntent();
 
                 String adId = intent.getStringExtra(MainActivity.EXTRA_ADID);
 
-
-                intent = new Intent(EditDetail.this, EditAd.class);
+                intent = new Intent(MyAdsDetails.this, EditAd.class);
                 intent.putExtra(EXTRA_ADID, adId);
                 startActivity(intent);
-
-
             }
 
-              });
+        });
 
         deleteAd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(EditDetail.this,"Für Löschung Button länger drücken", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyAdsDetails.this,"Für Löschung Button länger drücken", Toast.LENGTH_SHORT).show();
             }
         });
         deleteAd.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 //Initialze Alert Dialog
-                AlertDialog.Builder builder =new AlertDialog.Builder(EditDetail.this);
+                AlertDialog.Builder builder =new AlertDialog.Builder(MyAdsDetails.this);
                 //Set title
                 builder.setTitle("Löschung");
                 //Set message
@@ -104,38 +93,23 @@ public class EditDetail extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         //activity.finishAffinity();
 
-
-
                         //userId = fAuth.getCurrentUser().getUid();
-
 
                         try {Intent intent = getIntent();
                             //Löschen des Dokuments und des Fotos
-                            String adId = intent.getStringExtra(EditDetail.EXTRA_ADID);
+                            String adId = intent.getStringExtra(MyAdsDetails.EXTRA_ADID);
                             documentReference= fStore.collection("ads").document(adId);
                             StorageReference fileRef = storageReference.child("ads/"+adId+"/adPhoto.jpg");
                             documentReference.delete();
                             fileRef.delete();
-
                         }catch (Exception e) {
-                            Toast.makeText(EditDetail.this, "Anzeige nicht vorhanden", Toast.LENGTH_SHORT).show();
-
-
+                            Toast.makeText(MyAdsDetails.this, "Anzeige nicht vorhanden", Toast.LENGTH_SHORT).show();
                         }
                         if (documentReference != null) {
-
-                            Toast.makeText(EditDetail.this, "Anzeige wurde gelöscht", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MyAdsDetails.this, "Anzeige wurde gelöscht", Toast.LENGTH_SHORT).show();
                         }
 
                         startActivity(new Intent(getApplicationContext(), MyAds.class));
-
-
-
-
-
-
-
-
                     }
                 });
                 //negative button
@@ -146,14 +120,12 @@ public class EditDetail extends AppCompatActivity {
                     }
                 });
                 builder.show();
-
-
                 //startActivity(new Intent(getApplicationContext(),MainActivity.class));
                 return false;
             }
         });
 
-                //get Intent and adId from clicked itemview
+        //get Intent and adId from clicked itemview
         Intent intent = getIntent();
         String adId = intent.getStringExtra(MainActivity.EXTRA_ADID);
 
@@ -177,7 +149,7 @@ public class EditDetail extends AppCompatActivity {
                 amount.setText(documentSnapshot.getString("amount"));
                 ingredients.setText(documentSnapshot.getString("ingredients"));
                 //(documentSnapshot.getString("filterOptions"));
-                filterOptions.setText(documentSnapshot.getString("filterOptions")); //List zu String
+                filterOptions.setText(documentSnapshot.getString("filterOptions"));
             }
         });
 

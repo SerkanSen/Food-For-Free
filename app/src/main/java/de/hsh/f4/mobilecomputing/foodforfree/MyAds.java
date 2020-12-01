@@ -13,17 +13,15 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.api.Distribution;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-import static de.hsh.f4.mobilecomputing.foodforfree.MainActivity.EXTRA_ADID;
-
 public class MyAds extends AppCompatActivity {
     //Initialize variable
+    protected static final String EXTRA_ADID = "de.hsh.mobilecomputing.foodforfree.ADID";
     DrawerLayout drawerLayout;
     FirebaseAuth fAuth;
     String userId;
@@ -37,7 +35,7 @@ public class MyAds extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ads);
+        setContentView(R.layout.activity_my_ads);
 
         //assign variable
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -50,8 +48,6 @@ public class MyAds extends AppCompatActivity {
 
     private void setUpRecyclerView() {
         Query query = adRef.whereEqualTo("userID", userId).orderBy("timestamp", Query.Direction.DESCENDING);
-        //adRef.orderBy("timestamp", Query.Direction.DESCENDING);
-        //.orderBy("timestamp", Query.Direction.DESCENDING)
 
         FirestoreRecyclerOptions<Ad> options = new FirestoreRecyclerOptions.Builder<Ad>().setQuery(query, Ad.class).build();
 
@@ -65,8 +61,9 @@ public class MyAds extends AppCompatActivity {
         adapter.setOnItemClickListener(new AdAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                Intent intent = new Intent(MyAds.this, EditDetail.class);
+                Intent intent = new Intent(MyAds.this, MyAdsDetails.class);
                 String adId = documentSnapshot.getId();
+                //übergeben der adId
                 intent.putExtra(EXTRA_ADID, adId);
                 startActivity(intent);
                 //startActivity(new Intent(getApplicationContext(), AdDetails.class));

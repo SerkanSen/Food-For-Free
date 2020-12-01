@@ -74,6 +74,7 @@ public class EditAd extends AppCompatActivity {
         chBoxMeal = findViewById(R.id.chBoxMeal);
         chBoxSweets = findViewById(R.id.chBoxSweets);
         pUpdateAdBtn = findViewById(R.id.placeAdBtn);
+        pUpdateAdBtn.setText("Anzeige aktualisieren");
         pAdPhoto = findViewById(R.id.adPhoto);
         pUploadAdPhotoBtn = findViewById(R.id.uploadAdPhotoBtn);
         pMakePic = findViewById(R.id.makePic);
@@ -93,18 +94,17 @@ public class EditAd extends AppCompatActivity {
 
         //get Intent and adId from clicked itemview
         Intent intent = getIntent();
-        String adId = intent.getStringExtra(EditDetail.EXTRA_ADID);
+        adId = intent.getStringExtra(MyAdsDetails.EXTRA_ADID);
 
+        //Darstellung der bisherigen Informationen:
         //get Image from storage/ads
         StorageReference adsRef = storageReference.child("ads/"+adId+"/adPhoto.jpg");
         adsRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                Picasso.get().load(uri).resize(500,500).onlyScaleDown().into(pAdPhoto);
-               //imageUri= uri;
             }
         });
-
         //get document information
         DocumentReference documentReference = fStore.collection("ads").document(adId);
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
@@ -116,7 +116,7 @@ public class EditAd extends AppCompatActivity {
                 pAmount.setText(documentSnapshot.getString("amount"));
                 pIngredients.setText(documentSnapshot.getString("ingredients"));
                 //(documentSnapshot.getString("filterOptions"));
-         //       filterOptions.setText(documentSnapshot.getString("filterOptions")); //Checkboxen, die bereits angegklickt wurden
+                //filterOptions.setText(documentSnapshot.getString("filterOptions")); //Checkboxen, die bereits angegklickt wurden
             }
         });
 
@@ -136,8 +136,6 @@ public class EditAd extends AppCompatActivity {
             }
         });
 
-
-
         pUpdateAdBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,7 +147,7 @@ public class EditAd extends AppCompatActivity {
                 String filterOptions;
 
                 calendar = Calendar.getInstance();
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
                 String timestamp = simpleDateFormat.format(calendar.getTime());
 
                 if(TextUtils.isEmpty(title)){
@@ -186,6 +184,8 @@ public class EditAd extends AppCompatActivity {
                 Map<String, Object> ad = new HashMap<>();
 
                 documentReference.set(ad);
+                ad.put("adID", adId);
+                ad.put("userID", userId);
                 ad.put("title", title);
                 ad.put("description", description);
                 ad.put("ingredients", ingredients);
@@ -206,7 +206,7 @@ public class EditAd extends AppCompatActivity {
                         Log.d(TAG, "onFailure: " + e.toString());
                     }
                 });
-                startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                startActivity(new Intent(getApplicationContext(),MyAds.class));
             }
         });
 
