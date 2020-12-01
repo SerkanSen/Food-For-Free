@@ -72,6 +72,11 @@ public class MyAds extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+    }
+
     //when app updates new data from firestore
     @Override
     protected void onStart() {

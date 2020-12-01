@@ -51,7 +51,8 @@
             android:theme="@style/Base.Theme.AppCompat" />
         <activity
             android:name=".EditAd"
-            android:parentActivityName=".MyAds" />
+            android:parentActivityName=".MyAds"
+            android:noHistory="true" />
         <activity
             android:name=".MyAds"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"

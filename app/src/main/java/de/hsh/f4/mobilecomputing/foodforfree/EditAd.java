@@ -207,8 +207,10 @@ public class EditAd extends AppCompatActivity {
                         Log.d(TAG, "onFailure: " + e.toString());
                     }
                 });
-                startActivity(new Intent(getApplicationContext(),MyAds.class));
+                startActivity(new Intent(getApplicationContext(), MyAds.class));
+
             }
+
         });
 
 
@@ -230,6 +232,11 @@ public class EditAd extends AppCompatActivity {
             //pAdPhoto.setImageURI(imageUri);
         }
     }
+
+    public void onBackPressed(){
+        return;
+    }
+
 
 
     //uploads image to Firebase Storage "ads/adId/adPhoto"

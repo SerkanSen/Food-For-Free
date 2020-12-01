@@ -120,6 +120,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    public void onBackPressed(){
+        return;
+    }
 
 
     //when app updates new data from firestore
