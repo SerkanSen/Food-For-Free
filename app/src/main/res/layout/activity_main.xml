@@ -25,7 +25,6 @@
             tools:layout_editor_absoluteX="-16dp" />
 
 
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/newAdBtn"
             android:layout_width="wrap_content"
@@ -34,8 +33,10 @@
             android:layout_marginBottom="16dp"
             android:background="@drawable/ic_add"
             android:clickable="true"
-            android:src="@drawable/ic_add"
+            android:src="@drawable/add"
+            android:tint="#FFC107"
             android:visibility="visible"
+            app:backgroundTint="#FFC107"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

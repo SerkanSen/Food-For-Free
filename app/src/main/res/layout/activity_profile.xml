@@ -14,32 +14,31 @@
 
         <include
             android:id="@+id/main_toolbar"
-            layout="@layout/main_toolbar" />
+            layout="@layout/main_toolbar"
+            android:text="Mein Profil"/>
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:gravity="center"
             android:text="Profil"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.076"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/main_toolbar" />
 
         <ImageView
             android:id="@+id/profilePhoto"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="208dp"
+            android:layout_height="211dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView"
-            app:srcCompat="@mipmap/ic_launcher" />
+            app:srcCompat="@drawable/kein_bild" />
 
         <TextView
             android:id="@+id/profileName"
@@ -72,18 +71,18 @@
             android:text="Deine Adresse"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tAdresse" />
+            app:layout_constraintTop_toBottomOf="@+id/tStadtteil" />
 
         <Button
-            android:id="@+id/uploadProfilePhotoBtn"
+            android:id="@+id/updateProfileBtn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
-            android:text="Profilbild hochladen"
+            android:layout_height="48dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="Profildaten bearbeiten"
             android:textSize="14sp"
-            app:layout_constraintStart_toEndOf="@+id/profilePhoto"
-            app:layout_constraintTop_toTopOf="@+id/profilePhoto" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/tName"
@@ -110,7 +109,7 @@
             app:layout_constraintTop_toBottomOf="@+id/profileName" />
 
         <TextView
-            android:id="@+id/tAdresse"
+            android:id="@+id/tStadtteil"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -120,32 +119,32 @@
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profileMail" />
-<!--
-        <EditText
-            android:id="@+id/standort"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textShortMessage"
-            android:layout_marginTop="169dp"
-            android:hint="Standort eingeben oder \nleerlassen für Ortung"
-            android:textSize="18sp"
-            app:layout_constraintStart_toEndOf="@+id/tAdresse"
-            app:layout_constraintTop_toBottomOf="@+id/uploadProfilePhotoBtn" />
+        <!--
+                <EditText
+                    android:id="@+id/standort"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textShortMessage"
+                    android:layout_marginTop="169dp"
+                    android:hint="Standort eingeben oder \nleerlassen für Ortung"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toEndOf="@+id/tAdresse"
+                    app:layout_constraintTop_toBottomOf="@+id/uploadProfilePhotoBtn" />
 
-        <Button
-            android:id="@+id/bestätigen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="146dp"
-            android:layout_marginEnd="177dp"
-            android:layout_marginBottom="37dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:text="Änderungen bestätigen"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
--->
+                <Button
+                    android:id="@+id/bestätigen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="146dp"
+                    android:layout_marginEnd="177dp"
+                    android:layout_marginBottom="37dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:text="Änderungen bestätigen"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+        -->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
