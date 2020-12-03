@@ -8,6 +8,9 @@ public class Ad {
     public Ad(){
         //empty constructor needed
     }
+    public Ad(String testImageUrl){
+        imageUrl = testImageUrl;
+    }
 
     public Ad(String title, String description, String ingredients, String amount, String pickupLocation, String filterOptions, String adID, String imageUrl) {
         this.title = title;
@@ -17,6 +20,10 @@ public class Ad {
         this.pickupLocation = pickupLocation;
         this.filterOptions = filterOptions;
         this.adID = adID;
+        //Falls imageUrl leer, dann imageUrl = imageUrl(Defaultbild)
+        if (imageUrl.trim().equals("")) {
+            imageUrl = "https://firebasestorage.googleapis.com/v0/b/food-for-free-9663f.appspot.com/o/ads%2FDefault%20Bild.jpg?alt=media&token=57a564e3-006c-4146-b793-cf4346a8f07a";
+        }
         this.imageUrl = imageUrl;
     }
 

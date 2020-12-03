@@ -20,8 +20,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -50,11 +52,12 @@ public class PlacingAd extends AppCompatActivity {
     Calendar calendar;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
-    String userId, adId, imageAdPhotoUrl;
+    String userId, adId;
     ImageView pAdPhoto;
     Uri imageUri;
     StorageReference storageReference;
     public static final String TAG = "TAG";
+    public static final String DEFAULT_URL = "https://firebasestorage.googleapis.com/v0/b/food-for-free-9663f.appspot.com/o/ads%2FDefault%20Bild.jpg?alt=media&token=57a564e3-006c-4146-b793-cf4346a8f07a";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +126,7 @@ public class PlacingAd extends AppCompatActivity {
 
                 //Zeitstempel erstellen
                 calendar = Calendar.getInstance();
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss a");
                 String timestamp = simpleDateFormat.format(calendar.getTime());
 
                 //Fehlerüberprüfung
@@ -173,15 +176,13 @@ public class PlacingAd extends AppCompatActivity {
                 ad.put("timestamp", timestamp);
                 ad.put("pickupLocation", pickupLocation);
                 ad.put("filterOptions", filterOptions);
+                ad.put("imageUrl", DEFAULT_URL);
                 //falls Bild vorhanden: Bild hochladen
                 if(imageUri!=null){
                     uploadImageToFirebase(imageUri);
-                    //URL des Bildes im Dokument speichern
-                    ad.put("imageUrl", imageAdPhotoUrl);
-                    //ad.put("imageUrl", Picasso.get().load(uri));
                 }
                 documentReference.set(ad).addOnSuccessListener((OnSuccessListener) (aVoid) -> {
-                    //Toast.makeText(PlacingAd.this,"Anzeige erfolgreich erstellt", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PlacingAd.this,"Anzeige erfolgreich erstellt", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "onSuccess: Anzeige erfolgreich erstellt!");
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -222,10 +223,22 @@ public class PlacingAd extends AppCompatActivity {
                     @Override
                     public void onSuccess(Uri uri) {
                         Picasso.get().load(uri).resize(200,200).into(pAdPhoto);
-                        //uri ist downloadUrl des Bildes
-                        imageAdPhotoUrl = "Hallo";
-                                //fileRef.getDownloadUrl().toString();
-                                //uri.toString();
+                        //imageUrl im Dokument speichern
+                        DocumentReference documentReference = fStore.collection("ads/").document(adId);
+                        documentReference
+                                .update("imageUrl", uri.toString())
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        //Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w(TAG, "Error updating document", e);
+                                    }
+                                });
                     }
                 });
             }

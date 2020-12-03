@@ -41,17 +41,19 @@ import java.util.List;
 import java.util.Map;
 
 public class EditAd extends AppCompatActivity {
-    private static final String EXTRA_ADID = "de.hsh.mobilecomputing.foodforfree.ADID";
+    //private static final String EXTRA_ADID = "de.hsh.mobilecomputing.foodforfree.ADID";
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     StorageReference storageReference;
     ArrayList<String> sFilterOptions = new ArrayList<>();
     Button pUpdateAdBtn, pUploadAdPhotoBtn, pMakePic;
     Calendar calendar;
-    String userId, adId, imageAdPhotoUrl;
+    String userId, adId;
     ImageView pAdPhoto;
     Uri imageUri;
     public static final String TAG = "TAG";
+    //Falls man Bild resetten einbaut:
+    //public static final String DEFAULT_URL = "https://firebasestorage.googleapis.com/v0/b/food-for-free-9663f.appspot.com/o/ads%2FDefault%20Bild.jpg?alt=media&token=57a564e3-006c-4146-b793-cf4346a8f07a";
 
     EditText pTitle, pDescription, pIngredients, pAmount;
     TextView pPickupLocation;
@@ -123,8 +125,11 @@ public class EditAd extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //open gallery
+                Toast.makeText(EditAd.this, "1", Toast.LENGTH_SHORT).show();
                 Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                Toast.makeText(EditAd.this, "2222", Toast.LENGTH_SHORT).show();
                 startActivityForResult(openGalleryIntent, 1000);
+                Toast.makeText(EditAd.this, "3333", Toast.LENGTH_SHORT).show();
             }
         });
         pMakePic.setOnClickListener(new View.OnClickListener() {
@@ -146,7 +151,7 @@ public class EditAd extends AppCompatActivity {
                 String filterOptions;
 
                 calendar = Calendar.getInstance();
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                 String timestamp = simpleDateFormat.format(calendar.getTime());
 
                 if(TextUtils.isEmpty(title)){
@@ -178,17 +183,11 @@ public class EditAd extends AppCompatActivity {
 
                 userId = fAuth.getCurrentUser().getUid();
 
-                if(imageUri!=null){
-                    uploadImageToFirebase(imageUri);
-                }
-
                 //überschreiben/updaten des bisherigen Dokumentes über die übergebene adId
                 DocumentReference documentReference = fStore.collection("ads").document(adId);
                 Map<String, Object> ad = new HashMap<>();
 
-                documentReference.set(ad);
-                ad.put("adID", adId);
-                ad.put("userID", userId);
+                documentReference.update(ad);
                 ad.put("title", title);
                 ad.put("description", description);
                 ad.put("ingredients", ingredients);
@@ -196,8 +195,12 @@ public class EditAd extends AppCompatActivity {
                 ad.put("timestamp", timestamp);
                 ad.put("pickupLocation", pickupLocation);
                 ad.put("filterOptions", filterOptions);
-                ad.put("imageUrl", imageAdPhotoUrl);
-                documentReference.set(ad).addOnSuccessListener((OnSuccessListener) (aVoid) -> {
+
+                //falls neues Bild: Bild hochladen
+                if(imageUri!=null){
+                    uploadImageToFirebase(imageUri);
+                }
+                documentReference.update(ad).addOnSuccessListener((OnSuccessListener) (aVoid) -> {
                     Toast.makeText(EditAd.this,"Anzeige aktualisiert", Toast.LENGTH_SHORT).show();
                     //Log.d(TAG, "onSuccess: Anzeige erfolgreich erstellt!");
                 }).addOnFailureListener(new OnFailureListener() {
@@ -218,9 +221,12 @@ public class EditAd extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Toast.makeText(EditAd.this, "4444", Toast.LENGTH_SHORT).show();
         if (requestCode == 1000) {
             if (resultCode == Activity.RESULT_OK) {
+                Toast.makeText(EditAd.this, "1", Toast.LENGTH_SHORT).show();
                 imageUri = data.getData();
+                Toast.makeText(EditAd.this, "2", Toast.LENGTH_SHORT).show();
                 pAdPhoto.setImageURI(imageUri);
             }
         } else if (requestCode == 61 && resultCode == Activity.RESULT_OK) {          //Übergabe Foto an pAdPhoto
@@ -248,7 +254,22 @@ public class EditAd extends AppCompatActivity {
                     @Override
                     public void onSuccess(Uri uri) {
                         Picasso.get().load(uri).resize(200,200).into(pAdPhoto);
-                        imageAdPhotoUrl = fileRef.getDownloadUrl().toString();
+                        //imageUrl im Dokument speichern
+                        DocumentReference documentReference = fStore.collection("ads/").document(adId);
+                        documentReference
+                                .update("imageUrl", uri.toString())
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        //Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w(TAG, "Url konnte nicht gespeichert werden", e);
+                                    }
+                                });
                     }
                 });
             }

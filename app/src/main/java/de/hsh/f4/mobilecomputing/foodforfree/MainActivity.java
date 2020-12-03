@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
         FirestoreRecyclerOptions<Ad> options = new FirestoreRecyclerOptions.Builder<Ad>().setQuery(query, Ad.class).build();
 
+        //adapter = new AdAdapter(getApplicationContext(),options);
         adapter = new AdAdapter(options);
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
@@ -177,6 +178,11 @@ public class MainActivity extends AppCompatActivity {
     public void ClickAds(View view){
         //redirect activity to Ads
         redirectActivity(this,MyAds.class);
+    }
+
+    public void ClickMessages(View view) {
+        //Redirect activity to MyAds
+        redirectActivity(this, Messages.class);
     }
 
     public void ClickLogout(View view){

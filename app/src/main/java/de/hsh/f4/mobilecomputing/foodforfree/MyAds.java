@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -66,7 +67,6 @@ public class MyAds extends AppCompatActivity {
                 //übergeben der adId
                 intent.putExtra(EXTRA_ADID, adId);
                 startActivity(intent);
-                //startActivity(new Intent(getApplicationContext(), AdDetails.class));
             }
         });
 
@@ -116,6 +116,11 @@ public class MyAds extends AppCompatActivity {
         recreate();
     }
 
+    public void ClickMessages(View view) {
+        //Redirect activity to MyAds
+        MainActivity.redirectActivity(this, Messages.class);
+    }
+
     public void ClickLogout(View view) {
         //logout
         logout(this);
@@ -132,10 +137,8 @@ public class MyAds extends AppCompatActivity {
         builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //activity.finishAffinity();
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(getApplicationContext(), Login.class));
-                //finish();
             }
         });
         //negative button
@@ -147,8 +150,6 @@ public class MyAds extends AppCompatActivity {
         });
         builder.show();
     }
-
-
 
     @Override
     protected void onPause(){
