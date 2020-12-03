@@ -64,6 +64,11 @@
             android:name=".Login"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
+            android:name=".Chat"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:parentActivityName=".AdDetails" />
+
+        <activity
             android:name=".Register"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
