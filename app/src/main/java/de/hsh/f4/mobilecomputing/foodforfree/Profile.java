@@ -172,6 +172,11 @@ public class Profile extends AppCompatActivity {
         MainActivity.redirectActivity(this, MyAds.class);
     }
 
+    public void ClickMessages(View view) {
+        //Redirect activity to Messages
+        MainActivity.redirectActivity(this, Messages.class);
+    }
+
     public void ClickLogout(View view) {
         //logout
         logout(this);

@@ -23,6 +23,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodForFree">
         <activity
+            android:name=".Messages"
+            android:theme="@style/Theme.FoodForFree.NoActionBar" />
+        <activity
+            android:name=".EditProfile"
+            android:parentActivityName=".Profile" />
+        <activity
             android:name=".MyAdsDetails"
             android:parentActivityName=".MyAds" />
         <activity
@@ -51,15 +57,15 @@
             android:theme="@style/Base.Theme.AppCompat" />
         <activity
             android:name=".EditAd"
-            android:parentActivityName=".MyAds"
-            android:noHistory="true" />
+            android:noHistory="true"
+            android:parentActivityName=".MyAds" />
         <activity
             android:name=".MyAds"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:noHistory="true"/>
+            android:noHistory="true"
+            android:theme="@style/Theme.FoodForFree.NoActionBar" />
         <activity
             android:name=".Profile"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/Theme.FoodForFree.NoActionBar" />
         <activity
             android:name=".Login"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -74,7 +80,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:theme="@style/Theme.FoodForFree.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

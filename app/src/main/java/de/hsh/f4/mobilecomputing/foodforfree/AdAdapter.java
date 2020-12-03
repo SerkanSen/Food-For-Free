@@ -1,5 +1,6 @@
 package de.hsh.f4.mobilecomputing.foodforfree;
 
+import android.content.Context;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,10 +29,15 @@ import java.util.List;
 public class AdAdapter extends FirestoreRecyclerAdapter<Ad, AdAdapter.AdHolder> {
 
     private OnItemClickListener listener;
-    StorageReference storageReference;
+    private Context mContext;
 
     public AdAdapter(@NonNull FirestoreRecyclerOptions<Ad> options) {
         super(options);
+    }
+
+    public AdAdapter(Context context, FirestoreRecyclerOptions<Ad> options) {
+        super(options);
+        mContext = context;
     }
 
     @Override
@@ -41,24 +47,11 @@ public class AdAdapter extends FirestoreRecyclerAdapter<Ad, AdAdapter.AdHolder> 
         holder.textViewPickupLocation.setText(model.getPickupLocation());
         holder.textViewFilter.setText(model.getFilterOptions());
 
-        //storageReference = FirebaseStorage.getInstance().getReference();
-        //StorageReference adPhotoRef = storageReference.child("ads/" +model.getAdID() + "adPhoto.jpg");
-
         //erster Versuch: abgespeicherte URL mit Picasso in imageViewAdPhoto zu laden -> App öffnet nicht
         //Picasso.get().load(model.getImageUrl()).into(holder.imageViewAdPhoto);
         //Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/food-for-free-9663f.appspot.com/o/ads%2FXpSL9noJl9LbFfcqorBn%2FadPhoto.jpg?alt=media&token=43fe765a-a6a4-41f5-9547-2a467da4cb69")
         //       .into(holder.imageViewAdPhoto);
 
-        //zweiter Versuch: storageReference "adRef" auf Bild der einzelnen Items und über getDownloadUrl, Url in imageViewAdPhoto laden
-        /*storageReference = FirebaseStorage.getInstance().getReference();
-        StorageReference adRef = storageReference.child("ads/"+model.getAdID()+"/adPhoto.jpg");
-        adRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                //Picasso.get().load(uri).into(holder.imageViewAdPhoto);
-                holder.imageViewAdPhoto.setImageURI(uri);
-            }
-        });*/
 
         //Picasso.get().load().into(holder.imageViewAdPhoto);
 
@@ -66,7 +59,7 @@ public class AdAdapter extends FirestoreRecyclerAdapter<Ad, AdAdapter.AdHolder> 
         /*Glide.with(this  //context )
                 .load(adRef)
                 .into(holder.imageViewAdPhoto);*/
-        //Glide.with(context).load(model.getImageUrl()).into(holder.imageViewAdPhoto);
+        //Glide.with(mContext).load(model.getImageUrl()).into(holder.imageViewAdPhoto);
     }
 
     @NonNull
