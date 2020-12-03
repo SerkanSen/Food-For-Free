@@ -115,8 +115,7 @@ public class EditAd extends AppCompatActivity {
                 pDescription.setText(documentSnapshot.getString("description"));
                 pAmount.setText(documentSnapshot.getString("amount"));
                 pIngredients.setText(documentSnapshot.getString("ingredients"));
-                //(documentSnapshot.getString("filterOptions"));
-                //filterOptions.setText(documentSnapshot.getString("filterOptions")); //Checkboxen, die bereits angegklickt wurden
+                //Checkboxen evtl. inkludieren
             }
         });
 
@@ -179,6 +178,10 @@ public class EditAd extends AppCompatActivity {
 
                 userId = fAuth.getCurrentUser().getUid();
 
+                if(imageUri!=null){
+                    uploadImageToFirebase(imageUri);
+                }
+
                 //überschreiben/updaten des bisherigen Dokumentes über die übergebene adId
                 DocumentReference documentReference = fStore.collection("ads").document(adId);
                 Map<String, Object> ad = new HashMap<>();
@@ -193,11 +196,7 @@ public class EditAd extends AppCompatActivity {
                 ad.put("timestamp", timestamp);
                 ad.put("pickupLocation", pickupLocation);
                 ad.put("filterOptions", filterOptions);
-
-                if(imageUri!=null){
-                    uploadImageToFirebase(imageUri);
-                    ad.put("imageUrl", imageAdPhotoUrl);
-                }
+                ad.put("imageUrl", imageAdPhotoUrl);
                 documentReference.set(ad).addOnSuccessListener((OnSuccessListener) (aVoid) -> {
                     Toast.makeText(EditAd.this,"Anzeige aktualisiert", Toast.LENGTH_SHORT).show();
                     //Log.d(TAG, "onSuccess: Anzeige erfolgreich erstellt!");

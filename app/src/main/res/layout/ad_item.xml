@@ -45,7 +45,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ad_item_title"
-            app:srcCompat="@mipmap/ic_launcher" />
+            app:srcCompat="@drawable/kein_bild" />
 
         <TextView
             android:id="@+id/ad_item_portion"

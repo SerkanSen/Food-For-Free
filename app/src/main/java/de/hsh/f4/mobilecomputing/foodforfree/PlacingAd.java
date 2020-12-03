@@ -35,13 +35,10 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class PlacingAd extends AppCompatActivity {
@@ -116,6 +113,7 @@ public class PlacingAd extends AppCompatActivity {
         pPlaceAdBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //eingegeben Werte einlesen
                 String title = pTitle.getText().toString();
                 String description = pDescription.getText().toString().trim();
                 String ingredients = pIngredients.getText().toString().trim();
@@ -123,11 +121,12 @@ public class PlacingAd extends AppCompatActivity {
                 String pickupLocation = pPickupLocation.getText().toString();
                 String filterOptions;
 
+                //Zeitstempel erstellen
                 calendar = Calendar.getInstance();
-                //String timestamp = DateFormat.getDateInstance().format(calendar.getTime());
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
                 String timestamp = simpleDateFormat.format(calendar.getTime());
 
+                //Fehlerüberprüfung
                 if(TextUtils.isEmpty(title)){
                     pTitle.setError("Titel wird benötigt.");
                     return;
@@ -149,7 +148,7 @@ public class PlacingAd extends AppCompatActivity {
                     return;
                 }
 
-                //filterOptions as String
+                //ArrayList mit den angeklickten Checkboxen als einen String speichern
                 StringBuilder stringBuilder = new StringBuilder();
                 for (String s : sFilterOptions)
                     stringBuilder.append("- ").append(s).append("\n");
@@ -158,9 +157,13 @@ public class PlacingAd extends AppCompatActivity {
 
                 userId = fAuth.getCurrentUser().getUid();
 
+                //neues Dokument in Firestore anlegen in der Sammlung "ads/"
                 DocumentReference documentReference = fStore.collection("ads").document();
+                //Id des Dokumentes adId zuweisen
                 adId = documentReference.getId();
+
                 Map<String, Object> ad = new HashMap<>();
+                //Angaben in Dokument speichern
                 ad.put("title", title);
                 ad.put("description", description);
                 ad.put("ingredients", ingredients);
@@ -170,36 +173,16 @@ public class PlacingAd extends AppCompatActivity {
                 ad.put("timestamp", timestamp);
                 ad.put("pickupLocation", pickupLocation);
                 ad.put("filterOptions", filterOptions);
+                //falls Bild vorhanden: Bild hochladen
                 if(imageUri!=null){
                     uploadImageToFirebase(imageUri);
-
-                    /*StorageReference fileRef = storageReference.child("ads/"+ adId +"/adPhoto.jpg");
-                    fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    Picasso.get().load(uri).resize(200,200).into(pAdPhoto);
-                                    //uri ist downloadUrl des Bildes
-                                    //imageAdPhotoUrl = uri.toString();
-                                    ad.put("imageUrl", uri.toString());
-                                }
-                            });
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(PlacingAd.this, "Fehlgeschlagen.", Toast.LENGTH_SHORT).show();
-                        }
-                    });*/
-
+                    //URL des Bildes im Dokument speichern
                     ad.put("imageUrl", imageAdPhotoUrl);
                     //ad.put("imageUrl", Picasso.get().load(uri));
                 }
                 documentReference.set(ad).addOnSuccessListener((OnSuccessListener) (aVoid) -> {
-                    Toast.makeText(PlacingAd.this,"Anzeige erfolgreich erstellt", Toast.LENGTH_SHORT).show();
-                    //Log.d(TAG, "onSuccess: Anzeige erfolgreich erstellt!");
+                    //Toast.makeText(PlacingAd.this,"Anzeige erfolgreich erstellt", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onSuccess: Anzeige erfolgreich erstellt!");
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
@@ -229,7 +212,7 @@ public class PlacingAd extends AppCompatActivity {
     }
 
 
-    //uploads image to Firebase Storage "ads/adId/adPhoto"
+    //hochladen des Bildes in Firebase Storage unter "ads/adId/adPhoto"
     private void uploadImageToFirebase(Uri imageUri) {
         StorageReference fileRef = storageReference.child("ads/"+ adId +"/adPhoto.jpg");
         fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -240,7 +223,8 @@ public class PlacingAd extends AppCompatActivity {
                     public void onSuccess(Uri uri) {
                         Picasso.get().load(uri).resize(200,200).into(pAdPhoto);
                         //uri ist downloadUrl des Bildes
-                        imageAdPhotoUrl = fileRef.getDownloadUrl().toString();
+                        imageAdPhotoUrl = "Hallo";
+                                //fileRef.getDownloadUrl().toString();
                                 //uri.toString();
                     }
                 });
@@ -253,7 +237,7 @@ public class PlacingAd extends AppCompatActivity {
         });
     }
 
-    //include checkboxes
+    //Checkboxen: wenn angeklickt, dann füge der ArrayList die entsprechende Kategorie hinzu
     public void selectItem(View view) {
         boolean checked = ((CheckBox) view).isChecked();
         switch (view.getId()){
@@ -307,57 +291,4 @@ public class PlacingAd extends AppCompatActivity {
                 break;
         }
     }
-    /*public void selectItem(View view) {
-        boolean checked = ((CheckBox) view).isChecked();
-            switch (view.getId()){
-                case R.id.chBoxVeggie:
-                    if(checked){
-                        pFilterOptions[0] = ("Vegetarisch");
-                    }
-                    else {
-                        pFilterOptions[0] = ("");
-                    }
-                    break;
-                case R.id.chBoxVegan:
-                    if(checked){
-                        pFilterOptions[1] = ("Vegan");
-                    }
-                    else {
-                        pFilterOptions[1] = ("");
-                    }
-                    break;
-                case R.id.chBoxFruitsVegs:
-                    if(checked){
-                        pFilterOptions[2] = ("Obst/Gemüse");
-                    }
-                    else {
-                        pFilterOptions[2] = ("");
-                    }
-                    break;
-                case R.id.chBoxCans:
-                    if(checked){
-                        pFilterOptions[3] = ("Konserven");
-                    }
-                    else {
-                        pFilterOptions[3] = ("");
-                    }
-                    break;
-                case R.id.chBoxMeal:
-                    if(checked){
-                        pFilterOptions[4] = ("Gericht");
-                    }
-                    else {
-                        pFilterOptions[4] = ("");
-                    }
-                    break;
-                case R.id.chBoxSweets:
-                    if(checked){
-                        pFilterOptions[5] = ("Knabberzeug");
-                    }
-                    else {
-                        pFilterOptions[5] = ("");
-                    }
-                    break;
-            }
-    }*/
 }

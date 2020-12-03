@@ -22,7 +22,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodForFree">
-        <activity android:name=".Chat"></activity>
         <activity
             android:name=".MyAdsDetails"
             android:parentActivityName=".MyAds" />
@@ -52,12 +51,12 @@
             android:theme="@style/Base.Theme.AppCompat" />
         <activity
             android:name=".EditAd"
-            android:noHistory="true"
-            android:parentActivityName=".MyAds" />
+            android:parentActivityName=".MyAds"
+            android:noHistory="true" />
         <activity
             android:name=".MyAds"
-            android:noHistory="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:noHistory="true"/>
         <activity
             android:name=".Profile"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
