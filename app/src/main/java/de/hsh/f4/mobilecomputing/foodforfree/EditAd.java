@@ -125,11 +125,9 @@ public class EditAd extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //open gallery
-                Toast.makeText(EditAd.this, "1", Toast.LENGTH_SHORT).show();
                 Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                Toast.makeText(EditAd.this, "2222", Toast.LENGTH_SHORT).show();
                 startActivityForResult(openGalleryIntent, 1000);
-                Toast.makeText(EditAd.this, "3333", Toast.LENGTH_SHORT).show();
+
             }
         });
         pMakePic.setOnClickListener(new View.OnClickListener() {
@@ -221,12 +219,9 @@ public class EditAd extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Toast.makeText(EditAd.this, "4444", Toast.LENGTH_SHORT).show();
         if (requestCode == 1000) {
             if (resultCode == Activity.RESULT_OK) {
-                Toast.makeText(EditAd.this, "1", Toast.LENGTH_SHORT).show();
                 imageUri = data.getData();
-                Toast.makeText(EditAd.this, "2", Toast.LENGTH_SHORT).show();
                 pAdPhoto.setImageURI(imageUri);
             }
         } else if (requestCode == 61 && resultCode == Activity.RESULT_OK) {          //Übergabe Foto an pAdPhoto

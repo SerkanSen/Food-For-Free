@@ -57,11 +57,9 @@
             android:theme="@style/Base.Theme.AppCompat" />
         <activity
             android:name=".EditAd"
-            android:noHistory="true"
             android:parentActivityName=".MyAds" />
         <activity
             android:name=".MyAds"
-            android:noHistory="true"
             android:theme="@style/Theme.FoodForFree.NoActionBar" />
         <activity
             android:name=".Profile"
