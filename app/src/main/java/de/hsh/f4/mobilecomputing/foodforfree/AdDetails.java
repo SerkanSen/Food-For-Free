@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,12 +24,16 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import static de.hsh.f4.mobilecomputing.foodforfree.MainActivity.EXTRA_ADID;
+
 public class AdDetails extends AppCompatActivity {
+    public static final String EXTRA_ADID = "de.hsh.mobilecomputing.foodforfree.ADID" ;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     StorageReference storageReference;
     TextView title, pickupLocation, description, amount, ingredients, filterOptions;
     ImageView image;
+    ImageButton contact;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +47,7 @@ public class AdDetails extends AppCompatActivity {
         ingredients = findViewById(R.id.adDetails_ingredients);
         filterOptions = findViewById(R.id.adDetails_filterOptions);
         image = findViewById(R.id.adDetails_image);
+        contact =findViewById(R.id.contact);
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
@@ -48,7 +55,7 @@ public class AdDetails extends AppCompatActivity {
 
         //get Intent and adId from clicked itemview
         Intent intent = getIntent();
-        String adId = intent.getStringExtra(MainActivity.EXTRA_ADID);
+        String adId = intent.getStringExtra(EXTRA_ADID);
 
         //get Image from storage/ads
         StorageReference adsRef = storageReference.child("ads/"+adId+"/adPhoto.jpg");
@@ -71,6 +78,26 @@ public class AdDetails extends AppCompatActivity {
                 ingredients.setText(documentSnapshot.getString("ingredients"));
                 //(documentSnapshot.getString("filterOptions"));
                 filterOptions.setText(documentSnapshot.getString("filterOptions")); //List zu String
+            }
+        });
+        contact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = getIntent();
+
+                String adId = intent.getStringExtra(MainActivity.EXTRA_ADID);
+
+                intent = new Intent(AdDetails.this, Chat.class);
+                intent.putExtra(EXTRA_ADID, adId);
+                startActivity(intent);
+
+
+
+
+
+
+
+
             }
         });
 
