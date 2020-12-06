@@ -16,6 +16,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <ProgressBar
+                android:id="@+id/progressBarAdPhoto"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/adDetails_image"
+                app:layout_constraintEnd_toEndOf="@+id/adDetails_image"
+                app:layout_constraintStart_toStartOf="@+id/adDetails_image"
+                app:layout_constraintTop_toTopOf="@+id/adDetails_image" />
+
             <ImageView
                 android:id="@+id/adDetails_image"
                 android:layout_width="match_parent"
@@ -23,7 +37,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/kein_bild" />
+                app:srcCompat="?android:attr/activatedBackgroundIndicator" />
 
             <TextView
                 android:id="@+id/adDetails_title"
@@ -53,6 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Beschreibung"
+                android:textAlignment="viewStart"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/adDetails_pickupLocation"
                 app:layout_constraintTop_toBottomOf="@+id/adDetails_pickupLocation" />
@@ -108,15 +123,16 @@
                 app:layout_constraintTop_toBottomOf="@+id/adDetails_ingredients" />
 
 
-
             <ImageButton
                 android:id="@+id/contact"
+                style="@android:style/Widget.Holo.Light.ImageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="26dp"
+                android:layout_marginTop="16dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/adDetails_image"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/adDetails_filterOptions"
                 app:srcCompat="@drawable/ic_message" />
 
 

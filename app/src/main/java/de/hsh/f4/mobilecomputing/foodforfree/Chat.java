@@ -69,7 +69,7 @@ public class Chat extends AppCompatActivity {
 
         //get Intent and adId from clicked itemview
         Intent intent = getIntent();
-        adId = intent.getStringExtra(AdDetails.EXTRA_ADID); //reciever
+        adId = intent.getStringExtra(EXTRA_ADID); //reciever
 
 
     }

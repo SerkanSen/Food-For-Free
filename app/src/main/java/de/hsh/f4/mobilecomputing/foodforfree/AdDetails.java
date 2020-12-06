@@ -9,8 +9,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -20,20 +23,23 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import static de.hsh.f4.mobilecomputing.foodforfree.MainActivity.EXTRA_ADID;
+import static de.hsh.f4.mobilecomputing.foodforfree.MainActivity.EXTRA_IMAGEURL;
 
 public class AdDetails extends AppCompatActivity {
-    public static final String EXTRA_ADID = "de.hsh.mobilecomputing.foodforfree.ADID" ;
+
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     StorageReference storageReference;
     TextView title, pickupLocation, description, amount, ingredients, filterOptions;
     ImageView image;
     ImageButton contact;
+    ProgressBar progressBarAdPhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,24 +53,34 @@ public class AdDetails extends AppCompatActivity {
         ingredients = findViewById(R.id.adDetails_ingredients);
         filterOptions = findViewById(R.id.adDetails_filterOptions);
         image = findViewById(R.id.adDetails_image);
+        progressBarAdPhoto = findViewById(R.id.progressBarAdPhoto);
         contact =findViewById(R.id.contact);
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
 
-        //get Intent and adId from clicked itemview
+        //get Intent and adId+imageUrl from clicked itemview
         Intent intent = getIntent();
         String adId = intent.getStringExtra(EXTRA_ADID);
+        String imageUrl = intent.getStringExtra(EXTRA_IMAGEURL);
 
-        //get Image from storage/ads
-        StorageReference adsRef = storageReference.child("ads/"+adId+"/adPhoto.jpg");
-        adsRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).resize(500,500).onlyScaleDown().into(image);
-            }
-        });
+        //load adPhoto from Storage with imageUrl, meanwhile progressBar
+        progressBarAdPhoto.setVisibility(View.VISIBLE);
+        Picasso.get()
+                .load(imageUrl)
+                .fit()
+                .centerCrop()
+                .into(image, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        progressBarAdPhoto.setVisibility(View.GONE);
+                    }
+                    @Override
+                    public void onError(Exception e) {
+                        Toast.makeText(AdDetails.this, "Bild konnte nicht geladen werden.", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
         //get document information
         DocumentReference documentReference = fStore.collection("ads").document(adId);
@@ -76,7 +92,6 @@ public class AdDetails extends AppCompatActivity {
                 description.setText(documentSnapshot.getString("description"));
                 amount.setText(documentSnapshot.getString("amount"));
                 ingredients.setText(documentSnapshot.getString("ingredients"));
-                //(documentSnapshot.getString("filterOptions"));
                 filterOptions.setText(documentSnapshot.getString("filterOptions")); //List zu String
             }
         });
@@ -90,14 +105,6 @@ public class AdDetails extends AppCompatActivity {
                 intent = new Intent(AdDetails.this, Chat.class);
                 intent.putExtra(EXTRA_ADID, adId);
                 startActivity(intent);
-
-
-
-
-
-
-
-
             }
         });
 

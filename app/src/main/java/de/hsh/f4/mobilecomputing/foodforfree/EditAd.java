@@ -5,6 +5,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -13,10 +15,13 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,22 +45,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EditAd extends AppCompatActivity {
-    //private static final String EXTRA_ADID = "de.hsh.mobilecomputing.foodforfree.ADID";
+import static de.hsh.f4.mobilecomputing.foodforfree.MyAds.EXTRA_AD_ID;
+import static de.hsh.f4.mobilecomputing.foodforfree.MyAds.EXTRA_IMAGE_URL;
+
+public class EditAd extends AppCompatActivity  {
+    //implements AdapterView.OnItemSelectedListener
+
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     StorageReference storageReference;
     ArrayList<String> sFilterOptions = new ArrayList<>();
     Button pUpdateAdBtn, pUploadAdPhotoBtn, pMakePic;
     Calendar calendar;
-    String userId, adId;
+    String userId, adId, imageUrl;
     ImageView pAdPhoto;
     Uri imageUri;
+    //public static final String EXTRA_AMOUNT = "";
     public static final String TAG = "TAG";
     //Falls man Bild resetten einbaut:
     //public static final String DEFAULT_URL = "https://firebasestorage.googleapis.com/v0/b/food-for-free-9663f.appspot.com/o/ads%2FDefault%20Bild.jpg?alt=media&token=57a564e3-006c-4146-b793-cf4346a8f07a";
 
     EditText pTitle, pDescription, pIngredients, pAmount;
+    //Spinner pAmount;
     TextView pPickupLocation;
     CheckBox chBoxVeggie, chBoxVegan, chBoxFruitsVegs, chBoxCans, chBoxMeal, chBoxSweets;
 
@@ -68,6 +79,13 @@ public class EditAd extends AppCompatActivity {
         pDescription = findViewById(R.id.editDescription);
         pIngredients = findViewById(R.id.editIngredients);
         pAmount = findViewById(R.id.editAmount);
+
+        /*pAmount = findViewById(R.id.spinnerAmount);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.numbers, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        pAmount.setAdapter(adapter);
+        pAmount.setOnItemSelectedListener(this);*/
+
         pPickupLocation = findViewById(R.id.pickupLocation);
         chBoxVeggie = findViewById(R.id.chBoxVeggie);
         chBoxVegan = findViewById(R.id.chBoxVegan);
@@ -94,29 +112,29 @@ public class EditAd extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
         userId = fAuth.getCurrentUser().getUid();
 
-        //get Intent and adId from clicked itemview
+        //get Intent and adId+imageUrl from clicked itemview
         Intent intent = getIntent();
-        adId = intent.getStringExtra(MyAdsDetails.EXTRA_ADID);
+        adId = intent.getStringExtra(EXTRA_AD_ID);
+        imageUrl = intent.getStringExtra(EXTRA_IMAGE_URL);
 
         //Darstellung der bisherigen Informationen:
         //get Image from storage/ads
-        StorageReference adsRef = storageReference.child("ads/"+adId+"/adPhoto.jpg");
-        adsRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-               Picasso.get().load(uri).resize(500,500).onlyScaleDown().into(pAdPhoto);
-            }
-        });
+        Picasso.get()
+                .load(imageUrl)
+                .fit()
+                .centerCrop()
+                .into(pAdPhoto);
+
         //get document information
         DocumentReference documentReference = fStore.collection("ads").document(adId);
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                 pTitle.setText(documentSnapshot.getString("title"));
-                pPickupLocation.setText(documentSnapshot.getString("pickupLocation"));
                 pDescription.setText(documentSnapshot.getString("description"));
                 pAmount.setText(documentSnapshot.getString("amount"));
                 pIngredients.setText(documentSnapshot.getString("ingredients"));
+                pPickupLocation.setText(documentSnapshot.getString("pickupLocation"));
                 //Checkboxen evtl. inkludieren
             }
         });
@@ -141,11 +159,11 @@ public class EditAd extends AppCompatActivity {
         pUpdateAdBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String title = pTitle.getText().toString();
+                String title = pTitle.getText().toString().trim();
                 String description = pDescription.getText().toString().trim();
                 String ingredients = pIngredients.getText().toString().trim();
-                String amount = pAmount.getText().toString();
-                String pickupLocation = pPickupLocation.getText().toString();
+                String amount = pAmount.getText().toString().trim();
+                String pickupLocation = pPickupLocation.getText().toString().trim();
                 String filterOptions;
 
                 calendar = Calendar.getInstance();
@@ -160,14 +178,14 @@ public class EditAd extends AppCompatActivity {
                     pDescription.setError("Bitte gib eine kurze Beschreibung ein.");
                     return;
                 }
-                if(TextUtils.isEmpty(amount)){
+                /*if(TextUtils.isEmpty(amount)){
                     pAmount.setError("Bitte gib die Portion/en an.");
                     return;
                 }
                 if(amount.equals("0")){
                     pAmount.setError("Min. eine Portion (1)");
                     return;
-                }
+                }*/
                 if(TextUtils.isEmpty(ingredients)){
                     pIngredients.setError("Min. eine Zutat wird benötigt. Bitte gib für Allergiker relevante Zutaten unbedingt an!");
                     return;
@@ -199,7 +217,7 @@ public class EditAd extends AppCompatActivity {
                     uploadImageToFirebase(imageUri);
                 }
                 documentReference.update(ad).addOnSuccessListener((OnSuccessListener) (aVoid) -> {
-                    Toast.makeText(EditAd.this,"Anzeige aktualisiert", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditAd.this,"Anzeige erfolgreich aktualisiert!", Toast.LENGTH_SHORT).show();
                     //Log.d(TAG, "onSuccess: Anzeige erfolgreich erstellt!");
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -222,7 +240,11 @@ public class EditAd extends AppCompatActivity {
         if (requestCode == 1000) {
             if (resultCode == Activity.RESULT_OK) {
                 imageUri = data.getData();
-                pAdPhoto.setImageURI(imageUri);
+                Picasso.get()
+                        .load(imageUri)
+                        .fit()
+                        .centerCrop()
+                        .into(pAdPhoto);
             }
         } else if (requestCode == 61 && resultCode == Activity.RESULT_OK) {          //Übergabe Foto an pAdPhoto
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");                   //habe viele Variationen mit dieser und in kombbination deiner variante drüber probiert, Casting in Uri,direkt als Uri
@@ -248,7 +270,11 @@ public class EditAd extends AppCompatActivity {
                 fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        Picasso.get().load(uri).resize(200,200).into(pAdPhoto);
+                        Picasso.get()
+                                .load(uri)
+                                .fit()
+                                .centerCrop()
+                                .into(pAdPhoto);
                         //imageUrl im Dokument speichern
                         DocumentReference documentReference = fStore.collection("ads/").document(adId);
                         documentReference
@@ -329,5 +355,42 @@ public class EditAd extends AppCompatActivity {
                 }
                 break;
         }
+    }
+
+    /*@Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String selectedAmount = parent.getItemAtPosition(position).toString();
+        Toast.makeText(parent.getContext(), selectedAmount, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent (EditAd.this, EditAd.class);
+        intent.putExtra(EXTRA_AMOUNT, selectedAmount);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }*/
+
+    public void ClickClose(View view){
+        //Initialze Alert Dialog
+        AlertDialog.Builder builder =new AlertDialog.Builder(this);
+        //Set title
+        builder.setTitle("Entwurf verwerfen");
+        //Set message
+        builder.setMessage("Wenn du die Seite verlässt, wird der Entwurf verworfen. Willst du fortfahren?");
+        //positive button
+        builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(getApplicationContext(), MyAds.class));
+            }
+        });
+        //negative button
+        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
     }
 }

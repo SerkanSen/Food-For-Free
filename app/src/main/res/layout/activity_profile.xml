@@ -15,7 +15,23 @@
         <include
             android:id="@+id/main_toolbar"
             layout="@layout/main_toolbar"
-            android:text="Mein Profil"/>
+            android:text="Mein Profil"
+            tools:layout_editor_absoluteX="48dp"
+            tools:layout_editor_absoluteY="40dp" />
+
+        <ProgressBar
+            android:id="@+id/progressBarProfileImage"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/profilePhoto"
+            app:layout_constraintEnd_toEndOf="@+id/profilePhoto"
+            app:layout_constraintStart_toStartOf="@+id/profilePhoto"
+            app:layout_constraintTop_toTopOf="@+id/profilePhoto" />
 
         <TextView
             android:id="@+id/textView"
@@ -38,7 +54,7 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView"
-            app:srcCompat="@drawable/kein_bild" />
+            app:srcCompat="?android:attr/activatedBackgroundIndicator" />
 
         <TextView
             android:id="@+id/profileName"

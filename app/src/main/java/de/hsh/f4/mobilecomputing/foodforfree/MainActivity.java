@@ -20,11 +20,14 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -39,6 +42,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.List;
@@ -49,6 +53,7 @@ import static androidx.core.view.GravityCompat.*;
 public class MainActivity extends AppCompatActivity {
     //Initialize variable
     protected static final String EXTRA_ADID = "de.hsh.mobilecomputing.foodforfree.ADID";
+    protected static final String EXTRA_IMAGEURL = "de.hsh.mobilecomputing.foodforfree.IMAGEURL";
     DrawerLayout drawerLayout;
     SearchView searchView;
     FloatingActionButton newAdBtn;
@@ -102,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
 
         FirestoreRecyclerOptions<Ad> options = new FirestoreRecyclerOptions.Builder<Ad>().setQuery(query, Ad.class).build();
 
-        //adapter = new AdAdapter(getApplicationContext(),options);
         adapter = new AdAdapter(options);
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
@@ -115,12 +119,15 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 Intent intent = new Intent(MainActivity.this, AdDetails.class);
                 String adId = documentSnapshot.getId();
-                //übergeben der adId
+                String imageUrl = documentSnapshot.getString("imageUrl");
+                //übergeben der adId und imageUrl
                 intent.putExtra(EXTRA_ADID, adId);
+                intent.putExtra(EXTRA_IMAGEURL, imageUrl);
                 startActivity(intent);
             }
         });
     }
+
     public void onBackPressed(){
         return;
     }

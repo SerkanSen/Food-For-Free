@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:src="@drawable/ic_baseline_home_24"/>
+            android:src="@drawable/ic_home"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -62,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:src="@drawable/ic_baseline_profile"/>
+            android:src="@drawable/ic_profile"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -84,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:src="@drawable/ic_baseline_article_24"/>
+            android:src="@drawable/ic_ads"/>
 
         <TextView
             android:layout_width="0dp"
@@ -106,7 +106,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:src="@drawable/ic_baseline_email_24"/>
+            android:src="@drawable/ic_messages"/>
 
         <TextView
             android:layout_width="0dp"
@@ -128,7 +128,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:src="@drawable/ic_baseline_west_24"/>
+            android:src="@drawable/ic_logout"/>
 
         <TextView
             android:layout_width="0dp"

@@ -5,6 +5,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -13,10 +15,13 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +29,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -43,8 +49,13 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PlacingAd extends AppCompatActivity {
-    EditText pTitle, pDescription, pIngredients, pAmount;
+public class PlacingAd extends AppCompatActivity  {
+    //implements AdapterView.OnItemSelectedListener
+    EditText pTitle, pDescription, pIngredients;
+    EditText pAmount;
+    TextInputEditText inputEditBeschreibung;
+    //Spinner pAmount;
+    //int selectedAmount;
     TextView pPickupLocation;
     CheckBox chBoxVeggie, chBoxVegan, chBoxFruitsVegs, chBoxCans, chBoxMeal, chBoxSweets;
     ArrayList <String> sFilterOptions = new ArrayList<>();
@@ -56,6 +67,7 @@ public class PlacingAd extends AppCompatActivity {
     ImageView pAdPhoto;
     Uri imageUri;
     StorageReference storageReference;
+    public static final String EXTRA_AMOUNT = "";
     public static final String TAG = "TAG";
     public static final String DEFAULT_URL = "https://firebasestorage.googleapis.com/v0/b/food-for-free-9663f.appspot.com/o/ads%2FDefault%20Bild.jpg?alt=media&token=57a564e3-006c-4146-b793-cf4346a8f07a";
 
@@ -65,9 +77,17 @@ public class PlacingAd extends AppCompatActivity {
         setContentView(R.layout.activity_placing_ad);
 
         pTitle = findViewById(R.id.editTitle);
+        //inputEditBeschreibung = findViewById(R.id.text_input_des);
         pDescription = findViewById(R.id.editDescription);
         pIngredients = findViewById(R.id.editIngredients);
+
         pAmount = findViewById(R.id.editAmount);
+        /*pAmount = findViewById(R.id.spinnerAmount);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.numbers, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        pAmount.setAdapter(adapter);
+        pAmount.setOnItemSelectedListener(this);*/
+
         pPickupLocation = findViewById(R.id.pickupLocation);
         chBoxVeggie = findViewById(R.id.chBoxVeggie);
         chBoxVegan = findViewById(R.id.chBoxVegan);
@@ -117,16 +137,19 @@ public class PlacingAd extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //eingegeben Werte einlesen
-                String title = pTitle.getText().toString();
+                String title = pTitle.getText().toString().trim();
                 String description = pDescription.getText().toString().trim();
                 String ingredients = pIngredients.getText().toString().trim();
-                String amount = pAmount.getText().toString();
-                String pickupLocation = pPickupLocation.getText().toString();
+                String amount = pAmount.getText().toString().trim();
+                //Intent intent1 = getIntent();
+                //String amount = intent1.getStringExtra(PlacingAd.EXTRA_AMOUNT);
+                //int amount = selectedAmount;
+                String pickupLocation = pPickupLocation.getText().toString().trim();
                 String filterOptions;
 
                 //Zeitstempel erstellen
                 calendar = Calendar.getInstance();
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss a");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                 String timestamp = simpleDateFormat.format(calendar.getTime());
 
                 //Fehlerüberprüfung
@@ -138,18 +161,21 @@ public class PlacingAd extends AppCompatActivity {
                     pDescription.setError("Bitte gib eine kurze Beschreibung ein.");
                     return;
                 }
-                if(TextUtils.isEmpty(amount)){
-                    pAmount.setError("Bitte gib die Portion/en an.");
-                    return;
-                }
-                if(amount.equals("0")){
-                    pAmount.setError("Min. eine Portion (1)");
-                    return;
-                }
+
                 if(TextUtils.isEmpty(ingredients)){
                     pIngredients.setError("Min. eine Zutat wird benötigt. Bitte gib für Allergiker relevante Zutaten unbedingt an!");
                     return;
                 }
+                if(TextUtils.isEmpty(amount)){
+                    pAmount.setError("Bitte die Portionen an!");
+                    return;
+                }
+
+                if(amount.equals("0")){
+                    pAmount.setError("Min. eine Portion ist nötig!");
+                    return;
+                }
+
 
                 //ArrayList mit den angeklickten Checkboxen als einen String speichern
                 StringBuilder stringBuilder = new StringBuilder();
@@ -222,7 +248,11 @@ public class PlacingAd extends AppCompatActivity {
                 fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        Picasso.get().load(uri).resize(200,200).into(pAdPhoto);
+                        Picasso.get()
+                                .load(uri)
+                                .fit()
+                                .centerCrop()
+                                .into(pAdPhoto);
                         //imageUrl im Dokument speichern
                         DocumentReference documentReference = fStore.collection("ads/").document(adId);
                         documentReference
@@ -230,13 +260,13 @@ public class PlacingAd extends AppCompatActivity {
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        //Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                        Log.d(TAG, "imageUrl successfully saved");
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        Log.w(TAG, "Error updating document", e);
+                                        Log.w(TAG, "Error saving imageUrl", e);
                                     }
                                 });
                     }
@@ -303,5 +333,42 @@ public class PlacingAd extends AppCompatActivity {
                 }
                 break;
         }
+    }
+
+    /*@Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String selectedAmount = parent.getItemAtPosition(position).toString();
+        Toast.makeText(parent.getContext(), selectedAmount, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent (PlacingAd.this, PlacingAd.class);
+        intent.putExtra(EXTRA_AMOUNT, selectedAmount);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }*/
+
+    public void ClickClose(View view){
+        //Initialze Alert Dialog
+        AlertDialog.Builder builder =new AlertDialog.Builder(this);
+        //Set title
+        builder.setTitle("Entwurf verwerfen");
+        //Set message
+        builder.setMessage("Wenn du die Seite verlässt, wird der Entwurf verworfen. Willst du fortfahren?");
+        //positive button
+        builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            }
+        });
+        //negative button
+        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
     }
 }

@@ -22,7 +22,8 @@ import com.google.firebase.firestore.Query;
 
 public class MyAds extends AppCompatActivity {
     //Initialize variable
-    protected static final String EXTRA_ADID = "de.hsh.mobilecomputing.foodforfree.ADID";
+    protected static final String EXTRA_AD_ID = "de.hsh.mobilecomputing.foodforfree.ADID";
+    protected static final String EXTRA_IMAGE_URL = "de.hsh.mobilecomputing.foodforfree.IMAGEURL";
     DrawerLayout drawerLayout;
     FirebaseAuth fAuth;
     String userId;
@@ -64,8 +65,10 @@ public class MyAds extends AppCompatActivity {
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 Intent intent = new Intent(MyAds.this, MyAdsDetails.class);
                 String adId = documentSnapshot.getId();
+                String imageUrl = documentSnapshot.getString("imageUrl");
                 //übergeben der adId
-                intent.putExtra(EXTRA_ADID, adId);
+                intent.putExtra(EXTRA_AD_ID, adId);
+                intent.putExtra(EXTRA_IMAGE_URL, imageUrl);
                 startActivity(intent);
             }
         });

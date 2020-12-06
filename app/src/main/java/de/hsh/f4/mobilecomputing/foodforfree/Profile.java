@@ -21,7 +21,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,6 +34,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -51,6 +54,7 @@ public class Profile extends AppCompatActivity {
     Button bestätigen;
     EditText standort;
     TextView profileAdress;
+    ProgressBar progressBarProfileImage;
 
     public LocationManager locationManager;
     public LocationListener locationListener = new MyLocationListener();
@@ -75,6 +79,7 @@ public class Profile extends AppCompatActivity {
         tAdresse = findViewById(R.id.tStadtteil);
         name = findViewById(R.id.profileName);
         email = findViewById(R.id.profileMail);
+        progressBarProfileImage = findViewById(R.id.progressBarProfileImage);
 
         profilePhoto = findViewById(R.id.profilePhoto);
         editProfileBtn = findViewById(R.id.updateProfileBtn);
@@ -93,11 +98,26 @@ public class Profile extends AppCompatActivity {
 
         userId = fAuth.getCurrentUser().getUid();
 
+        progressBarProfileImage.setVisibility(View.VISIBLE);
         StorageReference profileRef = storageReference.child("users/"+userId+"/profile.jpg");
         profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).resize(100,100).into(profilePhoto);
+                Picasso.get()
+                        .load(uri)
+                        .fit()
+                        .centerCrop()
+                        .into(profilePhoto, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                                progressBarProfileImage.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Toast.makeText(Profile.this, "Profilbild konnte nicht geladen werden.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
         });
 

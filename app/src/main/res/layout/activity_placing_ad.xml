@@ -12,26 +12,41 @@
         android:layout_height="wrap_content"
         tools:context=".PlacingAd">
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
+        <include
+            android:id="@+id/edit_toolbar"
+            layout="@layout/edit_toolbar"
+            android:text="Mein Profil"
+            tools:layout_editor_absoluteX="48dp"
+            tools:layout_editor_absoluteY="40dp" />
+
+        <!--<com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_des"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="Anzeige erstellen"
-            android:textSize="20sp"
-            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            app:counterEnabled="true"
+            app:counterMaxLength="15"
+            app:errorEnabled="true"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/placeAdBtn">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Beschreibung"
+                android:inputType="text" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        -->
 
         <ImageView
             android:id="@+id/adPhoto"
-            android:layout_width="138dp"
+            android:layout_width="125dp"
             android:layout_height="126dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            app:layout_constraintTop_toBottomOf="@+id/edit_toolbar"
             app:srcCompat="@drawable/kein_bild" />
 
         <Button
@@ -70,14 +85,14 @@
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editAmount" />
+            app:layout_constraintTop_toBottomOf="@+id/pickupLocation" />
 
         <TextView
             android:id="@+id/textView15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="100dp"
+            android:layout_marginEnd="45dp"
             android:text="Anzahl/Portionen"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -213,12 +228,13 @@
             app:layout_constraintStart_toStartOf="@+id/editDescription"
             app:layout_constraintTop_toBottomOf="@+id/editDescription" />
 
-        <TextView
+        <EditText
             android:id="@+id/pickupLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Stadtteil"
+            android:ems="10"
+            android:hint="Dein Stadtteil"
+            android:inputType="textPersonName"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@+id/pickupLocationTitle"
             app:layout_constraintTop_toBottomOf="@+id/pickupLocationTitle" />
@@ -235,12 +251,22 @@
 
         <EditText
             android:id="@+id/editAmount"
-            android:layout_width="190dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
             android:ems="10"
-            android:hint="Wie viel kannst du abgeben?"
             android:inputType="number"
             android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView15"
+            app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+        <Spinner
+            android:id="@+id/spinnerAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:visibility="invisible"
             app:layout_constraintStart_toStartOf="@+id/textView15"
             app:layout_constraintTop_toBottomOf="@+id/textView15" />
 

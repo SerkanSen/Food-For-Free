@@ -42,6 +42,7 @@ public class EditProfile extends AppCompatActivity {
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     String userId;
+    Uri imageUri;
     public static final String TAG = "TAG";
 
     @Override
@@ -70,7 +71,11 @@ public class EditProfile extends AppCompatActivity {
         adRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).resize(100,100).into(profilePhoto);
+                Picasso.get()
+                        .load(uri)
+                        .fit()
+                        .centerCrop()
+                        .into(profilePhoto);
             }
         });
 
@@ -97,6 +102,10 @@ public class EditProfile extends AppCompatActivity {
         updateProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(imageUri != null) {
+                    uploadImageToFirebase(imageUri);
+                }
+
                 String stadtteil = pStadtteil.getText().toString().trim();
 
                 DocumentReference documentReference = fStore.collection("users").document(userId);
@@ -105,6 +114,7 @@ public class EditProfile extends AppCompatActivity {
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
+                                Toast.makeText(EditProfile.this, "Profil erfolgreich aktualisiert!", Toast.LENGTH_SHORT).show();
                                 Log.d(TAG, "DocumentSnapshot successfully updated!");
                             }
                         })
@@ -125,10 +135,8 @@ public class EditProfile extends AppCompatActivity {
         if(requestCode == 1000) {
             //wenn Bild ausgewählt
             if(resultCode == Activity.RESULT_OK){
-                Uri imageUri = data.getData();
+                imageUri = data.getData();
                 profilePhoto.setImageURI(imageUri);
-
-                uploadImageToFirebase(imageUri);
             }
         }
     }
@@ -139,11 +147,14 @@ public class EditProfile extends AppCompatActivity {
         fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(EditProfile.this, "Profilbild erfolgreich hochgeladen.", Toast.LENGTH_SHORT).show();
                 fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        Picasso.get().load(uri).resize(200,200).into(profilePhoto);
+                        Picasso.get()
+                                .load(uri)
+                                .fit()
+                                .centerCrop()
+                                .into(profilePhoto);
                     }
                 });
             }

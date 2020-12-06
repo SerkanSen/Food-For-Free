@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,19 +24,21 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
+import static de.hsh.f4.mobilecomputing.foodforfree.MyAds.EXTRA_AD_ID;
+import static de.hsh.f4.mobilecomputing.foodforfree.MyAds.EXTRA_IMAGE_URL;
 
 
 public class MyAdsDetails extends AppCompatActivity {
-    public static final String EXTRA_ADID = "de.hsh.mobilecomputing.foodforfree.ADID" ;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     StorageReference storageReference;
     TextView title, pickupLocation, description, amount, ingredients, filterOptions;
     ImageView image;
+    ProgressBar progressBarAdPhoto;
     Button editAd, deleteAd;
-    String userId, adId;
-    //List <String> list;
     DocumentReference documentReference;
 
     @Override
@@ -52,10 +55,48 @@ public class MyAdsDetails extends AppCompatActivity {
         image = findViewById(R.id.adDetails_image);
         deleteAd =findViewById(R.id.deleteAd);
         editAd =findViewById(R.id.editAd);
+        progressBarAdPhoto = findViewById(R.id.progressBarAdPhoto);
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
+
+        //get Intent and adId from clicked itemview
+        Intent intent = getIntent();
+        String adId = intent.getStringExtra(EXTRA_AD_ID);
+        String imageUrl = intent.getStringExtra(EXTRA_IMAGE_URL);
+
+        //load adPhoto from Storage with imageUrl, meanwhile progressBar
+        progressBarAdPhoto.setVisibility(View.VISIBLE);
+        Picasso.get()
+                .load(imageUrl)
+                .fit()
+                .centerCrop()
+                .into(image, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        progressBarAdPhoto.setVisibility(View.GONE);
+                    }
+                    @Override
+                    public void onError(Exception e) {
+                        Toast.makeText(MyAdsDetails.this, "Bild konnte nicht geladen werden.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        //get document information
+        documentReference = fStore.collection("ads").document(adId);
+        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                title.setText(documentSnapshot.getString("title"));
+                pickupLocation.setText(documentSnapshot.getString("pickupLocation"));
+                description.setText(documentSnapshot.getString("description"));
+                amount.setText(documentSnapshot.getString("amount"));
+                ingredients.setText(documentSnapshot.getString("ingredients"));
+                //(documentSnapshot.getString("filterOptions"));
+                filterOptions.setText(documentSnapshot.getString("filterOptions"));
+            }
+        });
 
         editAd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,9 +105,11 @@ public class MyAdsDetails extends AppCompatActivity {
                 Intent intent = getIntent();
 
                 String adId = intent.getStringExtra(MainActivity.EXTRA_ADID);
+                String imageUrl = intent.getStringExtra(EXTRA_IMAGE_URL);
 
                 intent = new Intent(MyAdsDetails.this, EditAd.class);
-                intent.putExtra(EXTRA_ADID, adId);
+                intent.putExtra(EXTRA_AD_ID, adId);
+                intent.putExtra(EXTRA_IMAGE_URL, imageUrl);
                 startActivity(intent);
             }
 
@@ -97,8 +140,7 @@ public class MyAdsDetails extends AppCompatActivity {
 
                         try {Intent intent = getIntent();
                             //Löschen des Dokuments und des Fotos
-                            String adId = intent.getStringExtra(MyAdsDetails.EXTRA_ADID);
-                            documentReference= fStore.collection("ads").document(adId);
+                            documentReference = fStore.collection("ads").document(adId);
                             StorageReference fileRef = storageReference.child("ads/"+adId+"/adPhoto.jpg");
                             documentReference.delete();
                             fileRef.delete();
@@ -124,34 +166,5 @@ public class MyAdsDetails extends AppCompatActivity {
                 return false;
             }
         });
-
-        //get Intent and adId from clicked itemview
-        Intent intent = getIntent();
-        String adId = intent.getStringExtra(MainActivity.EXTRA_ADID);
-
-        //get Image from storage/ads
-        StorageReference adsRef = storageReference.child("ads/"+adId+"/adPhoto.jpg");
-        adsRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).resize(500,500).onlyScaleDown().into(image);
-            }
-        });
-
-        //get document information
-        DocumentReference documentReference = fStore.collection("ads").document(adId);
-        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-                title.setText(documentSnapshot.getString("title"));
-                pickupLocation.setText(documentSnapshot.getString("pickupLocation"));
-                description.setText(documentSnapshot.getString("description"));
-                amount.setText(documentSnapshot.getString("amount"));
-                ingredients.setText(documentSnapshot.getString("ingredients"));
-                //(documentSnapshot.getString("filterOptions"));
-                filterOptions.setText(documentSnapshot.getString("filterOptions"));
-            }
-        });
-
     }
 }
