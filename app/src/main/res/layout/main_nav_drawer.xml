@@ -46,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Home"
+            android:text="Startseite"
             android:padding="12dp"/>
 
     </LinearLayout>
@@ -68,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Profil"
+            android:text="Mein Profil"
             android:padding="12dp"/>
 
     </LinearLayout>

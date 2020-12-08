@@ -11,15 +11,15 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="ClickClose"
-        android:src="@drawable/ic_close"/>
+        android:onClick="ClickMenu"
+        android:src="@drawable/ic_baseline_menu_24"/>
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Anzeigenentwurf"
-        android:textAlignment="center"
+        android:text="    Meine Anzeigen"
+        android:textAlignment="textStart"
         android:textColor="@color/white"
         android:textSize="20dp"
         android:textStyle="bold" />

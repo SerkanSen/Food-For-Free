@@ -57,7 +57,7 @@ public class PlacingAd extends AppCompatActivity  {
     //Spinner pAmount;
     //int selectedAmount;
     TextView pPickupLocation;
-    CheckBox chBoxVeggie, chBoxVegan, chBoxFruitsVegs, chBoxCans, chBoxMeal, chBoxSweets;
+    CheckBox chBoxVeggie, chBoxVegan, chBoxFruitsVegs, chBoxCans, chBoxMeal, chBoxSweets, chBoxSnacks;
     ArrayList <String> sFilterOptions = new ArrayList<>();
     Button pPlaceAdBtn, pUploadAdPhotoBtn, pMakePic;
     Calendar calendar;
@@ -95,6 +95,7 @@ public class PlacingAd extends AppCompatActivity  {
         chBoxCans = findViewById(R.id.chBoxCans);
         chBoxMeal = findViewById(R.id.chBoxMeal);
         chBoxSweets = findViewById(R.id.chBoxSweets);
+        chBoxSnacks = findViewById(R.id.chBoxSnacks);
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
@@ -227,7 +228,12 @@ public class PlacingAd extends AppCompatActivity  {
         if (requestCode == 1000) {
             if (resultCode == Activity.RESULT_OK) {
                 imageUri = data.getData();
-                pAdPhoto.setImageURI(imageUri);
+                //pAdPhoto.setImageURI(imageUri);
+                Picasso.get()
+                        .load(imageUri)
+                        .fit()
+                        .centerCrop()
+                        .into(pAdPhoto);
             }
         } else if (requestCode == 61 && resultCode == Activity.RESULT_OK) {          //Übergabe Foto an pAdPhoto
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");                   //habe viele Variationen mit dieser und in kombbination deiner variante drüber probiert, Casting in Uri,direkt als Uri
@@ -326,10 +332,18 @@ public class PlacingAd extends AppCompatActivity  {
                 break;
             case R.id.chBoxSweets:
                 if(checked){
-                    sFilterOptions.add("Knabberzeug");
+                    sFilterOptions.add("Süßes");
                 }
                 else {
-                    sFilterOptions.remove("Knabberzeug");
+                    sFilterOptions.remove("Süßes");
+                }
+                break;
+            case R.id.chBoxSnacks:
+                if(checked){
+                    sFilterOptions.add("Snacks");
+                }
+                else {
+                    sFilterOptions.remove("Snacks");
                 }
                 break;
         }

@@ -5,6 +5,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -136,7 +138,12 @@ public class EditProfile extends AppCompatActivity {
             //wenn Bild ausgewählt
             if(resultCode == Activity.RESULT_OK){
                 imageUri = data.getData();
-                profilePhoto.setImageURI(imageUri);
+                //profilePhoto.setImageURI(imageUri);
+                Picasso.get()
+                        .load(imageUri)
+                        .fit()
+                        .centerCrop()
+                        .into(profilePhoto);
             }
         }
     }
@@ -164,5 +171,29 @@ public class EditProfile extends AppCompatActivity {
                 Toast.makeText(EditProfile.this, "Fehlgeschlagen.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void ClickClose(View view){
+        //Initialze Alert Dialog
+        AlertDialog.Builder builder =new AlertDialog.Builder(this);
+        //Set title
+        builder.setTitle("Entwurf verwerfen");
+        //Set message
+        builder.setMessage("Wenn du die Seite verlässt, wird der Entwurf verworfen. Willst du fortfahren?");
+        //positive button
+        builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(getApplicationContext(), Profile.class));
+            }
+        });
+        //negative button
+        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
     }
 }

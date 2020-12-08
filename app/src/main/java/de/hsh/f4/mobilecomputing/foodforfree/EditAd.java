@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -60,6 +62,8 @@ public class EditAd extends AppCompatActivity  {
     String userId, adId, imageUrl;
     ImageView pAdPhoto;
     Uri imageUri;
+    Layout toolbar_edit_ad;
+    Toolbar toolbar;
     //public static final String EXTRA_AMOUNT = "";
     public static final String TAG = "TAG";
     //Falls man Bild resetten einbaut:
@@ -68,12 +72,13 @@ public class EditAd extends AppCompatActivity  {
     EditText pTitle, pDescription, pIngredients, pAmount;
     //Spinner pAmount;
     TextView pPickupLocation;
-    CheckBox chBoxVeggie, chBoxVegan, chBoxFruitsVegs, chBoxCans, chBoxMeal, chBoxSweets;
+    CheckBox chBoxVeggie, chBoxVegan, chBoxFruitsVegs, chBoxCans, chBoxMeal, chBoxSweets, chBoxSnacks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_placing_ad);
+        setContentView(R.layout.activity_edit_ad);
+
 
         pTitle = findViewById(R.id.editTitle);
         pDescription = findViewById(R.id.editDescription);
@@ -93,6 +98,7 @@ public class EditAd extends AppCompatActivity  {
         chBoxCans = findViewById(R.id.chBoxCans);
         chBoxMeal = findViewById(R.id.chBoxMeal);
         chBoxSweets = findViewById(R.id.chBoxSweets);
+        chBoxSnacks = findViewById(R.id.chBoxSnacks);
         pUpdateAdBtn = findViewById(R.id.placeAdBtn);
         pUpdateAdBtn.setText("Anzeige aktualisieren");
         pAdPhoto = findViewById(R.id.adPhoto);
@@ -348,10 +354,18 @@ public class EditAd extends AppCompatActivity  {
                 break;
             case R.id.chBoxSweets:
                 if(checked){
-                    sFilterOptions.add("Knabberzeug");
+                    sFilterOptions.add("Süßes");
                 }
                 else {
-                    sFilterOptions.remove("Knabberzeug");
+                    sFilterOptions.remove("Süßes");
+                }
+                break;
+            case R.id.chBoxSnacks:
+                if(checked){
+                    sFilterOptions.add("Snacks");
+                }
+                else {
+                    sFilterOptions.remove("Snacks");
                 }
                 break;
         }

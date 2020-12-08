@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/toolbar_messages"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#018786"
@@ -18,7 +19,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="    Food For Free"
+        android:text="    Nachrichten"
         android:textAlignment="viewStart"
         android:textColor="@color/white"
         android:textSize="20dp"
