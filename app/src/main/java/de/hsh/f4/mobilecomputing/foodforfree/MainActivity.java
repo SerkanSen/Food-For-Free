@@ -21,14 +21,19 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SearchView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -53,7 +58,7 @@ import java.util.concurrent.Executor;
 
 import static androidx.core.view.GravityCompat.*;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     //Initialize variable
     protected static final String EXTRA_ADID = "de.hsh.mobilecomputing.foodforfree.ADID";
     protected static final String EXTRA_IMAGEURL = "de.hsh.mobilecomputing.foodforfree.IMAGEURL";
@@ -62,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton newAdBtn;
     FirebaseAuth fAuth;
     String userId;
+    Query query;
 
     //Firestore for recyclerView
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -79,6 +85,12 @@ public class MainActivity extends AppCompatActivity {
         newAdBtn = findViewById(R.id.newAdBtn);
         inputSearch = findViewById(R.id.inputSearch);
         final Button standort= (Button) findViewById(R.id.standort);
+
+        Spinner spinner = findViewById(R.id.spinnerFilter);
+        ArrayAdapter<CharSequence> adapterFilter = ArrayAdapter.createFromResource(this, R.array.filterOptions, android.R.layout.simple_spinner_item);
+        adapterFilter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapterFilter);
+        spinner.setOnItemSelectedListener(this);
 
         fAuth = FirebaseAuth.getInstance();
         userId = fAuth.getCurrentUser().getUid();
@@ -102,7 +114,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         }));
-        setUpRecyclerView("");
+
+        Query queryAll = adRef.orderBy("timestamp", Query.Direction.DESCENDING);
+        setUpRecyclerView(queryAll);
 
         //Suchleiste für Titel
         /*inputSearch.addTextChangedListener(new TextWatcher() {
@@ -127,11 +141,12 @@ public class MainActivity extends AppCompatActivity {
         });*/
     }
 
-    private void setUpRecyclerView(String data) {
-        Query query = adRef.orderBy("timestamp", Query.Direction.DESCENDING);
+    private void setUpRecyclerView(Query query) {
+        //Query query = adRef.orderBy("timestamp", Query.Direction.DESCENDING);
 
         //für Filter:
         //Query query = adRef.orderBy("title").orderBy("timestamp", Query.Direction.DESCENDING).startAt(data).endAt(data+"\uf8ff");
+        //Query query = adRef.whereEqualTo("title", data).orderBy("timestamp", Query.Direction.DESCENDING).startAt(data).endAt(data+"\uf8ff");
 
         FirestoreRecyclerOptions<Ad> options = new FirestoreRecyclerOptions.Builder<Ad>().setQuery(query, Ad.class).build();
 
@@ -160,6 +175,9 @@ public class MainActivity extends AppCompatActivity {
         return;
     }
 
+    public void ClickRefresh(View view) {
+        adapter.startListening();
+    }
 
     //when app updates new data from firestore
     @Override
@@ -266,4 +284,26 @@ public class MainActivity extends AppCompatActivity {
         closeDrawer(drawerLayout);
     }
 
+    //für Filter
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Query queryCat;
+        String catSelected = parent.getItemAtPosition(position).toString();
+        //Toast.makeText(MainActivity.this, "Startseite aktualisieren...", Toast.LENGTH_SHORT).show();
+        if(catSelected.equals("Alles")) {
+            queryCat = adRef.orderBy("timestamp", Query.Direction.DESCENDING);
+            //do nothing
+        } else {
+            queryCat = adRef.whereArrayContains("categories", catSelected).orderBy("timestamp", Query.Direction.DESCENDING);
+        }
+        setUpRecyclerView(queryCat);
+        adapter.startListening();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        //query = adRef.orderBy("timestamp", Query.Direction.DESCENDING);
+        Query queryAll = adRef.orderBy("timestamp", Query.Direction.DESCENDING);
+        setUpRecyclerView(queryAll);
+    }
 }

@@ -42,6 +42,7 @@ import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -51,20 +52,17 @@ import static de.hsh.f4.mobilecomputing.foodforfree.MyAds.EXTRA_AD_ID;
 import static de.hsh.f4.mobilecomputing.foodforfree.MyAds.EXTRA_IMAGE_URL;
 
 public class EditAd extends AppCompatActivity  {
-    //implements AdapterView.OnItemSelectedListener
 
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     StorageReference storageReference;
     ArrayList<String> sFilterOptions = new ArrayList<>();
+    String [] categories = new String[7];
     Button pUpdateAdBtn, pUploadAdPhotoBtn, pMakePic;
     Calendar calendar;
     String userId, adId, imageUrl;
     ImageView pAdPhoto;
     Uri imageUri;
-    Layout toolbar_edit_ad;
-    Toolbar toolbar;
-    //public static final String EXTRA_AMOUNT = "";
     public static final String TAG = "TAG";
     //Falls man Bild resetten einbaut:
     //public static final String DEFAULT_URL = "https://firebasestorage.googleapis.com/v0/b/food-for-free-9663f.appspot.com/o/ads%2FDefault%20Bild.jpg?alt=media&token=57a564e3-006c-4146-b793-cf4346a8f07a";
@@ -84,12 +82,6 @@ public class EditAd extends AppCompatActivity  {
         pDescription = findViewById(R.id.editDescription);
         pIngredients = findViewById(R.id.editIngredients);
         pAmount = findViewById(R.id.editAmount);
-
-        /*pAmount = findViewById(R.id.spinnerAmount);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.numbers, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        pAmount.setAdapter(adapter);
-        pAmount.setOnItemSelectedListener(this);*/
 
         pPickupLocation = findViewById(R.id.pickupLocation);
         chBoxVeggie = findViewById(R.id.chBoxVeggie);
@@ -171,6 +163,7 @@ public class EditAd extends AppCompatActivity  {
                 String amount = pAmount.getText().toString().trim();
                 String pickupLocation = pPickupLocation.getText().toString().trim();
                 String filterOptions;
+                List<String> filterCat = Arrays.asList(categories);
 
                 calendar = Calendar.getInstance();
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -184,14 +177,14 @@ public class EditAd extends AppCompatActivity  {
                     pDescription.setError("Bitte gib eine kurze Beschreibung ein.");
                     return;
                 }
-                /*if(TextUtils.isEmpty(amount)){
+                if(TextUtils.isEmpty(amount)){
                     pAmount.setError("Bitte gib die Portion/en an.");
                     return;
                 }
                 if(amount.equals("0")){
                     pAmount.setError("Min. eine Portion (1)");
                     return;
-                }*/
+                }
                 if(TextUtils.isEmpty(ingredients)){
                     pIngredients.setError("Min. eine Zutat wird benötigt. Bitte gib für Allergiker relevante Zutaten unbedingt an!");
                     return;
@@ -217,6 +210,7 @@ public class EditAd extends AppCompatActivity  {
                 ad.put("timestamp", timestamp);
                 ad.put("pickupLocation", pickupLocation);
                 ad.put("filterOptions", filterOptions);
+                ad.put("categories", filterCat);
 
                 //falls neues Bild: Bild hochladen
                 if(imageUri!=null){
@@ -308,81 +302,82 @@ public class EditAd extends AppCompatActivity  {
         });
     }
 
-    //include checkboxes
+    //Checkboxen: wenn angeklickt, dann füge der ArrayList die entsprechende Kategorie hinzu
     public void selectItem(View view) {
         boolean checked = ((CheckBox) view).isChecked();
         switch (view.getId()){
             case R.id.chBoxVeggie:
                 if(checked){
                     sFilterOptions.add("Vegetarisch");
+                    categories[0] = "Vegetarisch";
                 }
                 else {
                     sFilterOptions.remove("Vegetarisch");
+                    categories[0] = "";
                 }
                 break;
             case R.id.chBoxVegan:
                 if(checked){
                     sFilterOptions.add("Vegan");
+                    categories[1] = "Vegan";
                 }
                 else {
                     sFilterOptions.remove("Vegan");
+                    categories[1] = "";
                 }
                 break;
             case R.id.chBoxFruitsVegs:
                 if(checked){
                     sFilterOptions.add("Obst/Gemüse");
+                    categories[2] = "Obst/Gemüse";
                 }
                 else {
                     sFilterOptions.remove("Obst/Gemüse");
+                    categories[2] = "";
                 }
                 break;
             case R.id.chBoxCans:
                 if(checked){
                     sFilterOptions.add("Konserven");
+                    categories[3] = "Konserven";
                 }
                 else {
                     sFilterOptions.remove("Konserven");
+                    categories[3] = "";
                 }
                 break;
             case R.id.chBoxMeal:
                 if(checked){
                     sFilterOptions.add("Gericht");
+                    categories[4] = "Gericht";
                 }
                 else {
                     sFilterOptions.remove("Gericht");
+                    categories[4] = "";
                 }
                 break;
             case R.id.chBoxSweets:
                 if(checked){
                     sFilterOptions.add("Süßes");
+                    categories[5] = "Süßes";
                 }
                 else {
                     sFilterOptions.remove("Süßes");
+                    categories[5] = "";
                 }
                 break;
             case R.id.chBoxSnacks:
                 if(checked){
                     sFilterOptions.add("Snacks");
+                    categories[6] = "Snacks";
                 }
                 else {
                     sFilterOptions.remove("Snacks");
+                    categories[6] = "";
                 }
                 break;
         }
     }
-
-    /*@Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String selectedAmount = parent.getItemAtPosition(position).toString();
-        Toast.makeText(parent.getContext(), selectedAmount, Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent (EditAd.this, EditAd.class);
-        intent.putExtra(EXTRA_AMOUNT, selectedAmount);
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }*/
 
     public void ClickClose(View view){
         //Initialze Alert Dialog

@@ -21,6 +21,17 @@
         <item>9+</item>
     </string-array>
 
+    <string-array name="filterOptions">
+        <item>Alles</item>
+        <item>Gericht</item>
+        <item>Vegetarisch</item>
+        <item>Vegan</item>
+        <item>Obst/Gemüse</item>
+        <item>Konserven</item>
+        <item>Süßes</item>
+        <item>Snacks</item>
+    </string-array>
+
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>

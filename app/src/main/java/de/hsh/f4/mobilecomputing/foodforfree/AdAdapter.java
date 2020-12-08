@@ -47,6 +47,7 @@ public class AdAdapter extends FirestoreRecyclerAdapter<Ad, AdAdapter.AdHolder> 
         holder.textViewAmount.setText(model.getAmount());
         holder.textViewPickupLocation.setText(model.getPickupLocation());
         holder.textViewFilter.setText(model.getFilterOptions());
+
         progressBarAdItemPhoto.setVisibility(View.VISIBLE);
         Picasso.get()
                 .load(model.getImageUrl())

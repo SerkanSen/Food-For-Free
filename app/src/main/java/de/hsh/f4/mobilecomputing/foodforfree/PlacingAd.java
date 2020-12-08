@@ -45,8 +45,10 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PlacingAd extends AppCompatActivity  {
@@ -59,6 +61,7 @@ public class PlacingAd extends AppCompatActivity  {
     TextView pPickupLocation;
     CheckBox chBoxVeggie, chBoxVegan, chBoxFruitsVegs, chBoxCans, chBoxMeal, chBoxSweets, chBoxSnacks;
     ArrayList <String> sFilterOptions = new ArrayList<>();
+    String [] categories = new String[7];
     Button pPlaceAdBtn, pUploadAdPhotoBtn, pMakePic;
     Calendar calendar;
     FirebaseAuth fAuth;
@@ -142,11 +145,9 @@ public class PlacingAd extends AppCompatActivity  {
                 String description = pDescription.getText().toString().trim();
                 String ingredients = pIngredients.getText().toString().trim();
                 String amount = pAmount.getText().toString().trim();
-                //Intent intent1 = getIntent();
-                //String amount = intent1.getStringExtra(PlacingAd.EXTRA_AMOUNT);
-                //int amount = selectedAmount;
                 String pickupLocation = pPickupLocation.getText().toString().trim();
                 String filterOptions;
+                List<String> filterCat = Arrays.asList(categories);
 
                 //Zeitstempel erstellen
                 calendar = Calendar.getInstance();
@@ -168,7 +169,7 @@ public class PlacingAd extends AppCompatActivity  {
                     return;
                 }
                 if(TextUtils.isEmpty(amount)){
-                    pAmount.setError("Bitte die Portionen an!");
+                    pAmount.setError("Bitte gib die Portionen an!");
                     return;
                 }
 
@@ -203,6 +204,8 @@ public class PlacingAd extends AppCompatActivity  {
                 ad.put("timestamp", timestamp);
                 ad.put("pickupLocation", pickupLocation);
                 ad.put("filterOptions", filterOptions);
+                //doppelte Speicherung der Filter für Query, da es dort nur whereArrayContains gibt
+                ad.put("categories", filterCat);
                 ad.put("imageUrl", DEFAULT_URL);
                 //falls Bild vorhanden: Bild hochladen
                 if(imageUri!=null){
@@ -293,74 +296,75 @@ public class PlacingAd extends AppCompatActivity  {
             case R.id.chBoxVeggie:
                 if(checked){
                     sFilterOptions.add("Vegetarisch");
+                    categories[0] = "Vegetarisch";
                 }
                 else {
                     sFilterOptions.remove("Vegetarisch");
+                    categories[0] = "";
                 }
                 break;
             case R.id.chBoxVegan:
                 if(checked){
                     sFilterOptions.add("Vegan");
+                    categories[1] = "Vegan";
                 }
                 else {
                     sFilterOptions.remove("Vegan");
+                    categories[1] = "";
                 }
                 break;
             case R.id.chBoxFruitsVegs:
                 if(checked){
                     sFilterOptions.add("Obst/Gemüse");
+                    categories[2] = "Obst/Gemüse";
                 }
                 else {
                     sFilterOptions.remove("Obst/Gemüse");
+                    categories[2] = "";
                 }
                 break;
             case R.id.chBoxCans:
                 if(checked){
                     sFilterOptions.add("Konserven");
+                    categories[3] = "Konserven";
                 }
                 else {
                     sFilterOptions.remove("Konserven");
+                    categories[3] = "";
                 }
                 break;
             case R.id.chBoxMeal:
                 if(checked){
                     sFilterOptions.add("Gericht");
+                    categories[4] = "Gericht";
                 }
                 else {
                     sFilterOptions.remove("Gericht");
+                    categories[4] = "";
                 }
                 break;
             case R.id.chBoxSweets:
                 if(checked){
                     sFilterOptions.add("Süßes");
+                    categories[5] = "Süßes";
                 }
                 else {
                     sFilterOptions.remove("Süßes");
+                    categories[5] = "";
                 }
                 break;
             case R.id.chBoxSnacks:
                 if(checked){
                     sFilterOptions.add("Snacks");
+                    categories[6] = "Snacks";
                 }
                 else {
                     sFilterOptions.remove("Snacks");
+                    categories[6] = "";
                 }
                 break;
         }
     }
-
-    /*@Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String selectedAmount = parent.getItemAtPosition(position).toString();
-        Toast.makeText(parent.getContext(), selectedAmount, Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent (PlacingAd.this, PlacingAd.class);
-        intent.putExtra(EXTRA_AMOUNT, selectedAmount);
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }*/
 
     public void ClickClose(View view){
         //Initialze Alert Dialog
