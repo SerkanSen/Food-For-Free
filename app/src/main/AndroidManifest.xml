@@ -60,7 +60,7 @@
         <activity
             android:name=".Login" />
         <activity
-            android:name=".Chat"
+            android:name=".Contact"
             android:parentActivityName=".AdDetails" />
 
         <activity
