@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/ad_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:text="Titel"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+    <ImageView
+        android:id="@+id/ad_item_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
+        app:srcCompat="@drawable/kein_bild" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Benutzername:"
+        android:id="@+id/username"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:textSize="18sp"
+        android:layout_toRightOf="@+id/ad_item_image"
+        android:layout_toEndOf="@+id/ad_item_image"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"/>
+
+</RelativeLayout>
