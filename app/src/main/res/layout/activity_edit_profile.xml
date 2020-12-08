@@ -6,116 +6,99 @@
     android:layout_height="match_parent"
     tools:context=".EditProfile">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:text="Profil bearbeiten"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <include
+        android:id="@+id/toolbar_edit_profile"
+        layout="@layout/toolbar_edit_profile" />
 
     <ImageView
         android:id="@+id/profilePhoto"
         android:layout_width="208dp"
         android:layout_height="211dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="@+id/toolbar_edit_profile"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_edit_profile"
         app:srcCompat="@drawable/kein_bild" />
 
-        <TextView
-            android:id="@+id/profileName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="Dein Name"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tName" />
+    <TextView
+        android:id="@+id/profileName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Dein Name"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/tName"
+        app:layout_constraintTop_toBottomOf="@+id/tName" />
 
-        <TextView
-            android:id="@+id/profileMail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="Deine Email"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tEmail" />
+    <TextView
+        android:id="@+id/profileMail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Deine Email"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/tEmail"
+        app:layout_constraintTop_toBottomOf="@+id/tEmail" />
 
     <Button
         android:id="@+id/updateProfileBtn"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="Profildaten speichern"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileStadtteil" />
 
     <TextView
         android:id="@+id/tName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Name"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/profilePhoto"
         app:layout_constraintTop_toBottomOf="@+id/uploadProfilePhotoBtn" />
 
     <TextView
-            android:id="@+id/tEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="E-Mail Adresse"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profileName" />
+        android:id="@+id/tEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="E-Mail Adresse"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/profileName"
+        app:layout_constraintTop_toBottomOf="@+id/profileName" />
 
     <TextView
         android:id="@+id/tStadtteil"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Dein Stadtteil"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/profileMail"
         app:layout_constraintTop_toBottomOf="@+id/profileMail" />
 
     <EditText
         android:id="@+id/profileStadtteil"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tStadtteil"
         app:layout_constraintTop_toBottomOf="@+id/tStadtteil" />
 
     <Button
         android:id="@+id/uploadProfilePhotoBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:text="Bild hochladen"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

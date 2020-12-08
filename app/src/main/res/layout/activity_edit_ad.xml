@@ -10,12 +10,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".PlacingAd">
+        tools:context=".EditAd">
 
         <include
             android:id="@+id/edit_toolbar"
-            layout="@layout/toolbar_placing_ad"
-            android:text="Mein Profil"
+            layout="@layout/toolbar_edit_ad"
             tools:layout_editor_absoluteX="48dp"
             tools:layout_editor_absoluteY="40dp" />
 
@@ -165,6 +164,27 @@
             app:layout_constraintStart_toStartOf="@+id/filterOptionsTitle"
             app:layout_constraintTop_toBottomOf="@+id/filterOptionsTitle" />
 
+        <CheckBox
+            android:id="@+id/chBoxSweets"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="selectItem"
+            android:text="Süßes"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/chBoxFruitsVegs"
+            app:layout_constraintTop_toBottomOf="@+id/chBoxFruitsVegs" />
+
+        <CheckBox
+            android:id="@+id/chBoxSnacks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:onClick="selectItem"
+            android:text="Snacks"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@+id/chBoxSweets"
+            app:layout_constraintTop_toTopOf="@+id/chBoxSweets" />
+
         <EditText
             android:id="@+id/editDescription"
             android:layout_width="match_parent"
@@ -193,16 +213,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ingredients" />
-
-        <CheckBox
-            android:id="@+id/chBoxSweets"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="selectItem"
-            android:text="Süßes"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/chBoxFruitsVegs"
-            app:layout_constraintTop_toBottomOf="@+id/chBoxFruitsVegs" />
 
         <Button
             android:id="@+id/placeAdBtn"
@@ -268,19 +278,6 @@
             app:layout_constraintStart_toStartOf="@+id/textView15"
             app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
-        <CheckBox
-            android:id="@+id/chBoxSnacks"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:onClick="selectItem"
-            android:text="Snacks"
-            android:textSize="12sp"
-            app:layout_constraintStart_toEndOf="@+id/chBoxSweets"
-            app:layout_constraintTop_toTopOf="@+id/chBoxSweets" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
-
-

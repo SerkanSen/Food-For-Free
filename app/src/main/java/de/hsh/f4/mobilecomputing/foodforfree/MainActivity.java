@@ -20,10 +20,13 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -55,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     protected static final String EXTRA_ADID = "de.hsh.mobilecomputing.foodforfree.ADID";
     protected static final String EXTRA_IMAGEURL = "de.hsh.mobilecomputing.foodforfree.IMAGEURL";
     DrawerLayout drawerLayout;
-    SearchView searchView;
+    EditText inputSearch;
     FloatingActionButton newAdBtn;
     FirebaseAuth fAuth;
     String userId;
@@ -74,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         //Assign variabe
         drawerLayout = findViewById(R.id.drawer_layout);
         newAdBtn = findViewById(R.id.newAdBtn);
-        searchView = findViewById(R.id.searchView);
+        inputSearch = findViewById(R.id.inputSearch);
         final Button standort= (Button) findViewById(R.id.standort);
 
         fAuth = FirebaseAuth.getInstance();
@@ -99,11 +102,36 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         }));
-        setUpRecyclerView();
+        setUpRecyclerView("");
+
+        //Suchleiste für Titel
+        /*inputSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString() != null) {
+                    setUpRecyclerView(s.toString());
+                } else {
+                    setUpRecyclerView("");
+                }
+            }
+        });*/
     }
 
-    private void setUpRecyclerView() {
-        Query query = adRef.orderBy("timestamp", Query.Direction.DESCENDING );
+    private void setUpRecyclerView(String data) {
+        Query query = adRef.orderBy("timestamp", Query.Direction.DESCENDING);
+
+        //für Filter:
+        //Query query = adRef.orderBy("title").orderBy("timestamp", Query.Direction.DESCENDING).startAt(data).endAt(data+"\uf8ff");
 
         FirestoreRecyclerOptions<Ad> options = new FirestoreRecyclerOptions.Builder<Ad>().setQuery(query, Ad.class).build();
 

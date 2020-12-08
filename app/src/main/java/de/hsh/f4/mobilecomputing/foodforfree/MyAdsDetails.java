@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -37,6 +38,7 @@ public class MyAdsDetails extends AppCompatActivity {
     StorageReference storageReference;
     TextView title, pickupLocation, description, amount, ingredients, filterOptions;
     ImageView image;
+    ImageButton backBtn;
     ProgressBar progressBarAdPhoto;
     Button editAd, deleteAd;
     DocumentReference documentReference;
@@ -56,6 +58,7 @@ public class MyAdsDetails extends AppCompatActivity {
         deleteAd =findViewById(R.id.deleteAd);
         editAd =findViewById(R.id.editAd);
         progressBarAdPhoto = findViewById(R.id.progressBarAdPhoto);
+        backBtn = findViewById(R.id.backBtn);
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
@@ -164,6 +167,14 @@ public class MyAdsDetails extends AppCompatActivity {
                 builder.show();
                 //startActivity(new Intent(getApplicationContext(),MainActivity.class));
                 return false;
+            }
+        });
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyAdsDetails.this, MyAds.class);
+                startActivity(intent);
             }
         });
     }

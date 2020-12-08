@@ -38,7 +38,7 @@ public class AdDetails extends AppCompatActivity {
     StorageReference storageReference;
     TextView title, pickupLocation, description, amount, ingredients, filterOptions;
     ImageView image;
-    ImageButton contact;
+    ImageButton contact, backBtn;
     ProgressBar progressBarAdPhoto;
 
     @Override
@@ -55,6 +55,7 @@ public class AdDetails extends AppCompatActivity {
         image = findViewById(R.id.adDetails_image);
         progressBarAdPhoto = findViewById(R.id.progressBarAdPhoto);
         contact =findViewById(R.id.contact);
+        backBtn = findViewById(R.id.backBtn);
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
@@ -104,6 +105,14 @@ public class AdDetails extends AppCompatActivity {
 
                 intent = new Intent(AdDetails.this, Chat.class);
                 intent.putExtra(EXTRA_ADID, adId);
+                startActivity(intent);
+            }
+        });
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AdDetails.this, MainActivity.class);
                 startActivity(intent);
             }
         });
