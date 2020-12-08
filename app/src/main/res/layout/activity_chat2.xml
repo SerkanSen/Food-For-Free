@@ -26,7 +26,7 @@
         android:background="@android:color/transparent"
         android:hint="interlasse eine Nachricht.."
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/senden"/>
+        android:layout_toLeftOf="@+id/send"/>
 
         <ImageButton
             android:layout_width="40dp"
