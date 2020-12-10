@@ -15,4 +15,6 @@
         android:padding="8dp"
         android:background="@drawable/background_left"/>
 
+    <!-- -->
+
 </RelativeLayout>
