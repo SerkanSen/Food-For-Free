@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/msg"
         android:background="@android:color/transparent"
-        android:hint="interlasse eine Nachricht.."
+        android:hint="Hinterlasse eine Nachricht.."
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/send"/>
 

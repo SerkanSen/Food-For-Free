@@ -20,7 +20,7 @@
         android:id="@+id/show_message"
         android:layout_alignParentEnd="true"
         android:textSize="18sp"
-        android:textcolor="#fff"
+        android:textColor="@color/white"
         android:padding="8dp"/>
     </RelativeLayout>
 
