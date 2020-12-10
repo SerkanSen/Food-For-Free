@@ -16,21 +16,21 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-public class AdAdapter extends FirestoreRecyclerAdapter<Ad, AdAdapter.AdHolder> {
+public class MessageAdapter1 extends FirestoreRecyclerAdapter<Message, MessageAdapter1.MessageHolder> {
 
     private OnItemClickListener listener;
     private ProgressBar progressBarAdItemPhoto;
 
-    public AdAdapter(@NonNull FirestoreRecyclerOptions<Ad> options) {
+    public MessageAdapter1(@NonNull FirestoreRecyclerOptions<Message> options) {
         super(options);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull AdHolder holder, int position, @NonNull Ad model) {
-        holder.textViewTitle.setText(model.getTitle());
-        holder.textViewAmount.setText(model.getAmount());
-        holder.textViewPickupLocation.setText(model.getPickupLocation());
-        holder.textViewFilter.setText(model.getFilterOptions());
+    protected void onBindViewHolder(@NonNull MessageHolder holder, int position, @NonNull Message model) {
+        holder.textViewOtherUserName.setText(model.getInterestedUser());
+        holder.textViewTime.setText(model.getTimestamp());
+        holder.textViewAdTitle.setText(model.getAdTitle());
+        holder.textViewLastMessage.setText(model.getMessage());
 
         progressBarAdItemPhoto.setVisibility(View.VISIBLE);
         Picasso.get()
@@ -48,27 +48,28 @@ public class AdAdapter extends FirestoreRecyclerAdapter<Ad, AdAdapter.AdHolder> 
 
                     }
                 });
+
     }
 
     @NonNull
     @Override
-    public AdHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ad_item, parent, false);
-        return new AdHolder(view);
+    public MessageHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_item, parent, false);
+        return new MessageHolder(view);
     }
 
-    class AdHolder extends RecyclerView.ViewHolder {
-        TextView textViewTitle, textViewPickupLocation, textViewAmount, textViewFilter;
+    class MessageHolder extends RecyclerView.ViewHolder {
+        TextView textViewOtherUserName, textViewTime, textViewAdTitle, textViewLastMessage;
         ImageView imageViewAdPhoto;
 
-        public AdHolder(@NonNull View itemView) {
+        public MessageHolder(@NonNull View itemView) {
             super(itemView);
-            textViewTitle = itemView.findViewById(R.id.ad_item_title);
-            textViewPickupLocation = itemView.findViewById(R.id.ad_item_pickuplocation);
-            textViewAmount = itemView.findViewById(R.id.ad_item_amount);
-            textViewFilter = itemView.findViewById(R.id.ad_item_filter);
-            imageViewAdPhoto = itemView.findViewById(R.id.ad_item_image);
-            progressBarAdItemPhoto = itemView.findViewById(R.id.ad_item_progressBar);
+            textViewOtherUserName = itemView.findViewById(R.id.message_item_other_user);
+            textViewTime = itemView.findViewById(R.id.message_item_time);
+            textViewAdTitle = itemView.findViewById(R.id.message_item_ad_title);
+            textViewLastMessage = itemView.findViewById(R.id.message_item_message);
+            imageViewAdPhoto = itemView.findViewById(R.id.message_item_ad_image);
+            progressBarAdItemPhoto = itemView.findViewById(R.id.message_item_progressBar);
 
             //OnClick for each item(card)
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -92,5 +93,4 @@ public class AdAdapter extends FirestoreRecyclerAdapter<Ad, AdAdapter.AdHolder> 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
-
 }

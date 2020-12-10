@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,88 +39,104 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import Adapter.MessageAdapter;
-
 public class Contact extends AppCompatActivity {
 
     TextView title;
-    ImageButton send;
-    EditText msg;
+    Button sendBtn;
+    EditText message;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
-    String userId, adId, msgId, imageAdPhotoUrl, timestamp;
-    Uri imageUri;
+    String adTitle, interestedUserID, interestedUserName, offeringUserName , msgId;
+    String adId, imageUrl, offeringUserID;
     Calendar calendar;
     public static final String TAG = "TAG";
     public static final String EXTRA_ADID = "de.hsh.mobilecomputing.foodforfree.ADID";
-    MessageAdapter messageAdapter;
-    List<Chat> mChat;
-    RecyclerView recyclerView;
-
-    FirebaseUser fuser;
-    StorageReference reference;
+    public static final String EXTRA_IMAGEURL = "de.hsh.mobilecomputing.foodforfree.EXTRA_IMAGE_URL";
+    public static final String EXTRA_OFF_USERID = "de.hsh.mobilecomputing.foodforfree.EXTRA_OFF_USERID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat2);
+        setContentView(R.layout.activity_contact);
 
-        recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        linearLayoutManager.setStackFromEnd(true);
-        recyclerView.setLayoutManager(linearLayoutManager);
-
-        title = findViewById(R.id.title);
-        msg = findViewById(R.id.msg);
-        send = findViewById(R.id.send);
+        title = findViewById(R.id.adTitle);
+        message = findViewById(R.id.editMessage);
+        sendBtn = findViewById(R.id.sendBtn);
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 
-        userId = fAuth.getCurrentUser().getUid(); //sender
-
-        send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String message = msg.getText().toString(); //message
-                if (!message.equals("")) {
-                    sendMessage(userId, adId, message);
-                    Toast.makeText(Contact.this, "Lass uns das Essen retten!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(Contact.this, "Wir sollten niemanden mit leeren Nachrichten belästigen.", Toast.LENGTH_SHORT).show();
-                }
-                msg.setText("");
-            }
-        });
+        interestedUserID = fAuth.getCurrentUser().getUid(); //sender
 
         //get Intent and adId from clicked itemview
         Intent intent = getIntent();
-        adId = intent.getStringExtra(EXTRA_ADID); //reciever
+        String adId = intent.getStringExtra(AdDetails.EXTRA_ADID);
+        String imageUrl = intent.getStringExtra(AdDetails.EXTRA_IMAGEURL);
+        String offeringUserID = intent.getStringExtra(AdDetails.EXTRA_OFF_USERID);
 
+        DocumentReference adRef = fStore.collection("ads").document(adId);
+        adRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                adTitle = documentSnapshot.getString("title");
+                title.setText(documentSnapshot.getString("title"));
+            }
+        });
+
+        DocumentReference interestedUserRef = fStore.collection("users").document(interestedUserID);
+        interestedUserRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                interestedUserName = documentSnapshot.getString("name");
+            }
+        });
+
+        DocumentReference offeringUserRef = fStore.collection("users").document(offeringUserID);
+        offeringUserRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                offeringUserName = documentSnapshot.getString("name");
+            }
+        });
+
+        sendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String firstMessage = message.getText().toString(); //message
+                if (!firstMessage.equals("")) {
+                    sendMessage(interestedUserID, interestedUserName, offeringUserID, offeringUserName, adId, firstMessage, imageUrl);
+                    Toast.makeText(Contact.this, "Nachricht erfolgreich gesendet! \nLass uns das Essen retten!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(Contact.this, "Wir sollten niemanden mit leeren Nachrichten belästigen.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
     }
 
+    private void sendMessage(String interestedUserID, String interestedUserName, String offeringUserID, String offeringUserName,
+                             String adId, String message, String imageUrl) {
 
-    private void sendMessage(String sender, String reciever, String message) {
-        // StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-        //DocumentReference documentReference = fStore.collection("ads").document(adId).collection("Chat").document();
-        DocumentReference documentReference = fStore.collection("ads/" + adId + "/Chat").document();
+        DocumentReference documentReference = fStore.collection("chats").document();
 
         calendar = Calendar.getInstance();
         //String timestamp = DateFormat.getDateInstance().format(calendar.getTime());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         String timestamp = simpleDateFormat.format(calendar.getTime());
 
-        //StorageReference fileRef = storageReference.child("ads/"+ adId +"/adPhoto.jpg");
         msgId = documentReference.getId();
         Map<String, Object> chat = new HashMap<>();
-        chat.put("sender", sender);
-        chat.put("reciever", reciever);
+        chat.put("adID", adId);
+        chat.put("adTitle", adTitle);
+        chat.put("imageUrl", imageUrl);
+        chat.put("interestedUserID", interestedUserID);
+        chat.put("interestedUser", interestedUserName);
         chat.put("message", message);
+        chat.put("msgId", msgId);
+        chat.put("offeringUserID", offeringUserID);
+        chat.put("offeringUser", offeringUserName);
         chat.put("timestamp", timestamp);
-        //storageReference.child("Chat").push().setValue(hashMap);
-        //documentReference.child("Chat");
+
         documentReference.set(chat).addOnSuccessListener((OnSuccessListener) (aVoid) -> {
 
             //Log.d(TAG, "onSuccess: Anzeige erfolgreich erstellt!");
@@ -128,28 +146,30 @@ public class Contact extends AppCompatActivity {
                 Log.d(TAG, "onFailure: " + e.toString());
             }
         });
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        startActivity(new Intent(getApplicationContext(), AdDetails.class));
     }
-/*
-    private void readMessages(String sender, String reciever, String message){
-        mChat =new ArrayList<>();
 
-        reference= FirebaseStorage.getInstance().getReference("Chats");
-
-
-        CollectionReference documentReference = fStore.collection("ads").where;
-        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+    public void ClickClose(View view){
+        //Initialze Alert Dialog
+        AlertDialog.Builder builder =new AlertDialog.Builder(this);
+        //Set title
+        builder.setTitle("Entwurf verwerfen");
+        //Set message
+        builder.setMessage("Wenn du die Seite verlässt, wird der Entwurf verworfen. Willst du fortfahren?");
+        //positive button
+        builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnaphot, @Nullable FirebaseFirestoreException error) {
-                mChat.clear();
-                for (DocumentSnapshot snapshot: documentSnaphot.getDocumentReference()){
-                    Chat chat=snapshot.getDocumentReference()
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(getApplicationContext(), Profile.class));
             }
-
-
-
-
-        }
+        });
+        //negative button
+        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
     }
-};*/
 }

@@ -62,12 +62,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     //Initialize variable
     protected static final String EXTRA_ADID = "de.hsh.mobilecomputing.foodforfree.ADID";
     protected static final String EXTRA_IMAGEURL = "de.hsh.mobilecomputing.foodforfree.IMAGEURL";
+    protected static final String EXTRA_OFF_USERID = "de.hsh.mobilecomputing.foodforfree.OFF_USERID";
     DrawerLayout drawerLayout;
     EditText inputSearch;
     FloatingActionButton newAdBtn;
     FirebaseAuth fAuth;
     String userId;
-    Query query;
 
     //Firestore for recyclerView
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -163,9 +163,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 Intent intent = new Intent(MainActivity.this, AdDetails.class);
                 String adId = documentSnapshot.getId();
                 String imageUrl = documentSnapshot.getString("imageUrl");
+                String offeringAdUserID = documentSnapshot.getString("userID");
                 //übergeben der adId und imageUrl
                 intent.putExtra(EXTRA_ADID, adId);
                 intent.putExtra(EXTRA_IMAGEURL, imageUrl);
+                intent.putExtra(EXTRA_OFF_USERID, offeringAdUserID);
                 startActivity(intent);
             }
         });
@@ -190,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     protected void onStop() {
         super.onStop();
-        adapter.startListening();
+        adapter.stopListening();
     }
 
     public void ClickMenu(View view) {

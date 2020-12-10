@@ -4,14 +4,14 @@ package de.hsh.f4.mobilecomputing.foodforfree;
 import java.util.List;
 
 public class Ad {
-    private String title, description, ingredients, pickupLocation, amount, adID, userID, imageUrl, filterOptions;
+    private String title, description, ingredients, pickupLocation, amount, adID, userID, imageUrl, filterOptions, timestamp;
     private List<String> categories;
 
     public Ad(){
         //empty constructor needed
     }
 
-    public Ad(String title, String description, String ingredients, String amount, String pickupLocation, String adID, String userID, String imageUrl, String filterOptions, List<String> categories) {
+    public Ad(String title, String description, String ingredients, String amount, String pickupLocation, String adID, String userID, String imageUrl, String filterOptions, List<String> categories, String timestamp) {
         this.title = title;
         this.description = description;
         this.ingredients = ingredients;
@@ -22,6 +22,7 @@ public class Ad {
         this.adID = adID;
         this.userID = userID;
         this.imageUrl = imageUrl;
+        this.timestamp = timestamp;
     }
 
     public String getTitle() {
@@ -60,5 +61,9 @@ public class Ad {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
     }
 }

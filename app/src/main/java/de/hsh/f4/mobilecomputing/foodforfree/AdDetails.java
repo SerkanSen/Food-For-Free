@@ -30,13 +30,20 @@ import java.util.List;
 
 import static de.hsh.f4.mobilecomputing.foodforfree.MainActivity.EXTRA_ADID;
 import static de.hsh.f4.mobilecomputing.foodforfree.MainActivity.EXTRA_IMAGEURL;
+import static de.hsh.f4.mobilecomputing.foodforfree.MainActivity.EXTRA_OFF_USERID;
 
 public class AdDetails extends AppCompatActivity {
+
+    protected static final String EXTRA_ADID = "de.hsh.mobilecomputing.foodforfree.ADID";
+    protected static final String EXTRA_IMAGEURL = "de.hsh.mobilecomputing.foodforfree.IMAGEURL";
+    protected static final String EXTRA_OFF_USERID = "de.hsh.mobilecomputing.foodforfree.OFF_USERID";
 
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     StorageReference storageReference;
     TextView title, pickupLocation, description, amount, ingredients, filterOptions;
+    String adUserId, userId;
+    String offeringUserID;
     ImageView image;
     ImageButton contact, backBtn;
     ProgressBar progressBarAdPhoto;
@@ -65,6 +72,21 @@ public class AdDetails extends AppCompatActivity {
         Intent intent = getIntent();
         String adId = intent.getStringExtra(EXTRA_ADID);
         String imageUrl = intent.getStringExtra(EXTRA_IMAGEURL);
+        offeringUserID = intent.getStringExtra(EXTRA_OFF_USERID);
+
+        //contactBtn nur, wenn es nicht die eigene Anzeige ist
+        userId = fAuth.getCurrentUser().getUid();
+        DocumentReference documentRef = fStore.collection("ads").document(adId);
+        documentRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                adUserId = documentSnapshot.getString("userID");
+                if (adUserId.equals(userId)) {
+                    Toast.makeText(AdDetails.this, "Deine Anzeige!", Toast.LENGTH_SHORT).show();
+                    contact.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
 
         //load adPhoto from Storage with imageUrl, meanwhile progressBar
         progressBarAdPhoto.setVisibility(View.VISIBLE);
@@ -96,15 +118,20 @@ public class AdDetails extends AppCompatActivity {
                 filterOptions.setText(documentSnapshot.getString("filterOptions")); //List zu String
             }
         });
+
         contact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = getIntent();
+                //Intent intent = getIntent();
 
-                String adId = intent.getStringExtra(MainActivity.EXTRA_ADID);
+                //String adId = intent.getStringExtra(MainActivity.EXTRA_ADID);
 
-                intent = new Intent(AdDetails.this, Chat.class);
+                Intent intent = new Intent(AdDetails.this, Contact.class);
                 intent.putExtra(EXTRA_ADID, adId);
+                intent.putExtra(EXTRA_IMAGEURL, imageUrl);
+                intent.putExtra(EXTRA_OFF_USERID, offeringUserID);
+                Toast.makeText(AdDetails.this,EXTRA_ADID, Toast.LENGTH_SHORT).show();
+                //intent.putExtra(EXTRA_ADTITLE, title.getText().toString());
                 startActivity(intent);
             }
         });

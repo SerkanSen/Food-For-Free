@@ -91,7 +91,7 @@ public class MyAds extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        adapter.startListening();
+        adapter.stopListening();
     }
 
     public void ClickMenu(View view) {

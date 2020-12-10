@@ -13,30 +13,28 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/ad_item_title"
+            android:id="@+id/message_item_other_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="12dp"
-            android:text="Titel"
-            android:textSize="20sp"
+            android:text="Nutzer"
+            android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/message_item_ad_image"
+            app:layout_constraintTop_toTopOf="@+id/message_item_ad_image" />
 
         <TextView
-            android:id="@+id/ad_item_portions"
+            android:id="@+id/message_item_ad_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
-            android:text="Portionen:"
+            android:text="Anzeigentitel"
             android:textSize="14sp"
-            app:layout_constraintStart_toEndOf="@+id/ad_item_image"
-            app:layout_constraintTop_toTopOf="@+id/ad_item_image" />
+            android:textStyle="italic"
+            app:layout_constraintStart_toStartOf="@+id/message_item_other_user"
+            app:layout_constraintTop_toBottomOf="@+id/message_item_other_user" />
 
         <ProgressBar
-            android:id="@+id/ad_item_progressBar"
+            android:id="@+id/message_item_progressBar"
             style="?android:attr/progressBarStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,52 +42,42 @@
             android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/ad_item_image"
-            app:layout_constraintEnd_toEndOf="@+id/ad_item_image"
-            app:layout_constraintStart_toStartOf="@+id/ad_item_image"
-            app:layout_constraintTop_toTopOf="@+id/ad_item_image" />
+            app:layout_constraintBottom_toBottomOf="@+id/message_item_ad_image"
+            app:layout_constraintEnd_toEndOf="@+id/message_item_ad_image"
+            app:layout_constraintStart_toStartOf="@+id/message_item_ad_image"
+            app:layout_constraintTop_toTopOf="@+id/message_item_ad_image" />
 
         <ImageView
-            android:id="@+id/ad_item_image"
-            android:layout_width="125dp"
-            android:layout_height="125dp"
+            android:id="@+id/message_item_ad_image"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ad_item_title"
-            app:srcCompat="@drawable/kein_bild" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="?android:attr/activatedBackgroundIndicator" />
 
         <TextView
-            android:id="@+id/ad_item_amount"
+            android:id="@+id/message_item_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Anzahl"
-            android:textSize="14sp"
-            app:layout_constraintStart_toEndOf="@+id/ad_item_portions"
-            app:layout_constraintTop_toTopOf="@+id/ad_item_portions" />
+            android:text="Nachricht"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/message_item_ad_title"
+            app:layout_constraintTop_toBottomOf="@+id/message_item_ad_title" />
 
         <TextView
-            android:id="@+id/ad_item_pickuplocation"
+            android:id="@+id/message_item_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:layout_marginEnd="2dp"
-            android:text="Stadtteil"
+            android:text="Uhrzeit"
             android:textSize="10sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/ad_item_filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@+id/ad_item_portions"
-            app:layout_constraintTop_toBottomOf="@+id/ad_item_portions" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

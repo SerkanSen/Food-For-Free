@@ -22,15 +22,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodForFree.NoActionBar">
-        <activity
-            android:name=".Messages" />
+        <activity android:name=".Chat"></activity>
+        <activity android:name=".Messages" />
         <activity
             android:name=".EditProfile"
             android:parentActivityName=".Profile" />
-        <activity
-            android:name=".MyAdsDetails" />
-        <activity
-            android:name=".AdDetails" />
+        <activity android:name=".MyAdsDetails" />
+        <activity android:name=".AdDetails" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -46,33 +44,23 @@
         <activity
             android:name=".MapsActivity"
             android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".PlacingAd" />
+        <activity android:name=".PlacingAd" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity
-            android:name=".EditAd" />
-        <activity
-            android:name=".MyAds" />
-        <activity
-            android:name=".Profile" />
-        <activity
-            android:name=".Login" />
-        <activity
-            android:name=".Contact"
-            android:parentActivityName=".AdDetails" />
-
-        <activity
-            android:name=".Register">
+        <activity android:name=".EditAd" />
+        <activity android:name=".MyAds" />
+        <activity android:name=".Profile" />
+        <activity android:name=".Login" />
+        <activity android:name=".Contact" />
+        <activity android:name=".Register">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

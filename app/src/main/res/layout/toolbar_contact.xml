@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/toolbar_edit_profile"
+    android:id="@+id/toolbar_contact"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#018786"
@@ -16,11 +16,10 @@
         android:src="@drawable/ic_close"/>
 
     <TextView
-        android:id="@+id/toolbar_textView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="    Profil bearbeiten"
+        android:text="    Nachricht schreiben"
         android:textAlignment="viewStart"
         android:textColor="@color/white"
         android:textSize="20dp"

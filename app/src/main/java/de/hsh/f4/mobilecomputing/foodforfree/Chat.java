@@ -1,40 +1,14 @@
 package de.hsh.f4.mobilecomputing.foodforfree;
 
-public class Chat {
-    private String sender;
-    private String reciever;
-    private String message;
+import androidx.appcompat.app.AppCompatActivity;
 
-    public Chat(String sender, String reciever, String message){
-        this.sender= sender;
-        this.reciever=reciever;
-        this.message=message;
-    }
+import android.os.Bundle;
 
-    public Chat(){
-            }
+public class Chat extends AppCompatActivity {
 
-    public String getSender() {
-        return sender;
-    }
-
-    public void setSender(String sender) {
-        this.sender = sender;
-    }
-
-    public String getReciever() {
-        return reciever;
-    }
-
-    public void setReciever(String reciever) {
-        this.reciever = reciever;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_chat);
     }
 }

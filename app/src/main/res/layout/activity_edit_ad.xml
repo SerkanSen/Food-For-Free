@@ -116,6 +116,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:onClick="selectItem"
+            android:checked="false"
             android:text="Vegetarisch"
             android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/chBoxMeal"
@@ -130,7 +131,8 @@
             android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/chBoxVeggie"
             app:layout_constraintTop_toBottomOf="@+id/filterOptionsTitle"
-            android:onClick="selectItem"/>
+            android:onClick="selectItem"
+            android:checked="false"/>
 
         <CheckBox
             android:id="@+id/chBoxFruitsVegs"
@@ -138,6 +140,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:onClick="selectItem"
+            android:checked="false"
             android:text="Obst/Gemüse"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -152,13 +155,15 @@
             android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/chBoxFruitsVegs"
             app:layout_constraintTop_toBottomOf="@+id/chBoxVegan"
-            android:onClick="selectItem"/>
+            android:onClick="selectItem"
+            android:checked="false"/>
 
         <CheckBox
             android:id="@+id/chBoxMeal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="selectItem"
+            android:checked="false"
             android:text="Gericht"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="@+id/filterOptionsTitle"
@@ -169,6 +174,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="selectItem"
+            android:checked="false"
             android:text="Süßes"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="@+id/chBoxFruitsVegs"
@@ -180,6 +186,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:onClick="selectItem"
+            android:checked="false"
             android:text="Snacks"
             android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/chBoxSweets"
@@ -219,7 +226,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="Anzeige erstellen"
+            android:text="Anzeige aktualisieren"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

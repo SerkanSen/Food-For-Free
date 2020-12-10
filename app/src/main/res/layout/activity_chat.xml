@@ -1,32 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<RelativeLayout
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#e6e6e6">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Titel">
-
-    </TextView>
-
-    <EditText
-        android:id="@+id/msg"
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:hint="Nachricht eingeben..."
-        android:inputType="textLongMessage"
-        android:gravity="top"
-        android:layout_margin="8dp"></EditText>
+        android:layout_height="match_parent"
+        android:id="@+id/recycler_view"
+        android:layout_above="@+id/bottom"/>
 
-    <Button
-        android:id="@+id/send"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="senden"
-        android:layout_gravity="center_horizontal"/>
+    <RelativeLayout
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:padding="5dp"
+        android:background="#fff"
+        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/msg"
+            android:background="@android:color/transparent"
+            android:hint="Hinterlasse eine Nachricht.."
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/send"/>
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/send"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/ic_sent"/>
 
 
-</LinearLayout>
+    </RelativeLayout>
+
+
+</RelativeLayout>

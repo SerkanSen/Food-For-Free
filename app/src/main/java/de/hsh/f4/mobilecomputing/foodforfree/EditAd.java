@@ -30,6 +30,7 @@ import android.widget.Toolbar;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -58,6 +59,7 @@ public class EditAd extends AppCompatActivity  {
     StorageReference storageReference;
     ArrayList<String> sFilterOptions = new ArrayList<>();
     String [] categories = new String[7];
+    String [] filterOptions = {"Vegetarisch", "Vegan", "Obst/Gemüse", "Konserven", "Gericht", "Süßes", "Snacks"};
     Button pUpdateAdBtn, pUploadAdPhotoBtn, pMakePic;
     Calendar calendar;
     String userId, adId, imageUrl;
@@ -71,6 +73,9 @@ public class EditAd extends AppCompatActivity  {
     //Spinner pAmount;
     TextView pPickupLocation;
     CheckBox chBoxVeggie, chBoxVegan, chBoxFruitsVegs, chBoxCans, chBoxMeal, chBoxSweets, chBoxSnacks;
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference adRef = db.collection("ads");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +97,6 @@ public class EditAd extends AppCompatActivity  {
         chBoxSweets = findViewById(R.id.chBoxSweets);
         chBoxSnacks = findViewById(R.id.chBoxSnacks);
         pUpdateAdBtn = findViewById(R.id.placeAdBtn);
-        pUpdateAdBtn.setText("Anzeige aktualisieren");
         pAdPhoto = findViewById(R.id.adPhoto);
         pUploadAdPhotoBtn = findViewById(R.id.uploadAdPhotoBtn);
         pMakePic = findViewById(R.id.makePic);
@@ -133,9 +137,32 @@ public class EditAd extends AppCompatActivity  {
                 pAmount.setText(documentSnapshot.getString("amount"));
                 pIngredients.setText(documentSnapshot.getString("ingredients"));
                 pPickupLocation.setText(documentSnapshot.getString("pickupLocation"));
+                //List<String> test = documentSnapshot.get("categories");
                 //Checkboxen evtl. inkludieren
+                //filterOptions = documentSnapshot.get("categories");
+                /*Map<String, Object> map = documentSnapshot.getData();
+                for (Map.Entry<String, Object> entry : map.entrySet()) {
+                    if (entry.getKey().equals("categories")) {
+                        Log.d("TAG", entry.getValue().toString());
+                        Toast.makeText(EditAd.this, "Hallo", Toast.LENGTH_SHORT).show();
+                    }
+                }*/
+
+                //for(int i = 0; i < 7; i++){
+                    /*switch(adRef.whereArrayContains("categories", filterOptions[i])){
+
+                    }*/
+
+
+                    /*if(adRef.whereArrayContains("categories","Vegetarisch")){
+
+                    }*/
+                // }
+
             }
         });
+
+
 
         pUploadAdPhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override

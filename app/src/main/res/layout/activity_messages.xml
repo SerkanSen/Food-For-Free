@@ -16,6 +16,14 @@
             android:id="@+id/toolbar_messages"
             layout="@layout/toolbar_messages" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_messages"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="52dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar_messages" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <RelativeLayout
