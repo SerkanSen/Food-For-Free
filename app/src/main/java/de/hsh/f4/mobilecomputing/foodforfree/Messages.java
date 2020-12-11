@@ -26,11 +26,13 @@ public class Messages extends AppCompatActivity {
     String userId;
     FirebaseAuth fAuth;
 
+    public static final String EXTRA_MSGID = "de.hsh.mobilecomputing.foodforfree.EXTRA_MSGID";
+
     //Firestore for recyclerView
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference chatRef = db.collection("chats");
 
-    private MessageAdapter1 adapter;
+    private MessageAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,24 +48,27 @@ public class Messages extends AppCompatActivity {
     }
 
     private void setUpRecyclerView() {
-        Query query = chatRef.whereEqualTo("offeringUserID", userId).orderBy("timestamp", Query.Direction.DESCENDING);
+        //in participants stehen Sender und Empfänger drin
+        Query query = chatRef.whereArrayContains("participants", userId).orderBy("timestamp", Query.Direction.DESCENDING);
+        //Query query = chatRef.whereEqualTo("offeringUser", userId).orderBy("timestamp", Query.Direction.DESCENDING);
 
         //Query query = chatRef.orderBy("timestamp", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Message> options = new FirestoreRecyclerOptions.Builder<Message>().setQuery(query, Message.class).build();
 
-        adapter = new MessageAdapter1(options);
+        adapter = new MessageAdapter(options);
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view_messages);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        adapter.setOnItemClickListener(new MessageAdapter1.OnItemClickListener() {
+        adapter.setOnItemClickListener(new MessageAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 Intent intent = new Intent(Messages.this, Chat.class);
-                //übergeben der adId
+                //übergeben der msgID
+                intent.putExtra(EXTRA_MSGID, documentSnapshot.getString("msgID"));
                 startActivity(intent);
                 Toast.makeText(Messages.this, "OnClick Item Message", Toast.LENGTH_SHORT).show();
             }

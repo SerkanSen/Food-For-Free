@@ -16,12 +16,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-public class MessageAdapter1 extends FirestoreRecyclerAdapter<Message, MessageAdapter1.MessageHolder> {
+public class MessageAdapter extends FirestoreRecyclerAdapter<Message, MessageAdapter.MessageHolder> {
 
     private OnItemClickListener listener;
     private ProgressBar progressBarAdItemPhoto;
 
-    public MessageAdapter1(@NonNull FirestoreRecyclerOptions<Message> options) {
+    public MessageAdapter(@NonNull FirestoreRecyclerOptions<Message> options) {
         super(options);
     }
 

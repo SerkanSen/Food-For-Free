@@ -34,6 +34,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -41,13 +42,14 @@ import java.util.Map;
 
 public class Contact extends AppCompatActivity {
 
+    //für push
     TextView title;
     Button sendBtn;
     EditText message;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     String adTitle, interestedUserID, interestedUserName, offeringUserName , msgId;
-    String adId, imageUrl, offeringUserID;
+    String [] participants = new String[2];
     Calendar calendar;
     public static final String TAG = "TAG";
     public static final String EXTRA_ADID = "de.hsh.mobilecomputing.foodforfree.ADID";
@@ -117,6 +119,9 @@ public class Contact extends AppCompatActivity {
     private void sendMessage(String interestedUserID, String interestedUserName, String offeringUserID, String offeringUserName,
                              String adId, String message, String imageUrl) {
 
+        participants[0] = interestedUserID;
+        participants[1] = offeringUserID;
+
         DocumentReference documentReference = fStore.collection("chats").document();
 
         calendar = Calendar.getInstance();
@@ -130,12 +135,14 @@ public class Contact extends AppCompatActivity {
         chat.put("adTitle", adTitle);
         chat.put("imageUrl", imageUrl);
         chat.put("interestedUserID", interestedUserID);
+        chat.put("sender", interestedUserID);
         chat.put("interestedUser", interestedUserName);
         chat.put("message", message);
         chat.put("msgId", msgId);
         chat.put("offeringUserID", offeringUserID);
         chat.put("offeringUser", offeringUserName);
         chat.put("timestamp", timestamp);
+        chat.put("participants", Arrays.asList(participants));
 
         documentReference.set(chat).addOnSuccessListener((OnSuccessListener) (aVoid) -> {
 
@@ -160,7 +167,7 @@ public class Contact extends AppCompatActivity {
         builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                startActivity(new Intent(getApplicationContext(), Profile.class));
+                startActivity(new Intent(getApplicationContext(), AdDetails.class));
             }
         });
         //negative button
