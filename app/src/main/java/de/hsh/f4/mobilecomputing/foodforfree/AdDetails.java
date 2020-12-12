@@ -131,7 +131,7 @@ public class AdDetails extends AppCompatActivity {
                 intent.putExtra(EXTRA_ADID, adId);
                 intent.putExtra(EXTRA_IMAGEURL, imageUrl);
                 intent.putExtra(EXTRA_OFF_USERID, offeringUserID);
-                Toast.makeText(AdDetails.this,EXTRA_ADID, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(AdDetails.this,adId, Toast.LENGTH_SHORT).show();
                 //intent.putExtra(EXTRA_ADTITLE, title.getText().toString());
                 startActivity(intent);
             }

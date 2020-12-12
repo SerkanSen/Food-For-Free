@@ -3,7 +3,7 @@ package de.hsh.f4.mobilecomputing.foodforfree;
 public class Message {
     private String interestedUser;
     private String offeringUser;
-    private String sender;
+    private String sender, senderName;
     private String message;
     private String timestamp, imageUrl, adTitle;
 
@@ -11,13 +11,16 @@ public class Message {
         //empty constructor needed
     }
 
-    public Message(String interestedUser, String offeringUser, String sender, String message, String timestamp, String imageUrl, String adTitle){
+    public Message(String interestedUser, String offeringUser, String sender, String senderName, String message, String timestamp, String imageUrl, String adTitle){
         this.interestedUser = interestedUser;
         this.offeringUser =offeringUser;
         this.message = message;
         this.timestamp = timestamp;
         this.imageUrl = imageUrl;
         this.adTitle = adTitle;
+        this.sender = sender;
+        this.senderName = senderName;
+
     }
 
     public String getInterestedUser() {
@@ -31,6 +34,8 @@ public class Message {
     public String getSender() {
         return sender;
     }
+
+    public String getSenderName() {return senderName; }
 
     public String getMessage() {
         return message;

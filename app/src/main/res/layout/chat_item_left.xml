@@ -8,12 +8,18 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:text="hallo"
+        android:text="Nutzername"
+        android:layout_toLeftOf="@+id/show_message"/>
+
+    <TextView
         android:id="@+id/show_message"
-        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:background="@drawable/background_left"
         android:padding="8dp"
-        android:background="@drawable/background_left"/>
+        android:text="hallo"
+        android:textSize="18sp" />
 
     <!-- -->
 

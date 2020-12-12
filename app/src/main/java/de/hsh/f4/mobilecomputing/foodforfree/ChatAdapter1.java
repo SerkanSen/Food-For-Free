@@ -14,9 +14,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class ChatAdapter1 extends FirestoreRecyclerAdapter<Message, ChatAdapter1.MessageHolder> {
+public class ChatAdapter1 extends FirestoreRecyclerAdapter<Message, ChatAdapter1.ChatHolder> {
 
-    //push
     public static final int MSG_TYPE_LEFT = 0;
     public static final int MSG_TYPE_RIGHT = 1;
     int type;
@@ -28,56 +27,66 @@ public class ChatAdapter1 extends FirestoreRecyclerAdapter<Message, ChatAdapter1
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull MessageHolder holder, int position, @NonNull Message model) {
+    protected void onBindViewHolder(@NonNull ChatHolder holder, int position, @NonNull Message model) {
         holder.textViewMessage.setText(model.getMessage());
+        holder.textViewUserName.setText(model.getSenderName());
 
-            fUser= FirebaseAuth.getInstance().getCurrentUser();
+
+            /*fUser= FirebaseAuth.getInstance().getCurrentUser();
             if (model.getSender().equals(fUser.getUid())){
                 type =  MSG_TYPE_RIGHT;
             } else{
                 type =  MSG_TYPE_LEFT;
-            }
+            }*/
 
     }
 
     @NonNull
     @Override
-    public MessageHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        //View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_item, parent, false);
-        //return new MessageHolder(view);
+    public ChatHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item, parent, false);
+        return new ChatHolder(view);
 
-        if ((viewType == MSG_TYPE_RIGHT)) {
+        /*if ((viewType == MSG_TYPE_RIGHT)) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item_right, parent, false);
-            return new MessageHolder(view);
+            return new ChatHolder(view);
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item_left, parent, false);
-            return new MessageHolder(view);
-        }
+            return new ChatHolder(view);
+        }*/
     }
 
-    class MessageHolder extends RecyclerView.ViewHolder {
-        TextView textViewMessage;
+    class ChatHolder extends RecyclerView.ViewHolder {
+        TextView textViewMessage, textViewUserName;
 
-        public MessageHolder(@NonNull View itemView) {
+        public ChatHolder(@NonNull View itemView) {
             super(itemView);
             textViewMessage = itemView.findViewById(R.id.show_message);
+            textViewUserName = itemView.findViewById(R.id.userName);
 
         }
     }
 
-    @Override
+    /*@Override
     public int getItemViewType(int position) {
+
+        fUser= FirebaseAuth.getInstance().getCurrentUser();
+        if (model.getSender().equals(fUser.getUid())){
+            type =  MSG_TYPE_RIGHT;
+        } else{
+            type =  MSG_TYPE_LEFT;
+        }
 
         if ( type == 1) {
             return MSG_TYPE_RIGHT;
         } else {
             return MSG_TYPE_LEFT;
         }
-        /*fUser= FirebaseAuth.getInstance().getCurrentUser();
+     fUser= FirebaseAuth.getInstance().getCurrentUser();
         if (mChat.get(position).getSender().equals(fUser.getUid())){
             return MSG_TYPE_RIGHT;
         } else{
             return MSG_TYPE_LEFT;
-        }*/
-    }
+        }
+    }*/
 }

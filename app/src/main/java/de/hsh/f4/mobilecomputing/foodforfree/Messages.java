@@ -68,9 +68,11 @@ public class Messages extends AppCompatActivity {
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 Intent intent = new Intent(Messages.this, Chat.class);
                 //übergeben der msgID
-                intent.putExtra(EXTRA_MSGID, documentSnapshot.getString("msgID"));
+                String msgId = documentSnapshot.getString("msgId");
+                //Toast.makeText(Messages.this, msgId, Toast.LENGTH_SHORT).show();
+                intent.putExtra(EXTRA_MSGID, msgId);
                 startActivity(intent);
-                Toast.makeText(Messages.this, "OnClick Item Message", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(Messages.this, "OnClick Item Message", Toast.LENGTH_SHORT).show();
             }
         });
 

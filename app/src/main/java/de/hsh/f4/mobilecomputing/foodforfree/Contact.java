@@ -42,7 +42,6 @@ import java.util.Map;
 
 public class Contact extends AppCompatActivity {
 
-    //für push
     TextView title;
     Button sendBtn;
     EditText message;
@@ -136,9 +135,10 @@ public class Contact extends AppCompatActivity {
         chat.put("imageUrl", imageUrl);
         chat.put("interestedUserID", interestedUserID);
         chat.put("sender", interestedUserID);
+        chat.put("senderName", interestedUserName);
         chat.put("interestedUser", interestedUserName);
         chat.put("message", message);
-        chat.put("msgId", msgId);
+        chat.put("msgID", msgId);
         chat.put("offeringUserID", offeringUserID);
         chat.put("offeringUser", offeringUserName);
         chat.put("timestamp", timestamp);

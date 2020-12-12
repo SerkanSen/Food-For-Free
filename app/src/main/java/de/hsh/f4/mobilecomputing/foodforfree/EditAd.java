@@ -59,7 +59,6 @@ public class EditAd extends AppCompatActivity  {
     StorageReference storageReference;
     ArrayList<String> sFilterOptions = new ArrayList<>();
     String [] categories = new String[7];
-    //String [] filterOptions = {"Vegetarisch", "Vegan", "Obst/Gemüse", "Konserven", "Gericht", "Süßes", "Snacks"};
     Button pUpdateAdBtn, pUploadAdPhotoBtn, pMakePic;
     Calendar calendar;
     String userId, adId, imageUrl;
