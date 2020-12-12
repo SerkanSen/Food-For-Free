@@ -3,6 +3,7 @@ package de.hsh.f4.mobilecomputing.foodforfree;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -58,10 +59,18 @@ public class Chat extends AppCompatActivity {
         message = findViewById(R.id.msg);
         otherUserName = findViewById(R.id.otherUserName);
 
+        int green = ResourcesCompat.getColor(getResources(), R.color.green, null );
+        //message.setBackgroundColor(green);
 
         fAuth = FirebaseAuth.getInstance();
 
         userId = fAuth.getCurrentUser().getUid();
+
+        //Intent und msgID+interestUserName holen
+        Intent intent = getIntent();
+        String messageID = intent.getStringExtra(Messages.EXTRA_MSGID);
+        Toast.makeText(Chat.this, messageID, Toast.LENGTH_SHORT).show();
+        String firstSenderName = intent.getStringExtra(Messages.EXTRA_INTEREST_USER_NAME);
 
         DocumentReference userRef = db.collection("users").document(userId);
         userRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
@@ -71,9 +80,7 @@ public class Chat extends AppCompatActivity {
             }
         });
 
-        //Intent und msgID holen
-        Intent intent = getIntent();
-        String messageID = intent.getStringExtra(Messages.EXTRA_MSGID);
+        //richtigen Nutzernamen in der Leiste anzeigen
 
 
 
@@ -120,7 +127,7 @@ public class Chat extends AppCompatActivity {
     }
 
     private void setUpRecyclerView(String msgId) {
-        Query query = chatRef.whereEqualTo("msgId", msgId).orderBy("timestamp", Query.Direction.ASCENDING);
+        Query query = chatRef.whereEqualTo("msgID", msgId).orderBy("timestamp", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<Message> options = new FirestoreRecyclerOptions.Builder<Message>().setQuery(query, Message.class).build();
 

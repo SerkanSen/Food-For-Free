@@ -27,6 +27,7 @@ public class Messages extends AppCompatActivity {
     FirebaseAuth fAuth;
 
     public static final String EXTRA_MSGID = "de.hsh.mobilecomputing.foodforfree.EXTRA_MSGID";
+    public static final String EXTRA_INTEREST_USER_NAME = "de.hsh.mobilecomputing.foodforfree.EXTRA_INTEREST_USER_NAME";
 
     //Firestore for recyclerView
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -50,9 +51,6 @@ public class Messages extends AppCompatActivity {
     private void setUpRecyclerView() {
         //in participants stehen Sender und Empfänger drin
         Query query = chatRef.whereArrayContains("participants", userId).orderBy("timestamp", Query.Direction.DESCENDING);
-        //Query query = chatRef.whereEqualTo("offeringUser", userId).orderBy("timestamp", Query.Direction.DESCENDING);
-
-        //Query query = chatRef.orderBy("timestamp", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Message> options = new FirestoreRecyclerOptions.Builder<Message>().setQuery(query, Message.class).build();
 
@@ -68,11 +66,11 @@ public class Messages extends AppCompatActivity {
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 Intent intent = new Intent(Messages.this, Chat.class);
                 //übergeben der msgID
-                String msgId = documentSnapshot.getString("msgId");
-                //Toast.makeText(Messages.this, msgId, Toast.LENGTH_SHORT).show();
+                String msgId = documentSnapshot.getString("msgID");
+                String firstSenderName = documentSnapshot.getString("interestedUser");
                 intent.putExtra(EXTRA_MSGID, msgId);
+                intent.putExtra(EXTRA_INTEREST_USER_NAME, firstSenderName);
                 startActivity(intent);
-                //Toast.makeText(Messages.this, "OnClick Item Message", Toast.LENGTH_SHORT).show();
             }
         });
 
