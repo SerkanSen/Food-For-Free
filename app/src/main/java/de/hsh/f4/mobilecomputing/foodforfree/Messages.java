@@ -50,7 +50,7 @@ public class Messages extends AppCompatActivity {
 
     private void setUpRecyclerView() {
         //in participants stehen Sender und Empfänger drin
-        Query query = chatRef.whereArrayContains("participants", userId).orderBy("timestamp", Query.Direction.DESCENDING);
+        Query query = chatRef.whereArrayContains("participants", userId).orderBy("lastTimestamp", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Message> options = new FirestoreRecyclerOptions.Builder<Message>().setQuery(query, Message.class).build();
 
@@ -67,9 +67,7 @@ public class Messages extends AppCompatActivity {
                 Intent intent = new Intent(Messages.this, Chat.class);
                 //übergeben der msgID
                 String msgId = documentSnapshot.getString("msgID");
-                String firstSenderName = documentSnapshot.getString("interestedUser");
                 intent.putExtra(EXTRA_MSGID, msgId);
-                intent.putExtra(EXTRA_INTEREST_USER_NAME, firstSenderName);
                 startActivity(intent);
             }
         });

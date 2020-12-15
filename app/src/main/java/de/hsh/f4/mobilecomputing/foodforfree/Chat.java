@@ -46,7 +46,7 @@ public class Chat extends AppCompatActivity {
     ImageButton sendMsgBtn;
     EditText message;
     FirebaseAuth fAuth;
-    String userId, userName;
+    String userId, userName, offeringUserID, offeringUserName, interestedUserName;
 
     public static final String TAG = "TAG";
 
@@ -59,9 +59,6 @@ public class Chat extends AppCompatActivity {
         message = findViewById(R.id.msg);
         otherUserName = findViewById(R.id.otherUserName);
 
-        int green = ResourcesCompat.getColor(getResources(), R.color.green, null );
-        //message.setBackgroundColor(green);
-
         fAuth = FirebaseAuth.getInstance();
 
         userId = fAuth.getCurrentUser().getUid();
@@ -69,9 +66,8 @@ public class Chat extends AppCompatActivity {
         //Intent und msgID+interestUserName holen
         Intent intent = getIntent();
         String messageID = intent.getStringExtra(Messages.EXTRA_MSGID);
-        Toast.makeText(Chat.this, messageID, Toast.LENGTH_SHORT).show();
-        String firstSenderName = intent.getStringExtra(Messages.EXTRA_INTEREST_USER_NAME);
 
+        //aktuellen Nutzernamen holen
         DocumentReference userRef = db.collection("users").document(userId);
         userRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
@@ -81,12 +77,24 @@ public class Chat extends AppCompatActivity {
         });
 
         //richtigen Nutzernamen in der Leiste anzeigen
+        DocumentReference chatRef = db.collection("chats").document(messageID);
+        chatRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                offeringUserID = documentSnapshot.getString("offeringUserID");
+                //interestedUserID = documentSnapshot.getString("interestedUserID");
+                offeringUserName = documentSnapshot.getString("offeringUser");
+                interestedUserName = documentSnapshot.getString("interestedUser");
 
-
+                if (userId.equals(offeringUserID)){
+                    otherUserName.setText("    "+interestedUserName);
+                } else {
+                    otherUserName.setText("    "+offeringUserName);
+                }
+            }
+        });
 
         setUpRecyclerView(messageID);
-        //adapter.startListening();
-        //Toast.makeText(Chat.this, messageID, Toast.LENGTH_SHORT).show();
 
         sendMsgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,35 +102,56 @@ public class Chat extends AppCompatActivity {
                 String newMessage = message.getText().toString().trim();
                 String senderName = userName;
 
-                DocumentReference documentReference = db.collection("chats").document();
+                if (!newMessage.equals("")) {
+                    sendMessage(messageID, senderName, newMessage);
+                    message.setText("");
+                    adapter.startListening();
+                }
+            }
+        });
+    }
 
-                Calendar calendar = Calendar.getInstance();
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                String timestamp = simpleDateFormat.format(calendar.getTime());
+    private void sendMessage (String msgId, String senderName, String message) {
 
-                Map<String, Object> chat = new HashMap<>();
-                //chat.put("adID", adId);
-                chat.put("msgID", messageID);
-                chat.put("sender", userId);
-                chat.put("senderName", senderName);
-                chat.put("message", newMessage);
-                chat.put("timestamp", timestamp);
-                //chat.put("participants", Arrays.asList(participants));
+        DocumentReference documentReference = db.collection("chats").document();
 
-                documentReference.set(chat).addOnSuccessListener((OnSuccessListener) (aVoid) -> {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        String timestamp = simpleDateFormat.format(calendar.getTime());
 
-                    Log.d(TAG, "onSuccess: Anzeige erfolgreich erstellt!");
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "onFailure: " + e.toString());
-                    }
-                });
-                message.setText("");
-                adapter.startListening();
+        Map<String, Object> chat = new HashMap<>();
+        chat.put("msgID", msgId);
+        chat.put("sender", userId);
+        chat.put("senderName", senderName);
+        chat.put("message", message);
+        chat.put("timestamp", timestamp);
+
+        documentReference.set(chat).addOnSuccessListener((OnSuccessListener) (aVoid) -> {
+
+            Log.d(TAG, "onSuccess: Nachricht erfolgreich gespeichert!");
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "onFailure: " + e.toString());
             }
         });
 
+        //1.Kontakt aktualisieren für MessageAdapter
+        DocumentReference documentReference1 = db.collection("chats").document(msgId);
+        Map<String, Object> chat1 = new HashMap<>();
+
+        documentReference1.update(chat1);
+        chat1.put("lastMessage", message);
+        chat1.put("lastTimestamp", timestamp);
+
+        documentReference1.update(chat1).addOnSuccessListener((OnSuccessListener) (aVoid) -> {
+            Log.d(TAG, "onSuccess: erste Nachricht erfolgreich aktualisiert für MessageAdapter!");
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "onFailure: " + e.toString());
+            }
+        });
 
     }
 
@@ -133,7 +162,6 @@ public class Chat extends AppCompatActivity {
 
         adapter = new ChatAdapter1(options);
 
-        //Toast.makeText(Chat.this, "in setUp", Toast.LENGTH_SHORT).show();
         RecyclerView recyclerView = findViewById(R.id.recycler_view_chats);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -154,7 +182,7 @@ public class Chat extends AppCompatActivity {
         adapter.stopListening();
     }
 
-    public void ClickBack() {
+    public void ClickBack(View view) {
         startActivity(new Intent(getApplicationContext(), Messages.class));
     }
 

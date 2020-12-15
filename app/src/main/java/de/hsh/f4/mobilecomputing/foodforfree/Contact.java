@@ -138,14 +138,15 @@ public class Contact extends AppCompatActivity {
         chat.put("senderName", interestedUserName);
         chat.put("interestedUser", interestedUserName);
         chat.put("message", message);
+        chat.put("lastMessage", message);
         chat.put("msgID", msgId);
         chat.put("offeringUserID", offeringUserID);
         chat.put("offeringUser", offeringUserName);
         chat.put("timestamp", timestamp);
+        chat.put("lastTimestamp", timestamp);
         chat.put("participants", Arrays.asList(participants));
 
         documentReference.set(chat).addOnSuccessListener((OnSuccessListener) (aVoid) -> {
-
             //Log.d(TAG, "onSuccess: Anzeige erfolgreich erstellt!");
         }).addOnFailureListener(new OnFailureListener() {
             @Override

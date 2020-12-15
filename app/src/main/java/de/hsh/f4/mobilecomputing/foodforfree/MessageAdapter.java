@@ -6,13 +6,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -20,6 +26,8 @@ public class MessageAdapter extends FirestoreRecyclerAdapter<Message, MessageAda
 
     private OnItemClickListener listener;
     private ProgressBar progressBarAdItemPhoto;
+    FirebaseAuth fAuth;
+    String currentUserId;
 
     public MessageAdapter(@NonNull FirestoreRecyclerOptions<Message> options) {
         super(options);
@@ -27,10 +35,18 @@ public class MessageAdapter extends FirestoreRecyclerAdapter<Message, MessageAda
 
     @Override
     protected void onBindViewHolder(@NonNull MessageHolder holder, int position, @NonNull Message model) {
-        holder.textViewOtherUserName.setText(model.getInterestedUser());
-        holder.textViewTime.setText(model.getTimestamp());
+
+        fAuth = FirebaseAuth.getInstance();
+        currentUserId = fAuth.getCurrentUser().getUid();
+        if (model.getOfferingUserID().equals(currentUserId)) {
+            holder.textViewOtherUserName.setText(model.getInterestedUser());
+        } else {
+            holder.textViewOtherUserName.setText(model.getOfferingUser());
+        }
+
+        holder.textViewTime.setText(model.getLastTimestamp());
         holder.textViewAdTitle.setText(model.getAdTitle());
-        holder.textViewLastMessage.setText(model.getMessage());
+        holder.textViewLastMessage.setText(model.getLastMessage());
 
         progressBarAdItemPhoto.setVisibility(View.VISIBLE);
         Picasso.get()

@@ -21,12 +21,7 @@ import static de.hsh.f4.mobilecomputing.foodforfree.R.color.white;
 
 public class ChatAdapter1 extends FirestoreRecyclerAdapter<Message, ChatAdapter1.ChatHolder> {
 
-    public static final int MSG_TYPE_LEFT = 0;
-    public static final int MSG_TYPE_RIGHT = 1;
-    int type;
-
     String currentUserId;
-    FirebaseUser fUser;
     FirebaseAuth fAuth;
 
     public ChatAdapter1(@NonNull FirestoreRecyclerOptions<Message> options) {
@@ -44,18 +39,10 @@ public class ChatAdapter1 extends FirestoreRecyclerAdapter<Message, ChatAdapter1
         if(model.getSender().equals(currentUserId)) {
             holder.cardView.setBackgroundResource(R.color.green);
             holder.textViewMessage.setTextColor(Color.parseColor("white"));
-            holder.textViewUserName.setTextColor(Color.parseColor("white"));
+            //holder.textViewUserName.setTextColor(Color.parseColor("white"));
+            holder.textViewUserName.setText("");
             holder.textViewTimestamp.setTextColor(Color.parseColor("white"));
         }
-
-
-            /*fUser= FirebaseAuth.getInstance().getCurrentUser();
-            if (model.getSender().equals(fUser.getUid())){
-                type =  MSG_TYPE_RIGHT;
-            } else{
-                type =  MSG_TYPE_LEFT;
-            }*/
-
     }
 
     @NonNull
@@ -63,14 +50,6 @@ public class ChatAdapter1 extends FirestoreRecyclerAdapter<Message, ChatAdapter1
     public ChatHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item, parent, false);
         return new ChatHolder(view);
-
-        /*if ((viewType == MSG_TYPE_RIGHT)) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item_right, parent, false);
-            return new ChatHolder(view);
-        } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item_left, parent, false);
-            return new ChatHolder(view);
-        }*/
     }
 
     class ChatHolder extends RecyclerView.ViewHolder {
@@ -85,27 +64,4 @@ public class ChatAdapter1 extends FirestoreRecyclerAdapter<Message, ChatAdapter1
             textViewTimestamp = itemView.findViewById(R.id.timestamp);
         }
     }
-
-    /*@Override
-    public int getItemViewType(int position) {
-
-        fUser= FirebaseAuth.getInstance().getCurrentUser();
-        if (model.getSender().equals(fUser.getUid())){
-            type =  MSG_TYPE_RIGHT;
-        } else{
-            type =  MSG_TYPE_LEFT;
-        }
-
-        if ( type == 1) {
-            return MSG_TYPE_RIGHT;
-        } else {
-            return MSG_TYPE_LEFT;
-        }
-     fUser= FirebaseAuth.getInstance().getCurrentUser();
-        if (mChat.get(position).getSender().equals(fUser.getUid())){
-            return MSG_TYPE_RIGHT;
-        } else{
-            return MSG_TYPE_LEFT;
-        }
-    }*/
 }

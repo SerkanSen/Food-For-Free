@@ -138,7 +138,6 @@ public class EditProfile extends AppCompatActivity {
             //wenn Bild ausgewählt
             if(resultCode == Activity.RESULT_OK){
                 imageUri = data.getData();
-                //profilePhoto.setImageURI(imageUri);
                 Picasso.get()
                         .load(imageUri)
                         .fit()

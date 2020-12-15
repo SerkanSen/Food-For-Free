@@ -25,6 +25,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -116,6 +117,25 @@ public class Profile extends AppCompatActivity {
                             @Override
                             public void onError(Exception e) {
                                 Toast.makeText(Profile.this, "Profilbild konnte nicht geladen werden.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Picasso.get()
+                        .load("https://firebasestorage.googleapis.com/v0/b/food-for-free-9663f.appspot.com/o/ads%2FDefault%20Bild.jpg?alt=media&token=57a564e3-006c-4146-b793-cf4346a8f07a")
+                        .fit()
+                        .centerCrop()
+                        .into(profilePhoto, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                                progressBarProfileImage.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+
                             }
                         });
             }
