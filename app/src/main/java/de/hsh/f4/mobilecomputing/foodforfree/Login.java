@@ -22,9 +22,11 @@ public class Login extends AppCompatActivity {
 
     EditText mEmail, mPasswort;
     Button mLoginBtn;
-    TextView mCreateBtn, mAktivitaet, mTitel;
+    TextView mCreateBtn, mAktivitaet, mTitel, mChangePasswordBtn;
     ProgressBar progressBar;
     FirebaseAuth fireAuth;
+
+    String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +41,12 @@ public class Login extends AppCompatActivity {
         fireAuth = FirebaseAuth.getInstance();
         mLoginBtn = findViewById(R.id.registrierenBtn);
         mCreateBtn = (TextView)findViewById(R.id.registerTextView);
+        mChangePasswordBtn= (TextView)findViewById(R.id.changePasswordTextView);
 
         mLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                String email = mEmail.getText().toString().trim();
+                email = mEmail.getText().toString().trim();
                 String passwort= mPasswort.getText().toString().trim();
 
                 if(TextUtils.isEmpty(email)){
@@ -81,6 +83,32 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), Register.class));
+            }
+        });
+
+        mChangePasswordBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                email = mEmail.getText().toString().trim();
+
+                if(TextUtils.isEmpty(email)){
+                    mEmail.setError("Bitte das Email-Feld ausfüllen für eine Passwortrücksetzung.");
+                    return;
+                }else {
+                    fireAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task task) {
+                            if(task.isSuccessful()){
+                                Toast.makeText(Login.this,"Für eine Passwortrücksetzung überprüfe deinen Email Account...",Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(Login.this,Login.class));
+                            }else{
+                                String message = task.getException().getMessage();
+                                Toast.makeText(Login.this,"Es ist ein Fehler aufgetreten"+message,Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+                startActivity(new Intent(getApplicationContext(),Login.class));
             }
         });
     }

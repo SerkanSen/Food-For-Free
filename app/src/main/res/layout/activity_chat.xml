@@ -26,6 +26,7 @@
             android:id="@+id/msg"
             android:background="@android:color/transparent"
             android:hint="Hinterlasse eine Nachricht.."
+            android:inputType="textCapSentences"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/send"/>
 

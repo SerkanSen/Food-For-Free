@@ -144,7 +144,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/adDetails_filterOptions"
-                app:srcCompat="@drawable/ic_message" />
+                app:srcCompat="@drawable/ic_messages" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

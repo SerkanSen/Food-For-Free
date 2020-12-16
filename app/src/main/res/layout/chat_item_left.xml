@@ -19,8 +19,8 @@
         android:background="@drawable/background_left"
         android:padding="8dp"
         android:text="hallo"
-        android:textSize="18sp" />
+        android:textSize="18sp"/>
 
-    <!-- -->
+
 
 </RelativeLayout>

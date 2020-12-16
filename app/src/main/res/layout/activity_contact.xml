@@ -19,7 +19,7 @@
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:hint="Hinterlasse eine Nachricht..."
-        android:inputType="textPersonName"
+        android:inputType="textCapSentences"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

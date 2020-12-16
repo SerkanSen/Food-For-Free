@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -110,23 +111,31 @@ public class EditProfile extends AppCompatActivity {
 
                 String stadtteil = pStadtteil.getText().toString().trim();
 
-                DocumentReference documentReference = fStore.collection("users").document(userId);
-                documentReference
-                        .update("stadtteil", stadtteil)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Toast.makeText(EditProfile.this, "Profil erfolgreich aktualisiert!", Toast.LENGTH_SHORT).show();
-                                Log.d(TAG, "DocumentSnapshot successfully updated!");
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w(TAG, "Error updating document", e);
-                            }
-                        });
-                startActivity(new Intent(getApplicationContext(), Profile.class));
+                if(stadtteil.equals("")) {
+                    pStadtteil.setError("Stadtteil wird benötigt.");
+                    return;
+                }else{
+
+
+
+                    DocumentReference documentReference = fStore.collection("users").document(userId);
+                    documentReference
+                            .update("stadtteil", stadtteil)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(EditProfile.this, "Profil erfolgreich aktualisiert!", Toast.LENGTH_SHORT).show();
+                                    Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w(TAG, "Error updating document", e);
+                                }
+                            });
+                    startActivity(new Intent(getApplicationContext(), Profile.class));
+                }
             }
         });
     }

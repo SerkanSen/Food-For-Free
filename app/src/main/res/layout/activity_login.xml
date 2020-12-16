@@ -86,6 +86,18 @@
         app:layout_constraintVertical_bias="0.016" />
 
     <TextView
+        android:id="@+id/changePasswordTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Passwort vergessen?..."
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registrierenBtn" />
+
+    <TextView
         android:id="@+id/registerTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -95,7 +107,7 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registrierenBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/changePasswordTextView" />
 
     <ProgressBar
         android:id="@+id/progressBar"

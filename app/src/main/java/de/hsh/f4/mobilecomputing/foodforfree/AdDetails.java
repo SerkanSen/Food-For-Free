@@ -34,7 +34,6 @@ import static de.hsh.f4.mobilecomputing.foodforfree.MainActivity.EXTRA_OFF_USERI
 
 public class AdDetails extends AppCompatActivity {
 
-    //für push
     protected static final String EXTRA_ADID = "de.hsh.mobilecomputing.foodforfree.ADID";
     protected static final String EXTRA_IMAGEURL = "de.hsh.mobilecomputing.foodforfree.IMAGEURL";
     protected static final String EXTRA_OFF_USERID = "de.hsh.mobilecomputing.foodforfree.OFF_USERID";
@@ -48,6 +47,7 @@ public class AdDetails extends AppCompatActivity {
     ImageView image;
     ImageButton contact, backBtn;
     ProgressBar progressBarAdPhoto;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
