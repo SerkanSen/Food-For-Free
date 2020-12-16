@@ -3,6 +3,7 @@ package de.hsh.f4.mobilecomputing.foodforfree;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ import com.squareup.picasso.Picasso;
 public class MessageAdapter extends FirestoreRecyclerAdapter<Message, MessageAdapter.MessageHolder> {
 
     private OnItemClickListener listener;
+    private OnItemLongClickListener listener1;
     private ProgressBar progressBarAdItemPhoto;
     FirebaseAuth fAuth;
     String currentUserId;
@@ -74,6 +76,10 @@ public class MessageAdapter extends FirestoreRecyclerAdapter<Message, MessageAda
         return new MessageHolder(view);
     }
 
+    public void deleteItem (int position) {
+        getSnapshots().getSnapshot(position).getReference().delete();
+    }
+
     class MessageHolder extends RecyclerView.ViewHolder {
         TextView textViewOtherUserName, textViewTime, textViewAdTitle, textViewLastMessage;
         ImageView imageViewAdPhoto;
@@ -98,6 +104,17 @@ public class MessageAdapter extends FirestoreRecyclerAdapter<Message, MessageAda
                 }
             });
 
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION && listener1 != null) {
+                        listener1.onItemLongClick(getSnapshots().getSnapshot(position), position);
+                    }
+                    return false;
+                }
+            });
+
         }
     }
 
@@ -105,6 +122,12 @@ public class MessageAdapter extends FirestoreRecyclerAdapter<Message, MessageAda
     public interface OnItemClickListener {
         void onItemClick(DocumentSnapshot documentSnapshot, int position);
     }
+
+    public interface OnItemLongClickListener {
+        void onItemLongClick(DocumentSnapshot snapshot, int position);
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener listener1) { this.listener1 = listener1; }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;

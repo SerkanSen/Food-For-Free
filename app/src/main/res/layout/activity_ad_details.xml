@@ -134,17 +134,21 @@
                 app:rippleColor="@color/teal_200"
                 app:srcCompat="@drawable/ic_back" />
 
-            <ImageButton
-                android:id="@+id/contact"
-                style="@android:style/Widget.Holo.Light.ImageButton"
+            <Button
+                android:id="@+id/contactBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
+                android:backgroundTint="@color/teal_700"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:text="Nachricht"
+                android:textSize="14sp"
+                app:icon="@drawable/ic_message_small"
+                app:iconPadding="8dp"
+                app:iconTint="@color/weiss"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/adDetails_filterOptions"
-                app:srcCompat="@drawable/ic_messages" />
+                app:layout_constraintTop_toBottomOf="@+id/adDetails_filterOptions" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

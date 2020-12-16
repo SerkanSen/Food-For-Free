@@ -1,5 +1,6 @@
 package de.hsh.f4.mobilecomputing.foodforfree;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -45,7 +47,8 @@ public class AdDetails extends AppCompatActivity {
     String adUserId, userId;
     String offeringUserID;
     ImageView image;
-    ImageButton contact, backBtn;
+    ImageButton backBtn;
+    Button contactBtn;
     ProgressBar progressBarAdPhoto;
 
 
@@ -62,7 +65,7 @@ public class AdDetails extends AppCompatActivity {
         filterOptions = findViewById(R.id.adDetails_filterOptions);
         image = findViewById(R.id.adDetails_image);
         progressBarAdPhoto = findViewById(R.id.progressBarAdPhoto);
-        contact =findViewById(R.id.contact);
+        contactBtn = findViewById(R.id.contactBtn);
         backBtn = findViewById(R.id.backBtn);
 
         fAuth = FirebaseAuth.getInstance();
@@ -77,6 +80,7 @@ public class AdDetails extends AppCompatActivity {
 
         //contactBtn nur, wenn es nicht die eigene Anzeige ist
         userId = fAuth.getCurrentUser().getUid();
+
         DocumentReference documentRef = fStore.collection("ads").document(adId);
         documentRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
@@ -84,7 +88,7 @@ public class AdDetails extends AppCompatActivity {
                 adUserId = documentSnapshot.getString("userID");
                 if (adUserId.equals(userId)) {
                     Toast.makeText(AdDetails.this, "Deine Anzeige!", Toast.LENGTH_SHORT).show();
-                    contact.setVisibility(View.INVISIBLE);
+                    contactBtn.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -120,7 +124,7 @@ public class AdDetails extends AppCompatActivity {
             }
         });
 
-        contact.setOnClickListener(new View.OnClickListener() {
+        contactBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Intent intent = getIntent();

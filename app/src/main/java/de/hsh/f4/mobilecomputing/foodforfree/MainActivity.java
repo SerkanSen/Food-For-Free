@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setUpRecyclerView(queryAll);
 
         //Suchleiste für Titel
-        /*inputSearch.addTextChangedListener(new TextWatcher() {
+        inputSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -132,13 +132,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.toString() != null) {
-                    setUpRecyclerView(s.toString());
+                if (s.toString().trim() != null) {
+                    String data = s.toString();
+                    //ads werden hier leider alphabetisch und nicht nach Zeit sortiert
+                    Query querySearch = adRef.orderBy("title").orderBy("timestamp", Query.Direction.DESCENDING).startAt(data).endAt(data+"\uf8ff");
+                    //Query querySearch1 = adRef.orderBy("timestamp", Query.Direction.DESCENDING).orderBy("title").startAt(data).endAt(data+"\uf8ff");
+                    //Query querySearch2 = adRef.whereEqualTo("title", data).orderBy("timestamp", Query.Direction.DESCENDING).startAt(data).endAt(data+"\uf8ff");
+                    setUpRecyclerView(querySearch);
                 } else {
-                    setUpRecyclerView("");
+                    //bringt leider nichts in Bezug auf Ordnung nach Zeit
+                    setUpRecyclerView(queryAll);
                 }
+                adapter.startListening();
             }
-        });*/
+        });
     }
 
     private void setUpRecyclerView(Query query) {

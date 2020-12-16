@@ -154,7 +154,12 @@ public class Contact extends AppCompatActivity {
                 Log.d(TAG, "onFailure: " + e.toString());
             }
         });
-        startActivity(new Intent(getApplicationContext(), AdDetails.class));
+        Intent intent = new Intent(Contact.this, AdDetails.class);
+        intent.putExtra(AdDetails.EXTRA_ADID, adId);
+        intent.putExtra(AdDetails.EXTRA_IMAGEURL, imageUrl);
+        intent.putExtra(AdDetails.EXTRA_OFF_USERID, offeringUserID);
+        startActivity(intent);
+        //startActivity(new Intent(getApplicationContext(), AdDetails.class));
     }
 
     public void ClickClose(View view){

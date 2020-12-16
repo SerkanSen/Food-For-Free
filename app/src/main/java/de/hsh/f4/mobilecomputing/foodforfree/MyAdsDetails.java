@@ -23,6 +23,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Callback;
@@ -137,16 +138,16 @@ public class MyAdsDetails extends AppCompatActivity {
                 builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //activity.finishAffinity();
-
-                        //userId = fAuth.getCurrentUser().getUid();
-
                         try {Intent intent = getIntent();
                             //Löschen des Dokuments und des Fotos
                             documentReference = fStore.collection("ads").document(adId);
-                            StorageReference fileRef = storageReference.child("ads/"+adId+"/adPhoto.jpg");
                             documentReference.delete();
+                            //documentReference = fStore.collection("chats").document();
+                            //deleteMessages(adId);
+                            //Query docRef = fStore.collection("chats").whereEqualTo("adID", adId);
+                            StorageReference fileRef = storageReference.child("ads/"+adId+"/adPhoto.jpg");
                             fileRef.delete();
+
                         }catch (Exception e) {
                             Toast.makeText(MyAdsDetails.this, "Anzeige nicht vorhanden", Toast.LENGTH_SHORT).show();
                         }
@@ -175,6 +176,19 @@ public class MyAdsDetails extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MyAdsDetails.this, MyAds.class);
                 startActivity(intent);
+            }
+        });
+    }
+
+    private void deleteMessages(String adId) {
+        DocumentReference documentReference1 = fStore.collection("chats").document("%");
+        documentReference1.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if(value.getString("adID").equals(adId)){
+                    documentReference1.delete();
+                }
+                String messageAdId = value.getString("adID");
             }
         });
     }

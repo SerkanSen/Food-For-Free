@@ -1,12 +1,16 @@
 package de.hsh.f4.mobilecomputing.foodforfree;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,20 +18,25 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.storage.StorageReference;
 
 public class Messages extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
     String userId;
     FirebaseAuth fAuth;
+    FirebaseFirestore fStore;
 
     public static final String EXTRA_MSGID = "de.hsh.mobilecomputing.foodforfree.EXTRA_MSGID";
-    public static final String EXTRA_INTEREST_USER_NAME = "de.hsh.mobilecomputing.foodforfree.EXTRA_INTEREST_USER_NAME";
 
     //Firestore for recyclerView
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -45,6 +54,8 @@ public class Messages extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         userId = fAuth.getCurrentUser().getUid();
 
+        fStore = FirebaseFirestore.getInstance();
+
         setUpRecyclerView();
     }
 
@@ -61,6 +72,43 @@ public class Messages extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
+        /*new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT| ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                //Initialze Alert Dialog
+                AlertDialog.Builder builder =new AlertDialog.Builder(Messages.this);
+                //Set title
+                builder.setTitle("Konversation beenden");
+                //Set message
+                builder.setMessage("Bist Du sicher, dass Du die Konservation beenden und löschen willst?");
+                //positive button
+                builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            adapter.deleteItem(viewHolder.getAdapterPosition());
+                        }catch (Exception e) {
+                            Toast.makeText(Messages.this, "Konversation nicht vorhanden", Toast.LENGTH_SHORT).show();
+                        }
+                       adapter.startListening(); //funktioniert nicht
+                    }
+                });
+                //negative button
+                builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        adapter.startListening();
+                    }
+                });
+                builder.show();
+            }
+        }).attachToRecyclerView(recyclerView);*/
+
         adapter.setOnItemClickListener(new MessageAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
@@ -69,6 +117,41 @@ public class Messages extends AppCompatActivity {
                 String msgId = documentSnapshot.getString("msgID");
                 intent.putExtra(EXTRA_MSGID, msgId);
                 startActivity(intent);
+            }
+        });
+
+        adapter.setOnItemLongClickListener(new MessageAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(DocumentSnapshot snapshot, int position) {
+                //Initialze Alert Dialog
+                AlertDialog.Builder builder =new AlertDialog.Builder(Messages.this);
+                //Set title
+                builder.setTitle("Konversation beenden");
+                //Set message
+                builder.setMessage("Bist Du sicher, dass Du die Konservation beenden und löschen willst?");
+                //positive button
+                builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            //Löschen der Startnachricht und damit Zugriff auf CHat
+                            String msgId = snapshot.getString("msgID");
+                            DocumentReference documentReference = fStore.collection("chats").document(msgId);
+                            documentReference.delete();
+                        }catch (Exception e) {
+                            Toast.makeText(Messages.this, "Konservation nicht vorhanden", Toast.LENGTH_SHORT).show();
+                        }
+                        adapter.startListening();
+                    }
+                });
+                //negative button
+                builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
             }
         });
 
@@ -88,7 +171,7 @@ public class Messages extends AppCompatActivity {
         adapter.stopListening();
     }
 
-
+ 
     //Navigationsmenü
     public void ClickMenu(View view) {
         //Open Drawer
@@ -136,10 +219,8 @@ public class Messages extends AppCompatActivity {
         builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //activity.finishAffinity();
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(getApplicationContext(), Login.class));
-                //finish();
             }
         });
         //negative button
