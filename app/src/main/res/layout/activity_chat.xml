@@ -26,9 +26,18 @@
             android:id="@+id/msg"
             android:background="@android:color/transparent"
             android:hint="Hinterlasse eine Nachricht.."
-            android:inputType="textCapSentences"
+            android:inputType="textMultiLine|textCapSentences"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/send"/>
+            android:layout_toLeftOf="@+id/location"/>
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/location"
+            android:layout_toLeftOf="@id/send"
+            android:background="@drawable/ic_location"
+            />
+
 
         <ImageButton
             android:layout_width="40dp"
