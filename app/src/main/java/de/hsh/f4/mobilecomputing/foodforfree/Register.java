@@ -116,7 +116,16 @@ public class Register extends AppCompatActivity {
                                     Log.d(TAG, "onFailure: " + e.toString());
                                 }
                             });
-                            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                            fireAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                  if(task.isSuccessful()) {
+                                      Toast.makeText(Register.this, "Registrierung war erfolgreich", Toast.LENGTH_SHORT).show();
+                                  }
+                                }
+                            });
+                            startActivity(new Intent(getApplicationContext(),Datenschutz.class));
+
                         }else{
                             Toast.makeText(Register.this, "Fehler!"+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
