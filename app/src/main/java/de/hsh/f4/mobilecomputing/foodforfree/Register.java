@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -31,7 +32,9 @@ import java.util.Map;
 public class Register extends AppCompatActivity {
     EditText mName,mEMail,mPasswort,mPasswort1,mStadtteil;
     Button mRegistrierenBtn;
-    TextView mLoginBtn, mDatenschutzBtn, mAgbBtn;
+    CheckBox mChBoxAccept;
+    Boolean accepted = false;
+    TextView mLoginBtn, mDatenschutzBtn, mAgbBtn, errorChBox;
     FirebaseAuth fireAuth;
     ProgressBar progressBar;
     FirebaseFirestore fStore;
@@ -48,7 +51,10 @@ public class Register extends AppCompatActivity {
         mEMail=findViewById(R.id.email);
         mPasswort=findViewById(R.id.passwort);
         mPasswort1=findViewById(R.id.editPasswortKontrolle);
+
         mRegistrierenBtn =findViewById(R.id.registrierenBtn);
+        mChBoxAccept = findViewById(R.id.chBoxAccept);
+        errorChBox = findViewById(R.id.errorChBox);
         mLoginBtn= findViewById(R.id.anmeldenTextView);
         mLoginBtn.setPaintFlags(mLoginBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         mAgbBtn = findViewById(R.id.agbs0);
@@ -59,12 +65,13 @@ public class Register extends AppCompatActivity {
 
         fireAuth =FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
-        progressBar = findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.ladebalken);
 
         if(fireAuth.getCurrentUser() != null){
             startActivity(new Intent(getApplicationContext(),MainActivity.class));
             finish();
         }
+
         mRegistrierenBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -103,11 +110,12 @@ public class Register extends AppCompatActivity {
                     return;
                 }
 
-                try {
-                    progressBar.setVisibility(View.VISIBLE);
-                }catch(NullPointerException e){
-                    System.out.print(" Ein Fehler ist aufgetreten");
+                if (!mChBoxAccept.isChecked()){
+                    errorChBox.setError("Du musst den AGBs und der Datenschutzerklärung zustimmen.");
+                    return;
                 }
+
+                progressBar.setVisibility(View.VISIBLE);
 
                 fireAuth.createUserWithEmailAndPassword(email,passwort).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -125,6 +133,7 @@ public class Register extends AppCompatActivity {
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(Register.this, "Fehler! "+e.toString(), Toast.LENGTH_SHORT).show();
                                     Log.d(TAG, "onFailure: " + e.toString());
                                 }
                             });
@@ -170,8 +179,5 @@ public class Register extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), AGBs0.class));
             }
         });
-
-
-
     }
 }

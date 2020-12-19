@@ -19,7 +19,7 @@
                 android:id="@+id/titel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="80dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text="Food For Free"
                 android:textAllCaps="false"
@@ -74,14 +74,13 @@
                 android:id="@+id/registrierenBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:backgroundTint="#FF9800"
                 android:shadowColor="#FFFFFF"
                 android:text="Registrieren"
                 android:textColor="#FFFFFF"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editPasswortKontrolle" />
+                app:layout_constraintTop_toBottomOf="@+id/chBoxAccept" />
 
             <ProgressBar
                 android:id="@+id/ladebalken"
@@ -90,6 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:progressTint="@color/white"
+                android:theme="@style/ProgressBar"
                 android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -160,7 +160,7 @@
                 android:id="@+id/datenschutz0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="8dp"
                 android:text="Datenschutzerklärung"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -171,13 +171,36 @@
                 android:id="@+id/agbs0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:shadowColor="@color/white"
                 android:text="Allgemeine Geschäftsbedingungen"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/datenschutz0" />
+
+            <CheckBox
+                android:id="@+id/chBoxAccept"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
+                android:buttonTint="#FFC107"
+                android:text="Ich akzeptiere mit der Registrierung die geltenen AGBs und die Datenschutzerklärung."
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toEndOf="@+id/editPasswortKontrolle"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/editPasswortKontrolle"
+                app:layout_constraintTop_toBottomOf="@+id/editPasswortKontrolle" />
+
+            <TextView
+                android:id="@+id/errorChBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toEndOf="@+id/chBoxAccept"
+                app:layout_constraintTop_toTopOf="@+id/chBoxAccept" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

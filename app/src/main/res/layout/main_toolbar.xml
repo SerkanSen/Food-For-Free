@@ -24,11 +24,5 @@
         android:textSize="20dp"
         android:textStyle="bold" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="ClickRefresh"
-        android:src="@drawable/ic_refresh"/>
-
 
 </LinearLayout>

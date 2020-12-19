@@ -53,8 +53,6 @@ public class PlacingAd extends AppCompatActivity  {
     EditText pTitle, pDescription, pIngredients;
     EditText pAmount;
     TextInputEditText inputEditBeschreibung;
-    //Spinner pAmount;
-    //int selectedAmount;
     TextView pPickupLocation;
     CheckBox chBoxVeggie, chBoxVegan, chBoxFruitsVegs, chBoxCans, chBoxMeal, chBoxSweets, chBoxSnacks;
     ArrayList <String> sFilterOptions = new ArrayList<>();

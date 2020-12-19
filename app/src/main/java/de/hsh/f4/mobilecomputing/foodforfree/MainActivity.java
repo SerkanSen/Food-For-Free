@@ -177,10 +177,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return;
     }
 
-    public void ClickRefresh(View view) {
-        adapter.startListening();
-    }
-
     //when app updates new data from firestore
     @Override
     protected void onStart() {
