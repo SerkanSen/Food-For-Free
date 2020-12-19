@@ -51,9 +51,6 @@ public class Contact extends AppCompatActivity {
     String [] participants = new String[2];
     Calendar calendar;
     public static final String TAG = "TAG";
-    public static final String EXTRA_ADID = "de.hsh.mobilecomputing.foodforfree.ADID";
-    public static final String EXTRA_IMAGEURL = "de.hsh.mobilecomputing.foodforfree.EXTRA_IMAGE_URL";
-    public static final String EXTRA_OFF_USERID = "de.hsh.mobilecomputing.foodforfree.EXTRA_OFF_USERID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

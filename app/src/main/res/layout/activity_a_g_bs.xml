@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AGBs">
+
+    <include
+        android:id="@+id/toolbar_agbs"
+        layout="@layout/toolbar_agbs" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="52dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_agbs">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="Diese Nutzungsbedingungen gelten ab dem 02. November 2020." />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="Die Food For Free GmbH, Ricklinger Stadtweg 120, 30459 Hannover, betreibt unter der Bezeichnung „Food For Free“ eine deutschsprachige mobile Anwendung.
+\nDiese Allgemeinen Nutzungsbedingungen (im Folgenden „Nutzungsbedingungen“) enthalten die grundlegenden Regeln für die Nutzung der Food For Free App.
+Die Nutzungsbedingungen werden ausschließlich in deutscher Sprache zur Verfügung gestellt.
+" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textStyle="bold"
+                android:text="§ 1 Leistungsbeschreibung und Bewerbung der Anzeigen" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textSize="12sp"
+                android:text="1.	Food For Free stellt mit der App einen Online-Service zur Verfügung, über den der Nutzer als Inserent aus Texten und Bildern bestehende Angebote (im Folgenden „Anzeigen“) erstellen und veröffentlichen sowie als Interessent veröffentlichte Anzeigen anderer Nutzer einsehen kann.
+\n 2.	Bei den beworbenen Anzeigen handelt es sich um eingestellte Lebensmittel oder Speisen, die der Nutzer anderen Nutzern privat verschenkt. Dabei ist jeder Nutzer verpflichtet ausschließlich genießbare Lebensmittel einzustellen. Diese Prüfung muss vor der Einstellung vom Inserenten sowie bei Abholung vom Inserenten und Abholer durchgeführt werden. Sind beide Parteien der Ansicht, dass das Essen genießbar ist, kann es verschenkt werden. Damit verzichtet der Abholer auf jeglichen Schadensersatz oder Schmerzensgeld aufgrund möglicher Lebensmittelvergiftungen o.Ä..
+\n3.	Darüber hinaus ermöglicht die Food For Free App auch den Austausch elektronischer Nachrichten zwischen Inserenten und Interessenten.
+\n4.	Die Food For Free App dient  dem Veröffentlichen von Anzeigen und dem Zusammenführen von Anbietern und Interessenten der eingestellten Lebensmittel. Food For Free ist selbst nicht Anbieter der jeweils mit den Anzeigen eingestellten Produkten.
+\n5.	Im Rahmen der Nachrichtenfunktion wird der bei der Registrierung angegebene Name für den jeweils anderen Chatpartner ersichtlich. Darüber hinaus, kann dort der eigene aktuelle Standort mitgeteilt werden, falls explizit gewünscht und selbstständig entschieden.
+\n6.	Der Kundenservice von Food For Free ist für jeden Nutzer kostenfrei zur Einreichung von Beschwerden und anderen Anfragen zugänglich. Den Kundenservice erreichen die Nutzer unter folgender E-Mailadresse:
+kundenservice@food-for-free.de
+Der Kundenservice dokumentiert eingereichte Beschwerden, prüft diese sorgfältig und wird die ggfs. erforderlichen Maßnahmen innerhalb eines angemessenen Zeitrahmens ergreifen und den Nutzer hierüber bzw. über das Ergebnis des Beschwerdeverfahrens informieren. Food For Free überprüft sein internes Beschwerdemanagementsystem regelmäßig und erstellt hierüber einen Bericht.
+
+\n7.	Food For Free ermöglicht es den Nutzern, die Suchergebnisse anhand verschiedener Kategorien zu filtern (bspw. Vegan, Vegetarisch).
+" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="§ 2 Registrierung, Nutzerkonto"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textSize="12sp"
+                android:text="1.	Für die Nutzung der Food For Free App ist eine Registrierung des Nutzers bei Food For Free erforderlich. Voraussetzung für eine Registrierung ist, dass es sich bei dem Nutzer um eine Privatperson handelt.
+\n2.	Der Nutzer ist verpflichtet, die bei der Registrierung von Food For Free erhobenen Daten wahrheitsgemäß und vollständig anzugeben.
+\n3.	Mit dem Absenden des Registrierungsformulars gibt der Nutzer ein Angebot auf den Abschluss einer Nutzungsvereinbarung mit Food For Free ab, mit dem er die Geltung der Nutzungsbedingungen akzeptiert sowie die Kenntnisnahme der Datenschutzerklärung erklärt. Akzeptiert Food For Free die Registrierung, erhält der Nutzer eine Bestätigungs-E-Mail mit einem personalisierten Link. Mit Zugang der Bestätigungs-E-Mail kommt zwischen Food For Free und dem Nutzer ein Vertrag über die Nutzung der Food For Free (im Folgenden „Nutzungsvertrag“) zustande. Um die Registrierung abzuschließen, muss der Nutzer den mit der Bestätigungs-E-Mail mitgeteilten Link aufrufen und so seine E-Mail-Adresse verifizieren. Ein Anspruch auf Abschluss eines Nutzungsvertrages besteht nicht.
+\n4.	Mit erfolgreicher Registrierung wird für den Nutzer ein Nutzerkonto angelegt, auf das er mit Hilfe seiner E-Mail-Adresse und seines bei der Registrierung gewählten Passwortes zugreifen kann. Das Passwort ist vom Nutzer geheim zu halten und vor dem Zugriff durch unbefugte Dritte geschützt aufzubewahren. Stellt der Nutzer fest oder hegt er den Verdacht, dass seine Zugangsdaten von einem Dritten unbefugt genutzt werden, hat er dies eBay Kleinanzeigen unverzüglich mitzuteilen und sein Passwort unverzüglich zu ändern.
+\n5.	Food For Free behält ferner sich vor, zwecks Verbesserung des Nutzererlebnisses neue oder veränderte Funktionen und Features beschränkt auf bestimmte Nutzergruppen zu testen, soweit dies den Nutzern unter Berücksichtigung der berechtigten Interessen von Food For Free zumutbar ist. Dies kann zu unterschiedlichen Darstellungen bei verschiedenen Nutzern führen.
+\n6.	Der Nutzer erhält eine Übersicht der von ihm veröffentlichten Anzeigen. Diese kann er jederzeit bearbeiten oder löschen.
+\n7.	Im Rahmen des Onlineservices hat Food For Free Zugang zu verschiedenen Informationen über Nutzer, einschließlich personenbezogener Daten. Hierzu gehören insbesondere solche Informationen, die Nutzer im Rahmen der Food For Free App an Food For Free übermitteln (z.B. Kontakt- oder Anzeigeninformationen) sowie solche, die bei der Erbringung und Abwicklung des Services generiert werden (Kommunikation). Nutzer erhalten über die App Informationen, die für die Erbringung des Services erforderlich sind (insbesondere die Nachrichten und Kontaktinformationen eines interessierten Käufers). Nutzer haben über den das Navigationsmenü zudem Zugang zu wichtigen von ihnen übermittelten Informationen (insbesondere unter Nachrichten,  Meine Anzeigen und Profil).
+\n8.	Food For Free gibt die Inserate einschließlich der hierin enthaltenen Informationen über Nutzer sowie andere Informationen aus der Food For Free App nur dann an Dritte weiter bzw. stellt Dritten einen Zugang zu diesen Informationen zur Verfügung, sofern das für die Erbringung des Services erforderlich.
+Über die Verarbeitung personenbezogener Daten durch Food For Free einschließlich der Übermittlung an Dritte und den Rechten des Nutzers als Betroffener informiert Food For Free in der Datenschutzerklärung.
+" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textStyle="bold"
+                android:text="§ 3 Inhaltliche Anforderungen an eingestellte Anzeigen" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textSize="12sp"
+                android:text="1.	Der Nutzer ist verpflichtet, jede Anzeige in die jeweils passende Kategorie einzustellen und sein jeweiliges Angebot wahrheitsgemäß und unter Angabe aller relevanten Merkmale und Eigenschaften mit Worten und möglichst auch durch aussagekräftige Bilder zu beschreiben.
+\n2.	Das Einstellen von Anzeigen, Texten, Bildern oder sonstigen Inhalten, die gegen gesetzliche Bestimmungen, diese Nutzungsbedingungen, Rechte Dritter oder gegen die guten Sitten verstoßen, ist untersagt. Insbesondere ist es verboten, Lebensmittel einzustellen, die nicht mehr genießbar sind.
+" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textStyle="bold"
+                android:text="§ 4 Haftung von Food For Free" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textSize="12sp"
+                android:text="1.	Die in der Food For Free App veröffentlichten Anzeigen werden von Food For Free nicht auf ihre Rechtmäßigkeit, Richtigkeit und Vollständigkeit überprüft. Food For Free übernimmt keine Gewähr für die Richtigkeit und Vollständigkeit der in den Anzeigen enthaltenen Angaben und auch keine Gewähr für die Qualität, Sicherheit oder Genießbarkeit der von Nutzern angebotenen Waren.
+\n2.	Soweit die Haftung von Food For Free ausgeschlossen oder beschränkt ist, gilt dies auch zugunsten der persönlichen Haftung ihrer gesetzlichen Vertreter, leitenden Angestellten und sonstigen Erfüllungsgehilfen.
+" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textStyle="bold"
+                android:text="§ 5 Haftung des Nutzers" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textSize="12sp"
+                android:text="1.	Der Nutzer stellt Food For Free von sämtlichen Ansprüchen frei, die andere Nutzer oder sonstige Dritte wegen einer Verletzung ihrer Rechte durch von dem Nutzer in die Food For Free App eingestellten Anzeigen gegenüber Food For Free geltend machen. Der Nutzer übernimmt hierbei die Kosten der notwendigen Rechtsverteidigung von Food For Free einschließlich sämtlicher Gerichts- und Anwaltskosten in gesetzlicher Höhe. Der Anspruch auf Freistellung besteht nicht, wenn der Nutzer die Rechtsverletzung nicht zu vertreten hat.
+\n2.	Der Nutzer ist verpflichtet, Food For Free im Falle einer Inanspruchnahme durch Dritte auf Anforderung unverzüglich wahrheitsgemäß und vollständig alle Informationen zur Verteidigung zur Verfügung zu stellen, die für die Prüfung der Ansprüche und eine Verteidigung dagegen erforderlich sind.
+\n3.	Eine über diese Regelungen hinausgehende Haftung des Nutzers bleibt unberührt.
+" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

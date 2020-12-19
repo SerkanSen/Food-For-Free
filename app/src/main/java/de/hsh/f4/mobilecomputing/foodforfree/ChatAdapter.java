@@ -14,17 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
-import static de.hsh.f4.mobilecomputing.foodforfree.R.color.weiss;
-import static de.hsh.f4.mobilecomputing.foodforfree.R.color.white;
-
-public class ChatAdapter1 extends FirestoreRecyclerAdapter<Message, ChatAdapter1.ChatHolder> {
+public class ChatAdapter extends FirestoreRecyclerAdapter<Message, ChatAdapter.ChatHolder> {
 
     String currentUserId;
     FirebaseAuth fAuth;
 
-    public ChatAdapter1(@NonNull FirestoreRecyclerOptions<Message> options) {
+    public ChatAdapter(@NonNull FirestoreRecyclerOptions<Message> options) {
         super(options);
     }
 

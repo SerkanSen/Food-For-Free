@@ -40,7 +40,7 @@ public class Datenschutz extends AppCompatActivity {
             dStatus.setTextColor(Color.parseColor("red"));
         }else{
             dStatus.setText("Email verifiziert, Anmelden nun möglich");
-            //dStatus.setTextColor(Color.parseColor("lightgreen"));
+            dStatus.setTextColor(Color.parseColor("lightgreen"));
         }
 
         zustimmenBtn.setOnClickListener(new View.OnClickListener() {

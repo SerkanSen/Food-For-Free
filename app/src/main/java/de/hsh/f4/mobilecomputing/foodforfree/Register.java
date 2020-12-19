@@ -1,6 +1,7 @@
 package de.hsh.f4.mobilecomputing.foodforfree;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -30,7 +31,7 @@ import java.util.Map;
 public class Register extends AppCompatActivity {
     EditText mName,mEMail,mPasswort,mPasswort1,mStadtteil;
     Button mRegistrierenBtn;
-    TextView mLoginBtn;
+    TextView mLoginBtn, mDatenschutzBtn, mAgbBtn;
     FirebaseAuth fireAuth;
     ProgressBar progressBar;
     FirebaseFirestore fStore;
@@ -49,6 +50,11 @@ public class Register extends AppCompatActivity {
         mPasswort1=findViewById(R.id.editPasswortKontrolle);
         mRegistrierenBtn =findViewById(R.id.registrierenBtn);
         mLoginBtn= findViewById(R.id.anmeldenTextView);
+        mLoginBtn.setPaintFlags(mLoginBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        mAgbBtn = findViewById(R.id.agbs0);
+        mAgbBtn.setPaintFlags(mAgbBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        mDatenschutzBtn = findViewById(R.id.datenschutz0);
+        mDatenschutzBtn.setPaintFlags(mDatenschutzBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         mStadtteil= findViewById(R.id.stadtteil);
 
         fireAuth =FirebaseAuth.getInstance();
@@ -68,10 +74,21 @@ public class Register extends AppCompatActivity {
                 String name = mName.getText().toString();
                 String stadtteil = mStadtteil.getText().toString();
 
+                if(TextUtils.isEmpty(name)){
+                    mName.setError("Name wird benötigt.");
+                    return;
+                }
+
                 if(TextUtils.isEmpty(email)){
                     mEMail.setError("Email wird benötigt.");
                     return;
                 }
+
+                if(TextUtils.isEmpty(stadtteil)) {
+                    mStadtteil.setError("Stadtteil wird benötigt.");
+                    return;
+                }
+
                 if(TextUtils.isEmpty(passwort)){
                     mPasswort.setError("Passwort wird benötigt.");
                     return;
@@ -83,11 +100,6 @@ public class Register extends AppCompatActivity {
 
                 if (!passwort.equals(passwort1)){
                     mPasswort1.setError("Die Passwörter stimmen nicht überein.");
-                    return;
-                }
-
-                if(TextUtils.isEmpty(stadtteil)) {
-                    mStadtteil.setError("Stadtteil wird benötigt.");
                     return;
                 }
 
@@ -120,11 +132,12 @@ public class Register extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                   if(task.isSuccessful()) {
-                                      Toast.makeText(Register.this, "Registrierung war erfolgreich", Toast.LENGTH_SHORT).show();
+                                      Toast.makeText(Register.this, "Verifizierungsemail gesendet.", Toast.LENGTH_SHORT).show();
                                   }
                                 }
                             });
-                            startActivity(new Intent(getApplicationContext(),Datenschutz.class));
+                            //startActivity(new Intent(getApplicationContext(),Datenschutz.class));
+                            startActivity(new Intent(getApplicationContext(),MainActivity.class));
 
                         }else{
                             Toast.makeText(Register.this, "Fehler!"+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -143,6 +156,21 @@ public class Register extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), Login.class));
             }
         });
+
+        mDatenschutzBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), PrivacyStatement0.class));
+            }
+        });
+
+        mAgbBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), AGBs0.class));
+            }
+        });
+
 
 
     }

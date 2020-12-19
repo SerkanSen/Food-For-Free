@@ -22,7 +22,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodForFree.NoActionBar">
-        <activity android:name=".Datenschutz"></activity>
+        <activity android:name=".AGBs0"></activity>
+        <activity android:name=".PrivacyStatement0" />
+        <activity android:name=".Datenschutz" />
+        <activity android:name=".AGBs" />
+        <activity android:name=".PrivacyStatement" />
+        <activity android:name=".Information" />
         <activity android:name=".Chat" />
         <activity android:name=".Messages" />
         <activity

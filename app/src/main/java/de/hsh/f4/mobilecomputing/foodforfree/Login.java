@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -22,7 +23,7 @@ public class Login extends AppCompatActivity {
 
     EditText mEmail, mPasswort;
     Button mLoginBtn;
-    TextView mCreateBtn, mAktivitaet, mTitel, mChangePasswordBtn;
+    TextView mRegisterBtn, mAktivitaet, mTitel, mChangePasswordBtn;
     ProgressBar progressBar;
     FirebaseAuth fireAuth;
 
@@ -40,8 +41,10 @@ public class Login extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         fireAuth = FirebaseAuth.getInstance();
         mLoginBtn = findViewById(R.id.registrierenBtn);
-        mCreateBtn = (TextView)findViewById(R.id.registerTextView);
-        mChangePasswordBtn= (TextView)findViewById(R.id.changePasswordTextView);
+        mRegisterBtn = findViewById(R.id.registerTextView);
+        mRegisterBtn.setPaintFlags(mRegisterBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        mChangePasswordBtn= findViewById(R.id.changePasswordTextView);
+        mChangePasswordBtn.setPaintFlags(mChangePasswordBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         mLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,7 +82,7 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        mCreateBtn.setOnClickListener(new View.OnClickListener() {
+        mRegisterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), Register.class));

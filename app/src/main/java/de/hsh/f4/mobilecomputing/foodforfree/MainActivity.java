@@ -136,8 +136,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     String data = s.toString();
                     //ads werden hier leider alphabetisch und nicht nach Zeit sortiert
                     Query querySearch = adRef.orderBy("title").orderBy("timestamp", Query.Direction.DESCENDING).startAt(data).endAt(data+"\uf8ff");
-                    //Query querySearch1 = adRef.orderBy("timestamp", Query.Direction.DESCENDING).orderBy("title").startAt(data).endAt(data+"\uf8ff");
-                    //Query querySearch2 = adRef.whereEqualTo("title", data).orderBy("timestamp", Query.Direction.DESCENDING).startAt(data).endAt(data+"\uf8ff");
                     setUpRecyclerView(querySearch);
                 } else {
                     //bringt leider nichts in Bezug auf Ordnung nach Zeit
@@ -149,11 +147,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void setUpRecyclerView(Query query) {
-        //Query query = adRef.orderBy("timestamp", Query.Direction.DESCENDING);
-
-        //für Filter:
-        //Query query = adRef.orderBy("title").orderBy("timestamp", Query.Direction.DESCENDING).startAt(data).endAt(data+"\uf8ff");
-        //Query query = adRef.whereEqualTo("title", data).orderBy("timestamp", Query.Direction.DESCENDING).startAt(data).endAt(data+"\uf8ff");
 
         FirestoreRecyclerOptions<Ad> options = new FirestoreRecyclerOptions.Builder<Ad>().setQuery(query, Ad.class).build();
 
@@ -245,6 +238,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void ClickMessages(View view) {
         //Redirect activity to MyAds
         redirectActivity(this, Messages.class);
+    }
+    public void ClickInfo(View view) {
+        //Redirect activity to Information
+        redirectActivity(this, Information.class);
     }
 
     public void ClickLogout(View view){

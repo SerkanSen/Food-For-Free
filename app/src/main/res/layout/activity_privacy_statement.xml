@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PrivacyStatement">
+
+    <include
+        android:id="@+id/toolbar_privacy_statement"
+        layout="@layout/toolbar_privacy_statement" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="52dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_agbs">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="In unserer Datenschutzerklärung haben wir alle wesentlichen Informationen über unseren Umgang mit Ihren personenbezogenen Daten und Ihre diesbezüglichen Rechte zusammengestellt.
+\n\nDiese Datenschutzerklärung gilt ab dem 24.07.2020." />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textStyle="bold"
+                android:text="1. Anwendungsbereich und Aktualisierung dieser Datenschutzerklärung" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textSize="12sp"
+                android:text="Diese Datenschutzerklärung gilt für die Nutzung der Food For Free App.
+
+Wir können diese Datenschutzerklärung jederzeit ändern, indem wir die geänderte Fassung auf dieser Website veröffentlichen und den Zeitpunkt des Inkrafttretens der geänderten Fassung angeben. Alle wesentlichen Änderungen dieser Datenschutzerklärung werden Ihnen per E-Mail mitgeteilt, sofern Sie sich bei uns registriert haben.
+" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textStyle="bold"
+                android:text="2. Verantwortlicher" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textSize="12sp"
+                android:text="Food For Free GmbH, Ricklinger Stadtweg 120, 30459 Hannover, ist die Betreiberin der Services und Verantwortliche im Sinne der Datenschutzgrundverordnung (DSGVO). Sofern in dieser Datenschutzerklärung von „wir“ bzw. „unsere“ die Rede ist, ist hiermit immer die Food For Free GmbH als Verantwortliche gemeint." />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textStyle="bold"
+                android:text="3. Datenschutzbeauftragte und Kontakt" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textSize="12sp"
+                android:text="Wir haben eine Datenschutzbeauftragte ernannt, die den Schutz Ihrer personenbezogenen Daten überwacht. Falls Sie eine Frage zu dieser Datenschutzerklärung oder allgemein zum Thema Datenschutz bei Food For Free haben, können Sie sich jederzeit per E-Mail an unsere Datenschutzbeauftragte unter datenschutz@food-for-free.de oder postalisch an unsere oben genannte Postanschrift mit dem Zusatz „Datenschutzbeauftragte“ wenden."/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textStyle="bold"
+                android:text="4. Welche personenbezogenen Daten wir erheben und verarbeiten" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textSize="12sp"
+                android:text="Wir erheben Ihre personenbezogenen Daten, wenn Sie unsere Services nutzen, ein neues Food For Free Konto erstellen, uns Informationen über ein Webformular mitteilen, Informationen zu Ihrem Food For Free Konto hinzufügen oder diese aktualisieren oder auf andere Art und Weise mit uns in Kontakt treten. "/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:text="4.1 Personenbezogene Daten, die Sie bei der Nutzung unserer Services oder bei der Einrichtung eines Food For Free Kontos angeben" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textSize="10sp"
+                android:text="•	Daten, die Sie identifizieren, wie Name, Stadtteil oder E-Mail-Adressen, die Sie bei Eröffnung des Food For Free Kontos oder zu einem späteren Zeitpunkt angeben.
+\n•	Daten zu Anzeigen und solche, die Sie bei einer Transaktion angeben (z.B. Abholadresse), sowie weitere transaktionsbezogene Inhalte, die Sie generieren (z.B. Anzeigen und sonstige Inhalte) oder die sich auf Ihr Food For Free Konto beziehen, die Nutzung der Kontaktfunktion in den Anzeigen.
+\n•	Inhalte, die Sie über unsere Nachrichten-Tools in Nachrichten mit anderen Nutzern austauschen.
+\n•	Sie können uns weitere Informationen über ein Webformular zur Verfügung stellen oder durch Aktualisieren oder Hinzufügen von Daten zu Ihrem Food For Free Konto, Anfragen, durch Anrufe bei unserem Kundenservice, die mit Ihrem Einverständnis aufgezeichnet werden können, oder wenn Sie aus anderen Gründen mit uns bezüglich unserer Services Kontakt aufnehmen.
+\n•	Weitere Daten, zu deren Erfassung und Verarbeitung wir gesetzlich verpflichtet oder berechtigt sind und die wir für Ihre Authentifizierung, Identifizierung oder zur Überprüfung der von uns erhobenen Daten benötigen.
+"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textStyle="bold"
+                android:text="5. Zwecke und Rechtsgrundlagen der Datenverarbeitung sowie Empfänger" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textSize="12sp"
+                android:text="Wir verarbeiten Ihre personenbezogenen Daten zu verschiedenen Zwecken und aufgrund verschiedener Rechtsgrundlagen, die eine solche Verarbeitung erlauben. Wir verarbeiten Ihre personenbezogenen Daten unter anderem, um unsere Services zu erbringen und diese zu verbessern, um Sie zu Ihrem Food For Free Konto und unseren Services zu kontaktieren, um Kundenservice zu erbringen, um rechtswidrige Aktivitäten zu erkennen, zu verhindern, einzudämmen und zu untersuchen.
+Im Folgenden finden Sie eine – nach Rechtsgrundlagen geordnete – Zusammenfassung der Zwecke, zu denen wir Ihre personenbezogenen Daten verarbeiten, einschließlich der Kategorien von Empfängern, an die wir personenbezogene Daten zu den jeweils genannten Zwecken übermitteln:
+"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:text="5.1 Wir verarbeiten Ihre personenbezogenen Daten, um den mit Ihnen geschlossenen Vertrag zu erfüllen und um Ihnen unsere Services zur Verfügung zu stellen (Art. 6 Abs. 1 lit. b) DSGVO). Dies umfasst die folgenden Zwecke:" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textSize="10sp"
+                android:text="•	Verarbeitung von Daten zu Ihrer zu Zwecken des Abschlusses und der Durchführung des Vertrags mit Ihnen.
+\n•	Erbringung unserer Services und deren Nutzung, insbesondere zur Veröffentlichung von Anzeigen und sonstigen Inhalten des Nutzers und um die Qualität und den Erfolg unserer Services zu messen und zu verbessern, unsere Services sicher und einsatzbereit zu halten.
+\n•	Ermöglichung und Durchführung von Transaktionen/Kontaktaufnahme mit anderen Nutzern (einschließlich der Übermittlung Ihrer hierfür erforderlichen personenbezogenen Daten an andere Food For Free Nutzer).
+\n•	Klärung von Problemen mit Ihrem Food For Free Konto und Erbringung sonstiger Leistungen im Rahmen des Kundenservices. Zu diesen Zwecken können wir Sie per Benachrichtigung in Ihrem Food For Free Konto, per E-Mail oder Push-Benachrichtigung auf Ihrem Mobilgerät kontaktieren.
+\n•	Verarbeitung allgemeiner Standortdaten (wie IP-Adresse oder Postleitzahl)
+\n•	Durchsetzung unserer Nutzungsbedingungen und dieser Datenschutzerklärung und anderer Grundsätze.
+"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textStyle="bold"
+                android:text="6. Speicherdauer und Löschung" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textSize="12sp"
+                android:text="Ihre personenbezogenen Daten werden von uns im Einklang mit dem anwendbaren Datenschutzrecht gespeichert, soweit und solange dies für die in dieser Datenschutzerklärung genannten Verarbeitungszwecke erforderlich. Anschließend löschen wir Ihre personenbezogenen Daten gemäß unseren Richtlinien zur Datenaufbewahrung und -löschung oder ergreifen Maßnahmen, um die Daten ordnungsgemäß zu anonymisieren. Etwas Abweichendes gilt dann, wenn wir gesetzlich dazu verpflichtet sind, Ihre personenbezogenen Daten länger aufzubewahren."/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textStyle="bold"
+                android:text="7. Datensicherheit" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textSize="12sp"
+                android:text="Wir schützen Ihre personenbezogenen Daten durch technische und organisatorische Sicherheitsmaßnahmen, um Risiken im Zusammenhang mit deren Verlust, Missbrauch, unberechtigtem Zugriff sowie unberechtigter Weitergabe und Änderung zu minimieren. Hierzu setzen wir beispielsweise Firewalls und Datenverschlüsselung ein, aber auch physische Zutrittsbeschränkungen für unsere Rechenzentren und Berechtigungskontrollen für den Datenzugriff. "/>
+
+
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

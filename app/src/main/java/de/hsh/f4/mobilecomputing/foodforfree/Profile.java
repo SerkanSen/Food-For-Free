@@ -183,6 +183,11 @@ public class Profile extends AppCompatActivity {
         MainActivity.redirectActivity(this, Messages.class);
     }
 
+    public void ClickInfo(View view) {
+        //Redirect activity to Information
+        MainActivity.redirectActivity(this, Information.class);
+    }
+
     public void ClickLogout(View view) {
         //logout
         logout(this);

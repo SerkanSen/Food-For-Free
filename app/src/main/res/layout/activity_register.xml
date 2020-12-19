@@ -13,7 +13,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/titel"
@@ -36,11 +36,13 @@
                 android:id="@+id/stadtteil"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
                 android:ems="10"
                 android:hint="Dein Stadtteil"
                 android:inputType="textPersonName"
                 android:textColor="@color/white"
                 android:textColorHint="#FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/email"
                 app:layout_constraintTop_toBottomOf="@+id/email" />
 
@@ -97,20 +99,24 @@
                 android:id="@+id/passwort"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
                 android:ems="10"
                 android:hint="Passwort"
                 android:inputType="textPassword"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#FFFFFF"
                 android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/stadtteil"
                 app:layout_constraintTop_toBottomOf="@+id/stadtteil" />
 
             <EditText
                 android:id="@+id/editName"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
                 android:ems="10"
                 android:hint="Name"
                 android:inputType="textPersonName"
@@ -125,11 +131,13 @@
                 android:id="@+id/editPasswortKontrolle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
                 android:ems="10"
                 android:hint="Passwort wiederholen"
                 android:inputType="textPassword"
                 android:textColor="@color/white"
                 android:textColorHint="#FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/passwort"
                 app:layout_constraintTop_toBottomOf="@+id/passwort" />
 
@@ -137,14 +145,40 @@
                 android:id="@+id/email"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
                 android:ems="10"
                 android:hint="E-Mail"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/white"
                 android:textColorHint="#FFFFFF"
                 android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/editName"
                 app:layout_constraintTop_toBottomOf="@+id/editName" />
+
+            <TextView
+                android:id="@+id/datenschutz0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Datenschutzerklärung"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ladebalken" />
+
+            <TextView
+                android:id="@+id/agbs0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:shadowColor="@color/white"
+                android:text="Allgemeine Geschäftsbedingungen"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/datenschutz0" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
