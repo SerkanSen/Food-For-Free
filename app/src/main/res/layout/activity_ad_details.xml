@@ -150,7 +150,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/adDetails_filterOptions" />
 
-
+            <ImageButton
+                android:id="@+id/location"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="164dp"
+                android:layout_marginTop="16dp"
+                android:layout_toLeftOf="@id/contactBtn"
+                android:background="@drawable/ic_location"
+                app:layout_constraintStart_toStartOf="@+id/contactBtn"
+                app:layout_constraintTop_toBottomOf="@+id/adDetails_filterOptions" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

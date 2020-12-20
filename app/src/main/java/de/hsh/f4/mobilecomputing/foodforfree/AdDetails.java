@@ -39,15 +39,16 @@ public class AdDetails extends AppCompatActivity {
     protected static final String EXTRA_ADID = "de.hsh.mobilecomputing.foodforfree.ADID";
     protected static final String EXTRA_IMAGEURL = "de.hsh.mobilecomputing.foodforfree.IMAGEURL";
     protected static final String EXTRA_OFF_USERID = "de.hsh.mobilecomputing.foodforfree.OFF_USERID";
+    protected static final String EXTRA_LOCATION = "de.hsh.mobilecomputing.foodforfree.LOCATION";
 
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     StorageReference storageReference;
     TextView title, pickupLocation, description, amount, ingredients, filterOptions;
-    String adUserId, userId;
-    String offeringUserID;
+    String adUserId, userId ;
+    String offeringUserID, location;;
     ImageView image;
-    ImageButton backBtn;
+    ImageButton backBtn, locationBtn;
     Button contactBtn;
     ProgressBar progressBarAdPhoto;
 
@@ -67,6 +68,7 @@ public class AdDetails extends AppCompatActivity {
         progressBarAdPhoto = findViewById(R.id.progressBarAdPhoto);
         contactBtn = findViewById(R.id.contactBtn);
         backBtn = findViewById(R.id.backBtn);
+        locationBtn = findViewById(R.id.location);
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
@@ -89,6 +91,7 @@ public class AdDetails extends AppCompatActivity {
                 if (adUserId.equals(userId)) {
                     Toast.makeText(AdDetails.this, "Deine Anzeige!", Toast.LENGTH_SHORT).show();
                     contactBtn.setVisibility(View.INVISIBLE);
+                    locationBtn.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -145,6 +148,16 @@ public class AdDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AdDetails.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        locationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AdDetails.this, MapsActivity.class);
+                location=pickupLocation.getText().toString();
+                intent.putExtra(EXTRA_LOCATION, location);
                 startActivity(intent);
             }
         });

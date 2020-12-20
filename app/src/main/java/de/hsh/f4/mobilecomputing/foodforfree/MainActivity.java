@@ -107,13 +107,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         }));
 
-        standort.setOnClickListener((new View.OnClickListener() {
+        /*standort.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mainActivity, MapsActivity.class);
                 startActivity(intent);
             }
-        }));
+        }));*/
 
         Query queryAll = adRef.orderBy("timestamp", Query.Direction.DESCENDING);
         setUpRecyclerView(queryAll);

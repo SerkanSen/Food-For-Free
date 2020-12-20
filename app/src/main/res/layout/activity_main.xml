@@ -33,9 +33,11 @@
             android:id="@+id/standort"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Standortsuche"
+            android:text="Die verfügbaren Anzeigen:"
+            android:background="@color/orange"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/inputSearch" />
+            app:layout_constraintTop_toBottomOf="@+id/inputSearch"/>
+        <!-- text: vorher Button Standortsuche-->
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
