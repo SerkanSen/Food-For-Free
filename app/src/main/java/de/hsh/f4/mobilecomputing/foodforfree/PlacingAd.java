@@ -239,6 +239,7 @@ public class PlacingAd extends AppCompatActivity  {
             Picasso.get()
                     .load(imageUri)
                     .fit()
+                    .rotate(90)
                     .centerCrop()
                     .into(pAdPhoto);
         }

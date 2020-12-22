@@ -78,6 +78,7 @@
         android:backgroundTint="#FF9800"
         android:shadowColor="#FFFFFF"
         android:text="Anmelden"
+        android:fontFamily="sans-serif-condensed-medium"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

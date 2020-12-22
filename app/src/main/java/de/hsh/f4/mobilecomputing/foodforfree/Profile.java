@@ -10,6 +10,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -25,9 +26,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -45,12 +49,13 @@ import java.util.Locale;
 public class Profile extends AppCompatActivity {
     //Initialize variable
     DrawerLayout drawerLayout;
-    TextView name, email, tName, tEmail, tAdresse;
+    TextView name, email, tName, tEmail, tAdresse, verfication;
     ImageView profilePhoto;
-    Button editProfileBtn;
+    Button editProfileBtn, sendVerificationBtn;
     StorageReference storageReference;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
+    FirebaseUser fUser;
     String userId;
     Button bestätigen;
     EditText standort;
@@ -71,10 +76,12 @@ public class Profile extends AppCompatActivity {
         tAdresse = findViewById(R.id.tStadtteil);
         name = findViewById(R.id.profileName);
         email = findViewById(R.id.profileMail);
+        verfication = findViewById(R.id.emailVerification);
         progressBarProfileImage = findViewById(R.id.progressBarProfileImage);
 
         profilePhoto = findViewById(R.id.profilePhoto);
         editProfileBtn = findViewById(R.id.updateProfileBtn);
+        sendVerificationBtn = findViewById(R.id.sendVerificationBtn);
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
@@ -83,6 +90,15 @@ public class Profile extends AppCompatActivity {
         //bestätigen = findViewById(R.id.bestätigen);
 
         final Profile profile = this;
+
+        fUser= fAuth.getCurrentUser();
+        boolean emailVerify = fUser.isEmailVerified();
+
+
+        if(!emailVerify){
+            verfication.setText("Email noch nicht verifiziert");
+            verfication.setTextColor(Color.parseColor("red"));
+        }
 
        // standort = (EditText) findViewById(R.id.standort);
         profileAdress = (TextView) findViewById(R.id.profileAdress);
@@ -147,6 +163,20 @@ public class Profile extends AppCompatActivity {
                 Intent intent = new Intent(profile, EditProfile.class);
                 startActivity(intent);
                 //startActivity(new Intent(getApplicationContext(),EditProfile.class));
+            }
+        });
+
+        sendVerificationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()) {
+                            Toast.makeText(Profile.this, "Verifizierungsemail gesendet.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
 

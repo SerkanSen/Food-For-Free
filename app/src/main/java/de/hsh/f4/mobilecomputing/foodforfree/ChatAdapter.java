@@ -34,9 +34,8 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Message, ChatAdapter.C
         currentUserId = fAuth.getCurrentUser().getUid();
         if(model.getSender().equals(currentUserId)) {
             holder.cardView.setBackgroundResource(R.color.green);
-            holder.textViewMessage.setTextColor(Color.parseColor("white"));
-            //holder.textViewUserName.setTextColor(Color.parseColor("white"));
             holder.textViewUserName.setText("");
+            holder.textViewMessage.setTextColor(Color.parseColor("white"));
             holder.textViewTimestamp.setTextColor(Color.parseColor("white"));
         }
     }
