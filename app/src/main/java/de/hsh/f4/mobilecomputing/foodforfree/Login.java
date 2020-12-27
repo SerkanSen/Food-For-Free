@@ -19,6 +19,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.math.BigInteger;
+
 public class Login extends AppCompatActivity {
 
     EditText mEmail, mPasswort;
@@ -27,7 +29,7 @@ public class Login extends AppCompatActivity {
     ProgressBar progressBar;
     FirebaseAuth fireAuth;
 
-    String email;
+    String email, md5Password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,14 +62,22 @@ public class Login extends AppCompatActivity {
                     mPasswort.setError("Passwort wird benötigt.");
                     return;
                 }
-                if (passwort.length() < 6) {
-                    mPasswort.setError("Passwort muss 6 Zeichen lang sein");
-                    return;
+
+                byte[] md5Input = passwort.getBytes();
+                BigInteger md5Data= null;
+
+                try{
+                    md5Data =new BigInteger(1,md5.encryptMD5(md5Input));
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
+
+                md5Password = md5Data.toString();
+
 
                 progressBar.setVisibility(View.VISIBLE);
 
-                fireAuth.signInWithEmailAndPassword(email, passwort).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                fireAuth.signInWithEmailAndPassword(email, md5Password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){

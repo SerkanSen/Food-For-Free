@@ -59,10 +59,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         searchView = findViewById(R.id.searchView);
 
-        Intent intent = getIntent();
-        String location = intent.getStringExtra(AdDetails.EXTRA_LOCATION);
-        searchView.setQuery("Hannover "+location, true);
 
+            Intent intent = getIntent();
+            String location = intent.getStringExtra(AdDetails.EXTRA_LOCATION);
+        if(location !=null){
+            searchView.setQuery("Hannover "+location, true);
+        }
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
@@ -76,14 +78,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Geocoder geocoder = new Geocoder(MapsActivity.this);
                     try {
                         addressList = geocoder.getFromLocationName(location,1);
-                    }catch (IOException e){
-                        e.printStackTrace();
-                    }
+
                     Address address=addressList.get(0);
                     LatLng latLng=new LatLng(address.getLatitude(), address.getLongitude());
                     mMap.addMarker(new MarkerOptions().position(latLng).title(location));
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14));
-
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        Toast.makeText(MapsActivity.this,"Bitte existierenden Ort eingeben \n oder Ortsangabe präzisieren.",Toast.LENGTH_SHORT).show();
+                    }
                 }
                 return false;
             }

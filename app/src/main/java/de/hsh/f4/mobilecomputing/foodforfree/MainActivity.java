@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         }));
 
+        //StandortButton für Anzeige aller Inserate auf der Map für spätere Umkreissuche  , fürs Erste funktionslos umbenannt in "die verfügbaren Anzeigen"
         /*standort.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {

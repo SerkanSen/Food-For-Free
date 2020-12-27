@@ -158,7 +158,8 @@ public class AdDetails extends AppCompatActivity {
                 Intent intent = new Intent(AdDetails.this, MapsActivity.class);
                 location=pickupLocation.getText().toString();
                 intent.putExtra(EXTRA_LOCATION, location);
-                startActivity(intent);
+                startActivity(intent)
+                ;
             }
         });
 
