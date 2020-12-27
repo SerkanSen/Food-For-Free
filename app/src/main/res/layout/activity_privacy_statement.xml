@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:text="In unserer Datenschutzerklärung haben wir alle wesentlichen Informationen über unseren Umgang mit Ihren personenbezogenen Daten und Ihre diesbezüglichen Rechte zusammengestellt.
-\n\nDiese Datenschutzerklärung gilt ab dem 24.07.2020." />
+\n\nDiese Datenschutzerklärung gilt ab dem 02.11.2020." />
 
             <TextView
                 android:layout_width="match_parent"

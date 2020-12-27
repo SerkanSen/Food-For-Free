@@ -12,5 +12,6 @@
     <color name="red">#FF0000</color>
     <color name="green_light">#70f050</color>
     <color name="orange"> #FFC107</color>
+    <color name="lightorgange">#59FFC107</color>
 
 </resources>

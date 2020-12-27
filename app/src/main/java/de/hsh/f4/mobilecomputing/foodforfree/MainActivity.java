@@ -92,11 +92,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         spinner.setAdapter(adapterFilter);
         spinner.setOnItemSelectedListener(this);
 
-        fAuth = FirebaseAuth.getInstance();
-        userId = fAuth.getCurrentUser().getUid();
-
-
         final MainActivity mainActivity = this;
+
+        fAuth = FirebaseAuth.getInstance();
+        try {
+            userId = fAuth.getCurrentUser().getUid();
+        } catch (NullPointerException e) {
+            startActivity(new Intent(this, Login.class));
+        }
 
         //newAdBtn -> new activity PlacingAd
         newAdBtn.setOnClickListener((new View.OnClickListener() {

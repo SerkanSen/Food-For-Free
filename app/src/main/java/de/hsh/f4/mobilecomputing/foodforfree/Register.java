@@ -34,7 +34,6 @@ public class Register extends AppCompatActivity {
     EditText mName,mEMail,mPasswort,mPasswort1,mStadtteil;
     Button mRegistrierenBtn;
     CheckBox mChBoxAccept;
-    Boolean accepted = false;
     TextView mLoginBtn, mDatenschutzBtn, mAgbBtn, errorChBox;
     FirebaseAuth fireAuth;
     ProgressBar progressBar;
@@ -55,7 +54,6 @@ public class Register extends AppCompatActivity {
 
         mRegistrierenBtn =findViewById(R.id.registrierenBtn);
         mChBoxAccept = findViewById(R.id.chBoxAccept);
-        errorChBox = findViewById(R.id.errorChBox);
         mLoginBtn= findViewById(R.id.anmeldenTextView);
         mLoginBtn.setPaintFlags(mLoginBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         mAgbBtn = findViewById(R.id.agbs0);
@@ -103,7 +101,7 @@ public class Register extends AppCompatActivity {
                     return;
                 }
                 if (passwort.length() < 6) {
-                    mPasswort.setError("Passwort muss 6 Zeichen lang sein");
+                    mPasswort.setError("Passwort muss min. 6 Zeichen lang sein.");
                     return;
                 }
 
@@ -113,7 +111,7 @@ public class Register extends AppCompatActivity {
                 }
 
                 if (!mChBoxAccept.isChecked()){
-                    errorChBox.setError("Du musst den AGBs und der Datenschutzerklärung zustimmen.");
+                    mChBoxAccept.setError("Du musst den AGBs und der Datenschutzerklärung zustimmen.");
                     return;
                 }
 

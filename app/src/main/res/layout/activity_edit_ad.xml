@@ -55,6 +55,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="32dp"
             android:text="Bild hochladen"
+            android:fontFamily="sans-serif-condensed-medium"
             app:layout_constraintStart_toEndOf="@+id/adPhoto"
             app:layout_constraintTop_toTopOf="@+id/adPhoto" />
 
@@ -228,6 +229,7 @@
             android:layout_marginTop="32dp"
             android:text="Anzeige aktualisieren"
             android:textStyle="bold"
+            android:fontFamily="sans-serif-condensed-medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/chBoxSnacks" />
@@ -261,6 +263,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="5dp"
             android:text="Kamera benutzen"
+            android:fontFamily="sans-serif-condensed-medium"
             app:layout_constraintStart_toEndOf="@+id/adPhoto"
             app:layout_constraintTop_toBottomOf="@+id/uploadAdPhotoBtn" />
 
@@ -273,15 +276,6 @@
             android:inputType="number"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textView15"
-            app:layout_constraintTop_toBottomOf="@+id/textView15" />
-
-        <Spinner
-            android:id="@+id/spinnerAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:visibility="invisible"
             app:layout_constraintStart_toStartOf="@+id/textView15"
             app:layout_constraintTop_toBottomOf="@+id/textView15" />
 

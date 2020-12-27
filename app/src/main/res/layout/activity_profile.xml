@@ -92,6 +92,7 @@
                     android:layout_marginBottom="16dp"
                     android:text="Profildaten bearbeiten"
                     android:textSize="14sp"
+                    android:fontFamily="sans-serif-condensed-medium"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/profileAdress" />
@@ -128,6 +129,42 @@
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="@+id/profileName"
                     app:layout_constraintTop_toBottomOf="@+id/profileName" />
+
+                <TextView
+                    android:id="@+id/emailVerification"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="E-Mail verifiziert"
+                    android:textColor="@color/green_light"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/profilePhoto"
+                    app:layout_constraintStart_toStartOf="@+id/textView4"
+                    app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Status"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/profilePhoto"
+                    app:layout_constraintTop_toTopOf="@+id/profilePhoto" />
+
+                <Button
+                    android:id="@+id/sendVerificationBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="sans-serif-condensed-medium"
+                    android:text="Verifizierungsemail erneut senden"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/updateProfileBtn" />
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
