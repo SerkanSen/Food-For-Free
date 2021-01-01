@@ -29,7 +29,7 @@ public class Login extends AppCompatActivity {
     ProgressBar progressBar;
     FirebaseAuth fireAuth;
 
-    String email, md5Password;
+    String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,21 +63,11 @@ public class Login extends AppCompatActivity {
                     return;
                 }
 
-                byte[] md5Input = passwort.getBytes();
-                BigInteger md5Data= null;
-
-                try{
-                    md5Data =new BigInteger(1,md5.encryptMD5(md5Input));
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-
-                md5Password = md5Data.toString();
 
 
                 progressBar.setVisibility(View.VISIBLE);
 
-                fireAuth.signInWithEmailAndPassword(email, md5Password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                fireAuth.signInWithEmailAndPassword(email, passwort).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){

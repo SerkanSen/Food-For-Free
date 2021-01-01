@@ -38,7 +38,7 @@ public class Register extends AppCompatActivity {
     FirebaseAuth fireAuth;
     ProgressBar progressBar;
     FirebaseFirestore fStore;
-    String userID, md5Password;;
+    String userID;
     public static final String TAG = "TAG";
 
 
@@ -117,23 +117,9 @@ public class Register extends AppCompatActivity {
 
                 progressBar.setVisibility(View.VISIBLE);
 
-                if (passwort.equals(passwort1)) {
-
-                    byte[] md5Input = passwort.getBytes();
-                    BigInteger md5Data= null;
-
-                    try{
-                        md5Data =new BigInteger(1,md5.encryptMD5(md5Input));
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-
-                    md5Password = md5Data.toString();
-
-                }
 
 
-                fireAuth.createUserWithEmailAndPassword(email,md5Password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                fireAuth.createUserWithEmailAndPassword(email,passwort).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
