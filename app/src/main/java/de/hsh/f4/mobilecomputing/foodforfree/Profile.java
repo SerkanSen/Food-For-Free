@@ -98,6 +98,8 @@ public class Profile extends AppCompatActivity {
         if(!emailVerify){
             verfication.setText("Email noch nicht verifiziert");
             verfication.setTextColor(Color.parseColor("red"));
+        }else{
+            sendVerificationBtn.setVisibility(View.GONE);
         }
 
        // standort = (EditText) findViewById(R.id.standort);
