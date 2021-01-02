@@ -1,4 +1,5 @@
- package de.hsh.f4.mobilecomputing.foodforfree;
+//Dieser Code wurde erstellt von Serkan Şen
+package de.hsh.f4.mobilecomputing.foodforfree;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

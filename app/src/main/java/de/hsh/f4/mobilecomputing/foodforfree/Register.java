@@ -1,3 +1,4 @@
+//Dieser Code wurde erstellt von Laura Nguyen und Serkan Şen
 package de.hsh.f4.mobilecomputing.foodforfree;
 
 import android.content.Intent;

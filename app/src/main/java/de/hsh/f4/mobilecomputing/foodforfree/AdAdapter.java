@@ -1,3 +1,4 @@
+//Dieser Code wurde erstellt von Laura Nguyen
 package de.hsh.f4.mobilecomputing.foodforfree;
 
 import android.view.LayoutInflater;

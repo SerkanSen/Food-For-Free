@@ -1,11 +1,10 @@
+//Dieser Code wurde erstellt von Laura Nguyen und Serkan Şen
 package de.hsh.f4.mobilecomputing.foodforfree;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,8 +14,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -27,12 +24,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-
-import java.util.List;
-
-import static de.hsh.f4.mobilecomputing.foodforfree.MainActivity.EXTRA_ADID;
-import static de.hsh.f4.mobilecomputing.foodforfree.MainActivity.EXTRA_IMAGEURL;
-import static de.hsh.f4.mobilecomputing.foodforfree.MainActivity.EXTRA_OFF_USERID;
 
 public class AdDetails extends AppCompatActivity {
 

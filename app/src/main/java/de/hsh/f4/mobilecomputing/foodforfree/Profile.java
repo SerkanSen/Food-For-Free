@@ -1,3 +1,4 @@
+//Dieser Code wurde erstellt von Laura Nguyen und Serkan Şen
 package de.hsh.f4.mobilecomputing.foodforfree;
 
 import androidx.annotation.NonNull;
@@ -50,7 +51,7 @@ import java.util.Locale;
 public class Profile extends AppCompatActivity {
     //Initialize variable
     DrawerLayout drawerLayout;
-    TextView name, email, tName, tEmail, tAdresse, verfication;
+    TextView name, email, verfication;
     ImageView profilePhoto;
     Button editProfileBtn, sendVerificationBtn;
     StorageReference storageReference;
@@ -58,8 +59,6 @@ public class Profile extends AppCompatActivity {
     FirebaseFirestore fStore;
     FirebaseUser fUser;
     String userId;
-    Button bestätigen;
-    EditText standort;
     TextView profileAdress;
     ProgressBar progressBarProfileImage;
 
@@ -72,9 +71,6 @@ public class Profile extends AppCompatActivity {
 
         //Assign variable
         drawerLayout = findViewById(R.id.drawer_layout);
-        //tName = findViewById(R.id.tName);
-        //tEmail = findViewById(R.id.tEmail);
-        //tAdresse = findViewById(R.id.tStadtteil);
         name = findViewById(R.id.profileName);
         email = findViewById(R.id.profileMail);
         verfication = findViewById(R.id.emailVerification);
@@ -87,8 +83,6 @@ public class Profile extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
-
-        //bestätigen = findViewById(R.id.bestätigen);
 
         final Profile profile = this;
 

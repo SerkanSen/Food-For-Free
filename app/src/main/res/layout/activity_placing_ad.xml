@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+<!-- Dieser Code wurde erstellt von Laura Nguyen-->
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -18,26 +18,6 @@
             android:text="Mein Profil"
             tools:layout_editor_absoluteX="48dp"
             tools:layout_editor_absoluteY="40dp" />
-
-        <!--<com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/text_input_des"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:counterEnabled="true"
-            app:counterMaxLength="15"
-            app:errorEnabled="true"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/placeAdBtn">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Beschreibung"
-                android:inputType="text" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-        -->
 
         <ImageView
             android:id="@+id/adPhoto"
