@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -30,6 +31,7 @@ public class MessageAdapter extends FirestoreRecyclerAdapter<Message, MessageAda
     private ProgressBar progressBarAdItemPhoto;
     FirebaseAuth fAuth;
     String currentUserId;
+    protected static final String EXTRA_IMAGEURL = "https://firebasestorage.googleapis.com/v0/b/food-for-free-9663f.appspot.com/o/ads%2FAnzeigenbild%20ge%C3%A4ndert.JPG?alt=media&token=acf0eccf-be20-4435-b336-5bf00e32d8dc";
 
     public MessageAdapter(@NonNull FirestoreRecyclerOptions<Message> options) {
         super(options);
@@ -62,8 +64,22 @@ public class MessageAdapter extends FirestoreRecyclerAdapter<Message, MessageAda
                     }
 
                     @Override
-                    public void onError(Exception e) {
+                    public void onError(Exception e) { //Falls Bild geändert wurde, wird ein Defaultbild: "Anzeigenbild wurde geändert" angezeigt
+                        Picasso.get()
+                                .load(EXTRA_IMAGEURL)
+                                .fit()
+                                .centerCrop()
+                                .into(holder.imageViewAdPhoto, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        progressBarAdItemPhoto.setVisibility(View.GONE);
+                                    }
 
+                                    @Override
+                                    public void onError(Exception e) {
+
+                                    }
+                                });
                     }
                 });
 

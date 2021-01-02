@@ -40,8 +40,6 @@ public class Standort {
                         result =locationAddress;// + "\n\n\nLatitude And Longitude"+result;
                         bundle.putString("address", result);
                         message.setData(bundle);
-
-
                     }
                     message.sendToTarget();
                 }

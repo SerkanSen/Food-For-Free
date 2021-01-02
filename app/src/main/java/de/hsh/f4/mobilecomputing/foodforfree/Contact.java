@@ -47,7 +47,7 @@ public class Contact extends AppCompatActivity {
     EditText message;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
-    String adTitle, interestedUserID, interestedUserName, offeringUserName , msgId;
+    String adTitle, interestedUserID, interestedUserName, offeringUserName , msgId, adId, imageUrl, offeringUserID;
     String [] participants = new String[2];
     Calendar calendar;
     public static final String TAG = "TAG";
@@ -68,9 +68,9 @@ public class Contact extends AppCompatActivity {
 
         //get Intent and adId from clicked itemview
         Intent intent = getIntent();
-        String adId = intent.getStringExtra(AdDetails.EXTRA_ADID);
-        String imageUrl = intent.getStringExtra(AdDetails.EXTRA_IMAGEURL);
-        String offeringUserID = intent.getStringExtra(AdDetails.EXTRA_OFF_USERID);
+        adId = intent.getStringExtra(AdDetails.EXTRA_ADID);
+        imageUrl = intent.getStringExtra(AdDetails.EXTRA_IMAGEURL);
+        offeringUserID = intent.getStringExtra(AdDetails.EXTRA_OFF_USERID);
 
         DocumentReference adRef = fStore.collection("ads").document(adId);
         adRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
@@ -121,9 +121,13 @@ public class Contact extends AppCompatActivity {
         DocumentReference documentReference = fStore.collection("chats").document();
 
         calendar = Calendar.getInstance();
-        //String timestamp = DateFormat.getDateInstance().format(calendar.getTime());
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        //Für die Sortierung
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String timestamp = simpleDateFormat.format(calendar.getTime());
+        //Für die Anzeige der Zeit
+        SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        String messageTime = simpleDateFormat1.format(calendar.getTime());
+
 
         msgId = documentReference.getId();
         Map<String, Object> chat = new HashMap<>();
@@ -140,11 +144,12 @@ public class Contact extends AppCompatActivity {
         chat.put("offeringUserID", offeringUserID);
         chat.put("offeringUser", offeringUserName);
         chat.put("timestamp", timestamp);
-        chat.put("lastTimestamp", timestamp);
+        chat.put("lastTimestamp", messageTime);
+        chat.put("messageTime", messageTime);
         chat.put("participants", Arrays.asList(participants));
 
         documentReference.set(chat).addOnSuccessListener((OnSuccessListener) (aVoid) -> {
-            //Log.d(TAG, "onSuccess: Anzeige erfolgreich erstellt!");
+            Log.d(TAG, "onSuccess: Nachricht erfolgreich gesendet!");
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
@@ -156,7 +161,6 @@ public class Contact extends AppCompatActivity {
         intent.putExtra(AdDetails.EXTRA_IMAGEURL, imageUrl);
         intent.putExtra(AdDetails.EXTRA_OFF_USERID, offeringUserID);
         startActivity(intent);
-        //startActivity(new Intent(getApplicationContext(), AdDetails.class));
     }
 
     public void ClickClose(View view){
@@ -170,7 +174,12 @@ public class Contact extends AppCompatActivity {
         builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                startActivity(new Intent(getApplicationContext(), AdDetails.class));
+                //startActivity(new Intent(getApplicationContext(), AdDetails.class));
+                Intent intent = new Intent(Contact.this, AdDetails.class);
+                intent.putExtra(AdDetails.EXTRA_ADID, adId);
+                intent.putExtra(AdDetails.EXTRA_IMAGEURL, imageUrl);
+                intent.putExtra(AdDetails.EXTRA_OFF_USERID, offeringUserID);
+                startActivity(intent);
             }
         });
         //negative button

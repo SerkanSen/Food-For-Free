@@ -33,7 +33,7 @@ import static de.hsh.f4.mobilecomputing.foodforfree.MyAds.EXTRA_AD_ID;
 import static de.hsh.f4.mobilecomputing.foodforfree.MyAds.EXTRA_IMAGE_URL;
 
 
-public class MyAdsDetails extends AppCompatActivity {
+public class  MyAdsDetails extends AppCompatActivity {
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     StorageReference storageReference;
@@ -41,7 +41,7 @@ public class MyAdsDetails extends AppCompatActivity {
     ImageView image;
     ImageButton backBtn;
     ProgressBar progressBarAdPhoto;
-    Button editAd, deleteAd;
+    Button editAdBtn, deleteAdBtn;
     DocumentReference documentReference;
 
     @Override
@@ -56,8 +56,8 @@ public class MyAdsDetails extends AppCompatActivity {
         ingredients = findViewById(R.id.adDetails_ingredients);
         filterOptions = findViewById(R.id.adDetails_filterOptions);
         image = findViewById(R.id.adDetails_image);
-        deleteAd =findViewById(R.id.deleteAd);
-        editAd =findViewById(R.id.editAd);
+        deleteAdBtn =findViewById(R.id.deleteAd);
+        editAdBtn =findViewById(R.id.editAd);
         progressBarAdPhoto = findViewById(R.id.progressBarAdPhoto);
         backBtn = findViewById(R.id.backBtn);
 
@@ -97,35 +97,32 @@ public class MyAdsDetails extends AppCompatActivity {
                 description.setText(documentSnapshot.getString("description"));
                 amount.setText(documentSnapshot.getString("amount"));
                 ingredients.setText(documentSnapshot.getString("ingredients"));
-                //(documentSnapshot.getString("filterOptions"));
                 filterOptions.setText(documentSnapshot.getString("filterOptions"));
             }
         });
 
-        editAd.setOnClickListener(new View.OnClickListener() {
+        editAdBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intent = getIntent();
+                //Intent intent = getIntent();
+                //String adId = intent.getStringExtra(MainActivity.EXTRA_ADID);
+                //String imageUrl = intent.getStringExtra(EXTRA_IMAGE_URL);
 
-                String adId = intent.getStringExtra(MainActivity.EXTRA_ADID);
-                String imageUrl = intent.getStringExtra(EXTRA_IMAGE_URL);
-
-                intent = new Intent(MyAdsDetails.this, EditAd.class);
+                Intent intent = new Intent(MyAdsDetails.this, EditAd.class);
                 intent.putExtra(EXTRA_AD_ID, adId);
                 intent.putExtra(EXTRA_IMAGE_URL, imageUrl);
                 startActivity(intent);
             }
-
         });
 
-        deleteAd.setOnClickListener(new View.OnClickListener() {
+        deleteAdBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MyAdsDetails.this,"Für Löschung Button länger drücken", Toast.LENGTH_SHORT).show();
             }
         });
-        deleteAd.setOnLongClickListener(new View.OnLongClickListener() {
+        deleteAdBtn.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 //Initialze Alert Dialog
@@ -138,23 +135,19 @@ public class MyAdsDetails extends AppCompatActivity {
                 builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        try {Intent intent = getIntent();
+                        try {
+                            //Intent intent = getIntent();
                             //Löschen des Dokuments und des Fotos
                             documentReference = fStore.collection("ads").document(adId);
                             documentReference.delete();
-                            //documentReference = fStore.collection("chats").document();
-                            //deleteMessages(adId);
-                            //Query docRef = fStore.collection("chats").whereEqualTo("adID", adId);
                             StorageReference fileRef = storageReference.child("ads/"+adId+"/adPhoto.jpg");
                             fileRef.delete();
-
                         }catch (Exception e) {
                             Toast.makeText(MyAdsDetails.this, "Anzeige nicht vorhanden", Toast.LENGTH_SHORT).show();
                         }
                         if (documentReference != null) {
                             Toast.makeText(MyAdsDetails.this, "Anzeige wurde gelöscht", Toast.LENGTH_SHORT).show();
                         }
-
                         startActivity(new Intent(getApplicationContext(), MyAds.class));
                     }
                 });
@@ -167,6 +160,7 @@ public class MyAdsDetails extends AppCompatActivity {
                 });
                 builder.show();
                 //startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                //?
                 return false;
             }
         });
@@ -176,19 +170,6 @@ public class MyAdsDetails extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MyAdsDetails.this, MyAds.class);
                 startActivity(intent);
-            }
-        });
-    }
-
-    private void deleteMessages(String adId) {
-        DocumentReference documentReference1 = fStore.collection("chats").document("%");
-        documentReference1.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                if(value.getString("adID").equals(adId)){
-                    documentReference1.delete();
-                }
-                String messageAdId = value.getString("adID");
             }
         });
     }

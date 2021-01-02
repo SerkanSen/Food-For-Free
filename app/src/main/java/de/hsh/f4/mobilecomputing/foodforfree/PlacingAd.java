@@ -49,23 +49,20 @@ import java.util.List;
 import java.util.Map;
 
 public class PlacingAd extends AppCompatActivity  {
-    //implements AdapterView.OnItemSelectedListener
     EditText pTitle, pDescription, pIngredients;
     EditText pAmount;
-    TextInputEditText inputEditBeschreibung;
     TextView pPickupLocation;
     CheckBox chBoxVeggie, chBoxVegan, chBoxFruitsVegs, chBoxCans, chBoxMeal, chBoxSweets, chBoxSnacks;
     ArrayList <String> sFilterOptions = new ArrayList<>();
     String [] categories = new String[7];
-    Button pPlaceAdBtn, pUploadAdPhotoBtn, pMakePic;
+    Button pPlaceAdBtn, pUploadAdPhotoBtn, pTakePicBtn;
     Calendar calendar;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
-    String userId, adId;
+    String userId, adId, currentPhotoPath;
     ImageView pAdPhoto;
     Uri imageUri;
     StorageReference storageReference;
-    public static final String EXTRA_AMOUNT = "";
     public static final String TAG = "TAG";
     public static final String DEFAULT_URL = "https://firebasestorage.googleapis.com/v0/b/food-for-free-9663f.appspot.com/o/ads%2FDefault%20Bild.jpg?alt=media&token=57a564e3-006c-4146-b793-cf4346a8f07a";
 
@@ -76,17 +73,9 @@ public class PlacingAd extends AppCompatActivity  {
         setContentView(R.layout.activity_placing_ad);
 
         pTitle = findViewById(R.id.editTitle);
-        //inputEditBeschreibung = findViewById(R.id.text_input_des);
         pDescription = findViewById(R.id.editDescription);
         pIngredients = findViewById(R.id.editIngredients);
-
         pAmount = findViewById(R.id.editAmount);
-        /*pAmount = findViewById(R.id.spinnerAmount);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.numbers, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        pAmount.setAdapter(adapter);
-        pAmount.setOnItemSelectedListener(this);*/
-
         pPickupLocation = findViewById(R.id.pickupLocation);
         chBoxVeggie = findViewById(R.id.chBoxVeggie);
         chBoxVegan = findViewById(R.id.chBoxVegan);
@@ -102,6 +91,7 @@ public class PlacingAd extends AppCompatActivity  {
 
         userId = fAuth.getCurrentUser().getUid();
 
+        //Voreinstellung von Abholort = Stadtteil
         DocumentReference userRef = fStore.collection("users").document(userId);
         userRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
@@ -113,7 +103,7 @@ public class PlacingAd extends AppCompatActivity  {
         pPlaceAdBtn = findViewById(R.id.placeAdBtn);
         pAdPhoto = findViewById(R.id.adPhoto);
         pUploadAdPhotoBtn = findViewById(R.id.uploadAdPhotoBtn);
-        pMakePic = findViewById(R.id.makePic);
+        pTakePicBtn = findViewById(R.id.makePic);
 
         pUploadAdPhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,14 +114,12 @@ public class PlacingAd extends AppCompatActivity  {
                 startActivityForResult(openGalleryIntent, 1000);
             }
         });
-        pMakePic.setOnClickListener(new View.OnClickListener() {
+        pTakePicBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dispatchTakePictureIntent();
             }
         });
-
-
 
         pPlaceAdBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,9 +133,10 @@ public class PlacingAd extends AppCompatActivity  {
                 String filterOptions;
                 List<String> filterCat = Arrays.asList(categories);
 
-                //Zeitstempel erstellen
+                //Zeitstempel erstellen für Sortierung
                 calendar = Calendar.getInstance();
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String timestamp = simpleDateFormat.format(calendar.getTime());
 
                 //Fehlerüberprüfung
@@ -174,15 +163,13 @@ public class PlacingAd extends AppCompatActivity  {
                     return;
                 }
 
-
                 //ArrayList mit den angeklickten Checkboxen als einen String speichern
                 StringBuilder stringBuilder = new StringBuilder();
                 for (String s : sFilterOptions)
                     stringBuilder.append("- ").append(s).append("\n");
                 filterOptions = stringBuilder.toString();
 
-
-                userId = fAuth.getCurrentUser().getUid();
+                //userId = fAuth.getCurrentUser().getUid();
 
                 //neues Dokument in Firestore anlegen in der Sammlung "ads/"
                 DocumentReference documentReference = fStore.collection("ads").document();
@@ -200,10 +187,11 @@ public class PlacingAd extends AppCompatActivity  {
                 ad.put("timestamp", timestamp);
                 ad.put("pickupLocation", pickupLocation);
                 ad.put("filterOptions", filterOptions);
-                //doppelte Speicherung der Filter für Query, da es dort nur whereArrayContains gibt
+                //doppelte Speicherung der Filteroptionen für Query, da es dort nur whereArrayContains gibt
                 ad.put("categories", filterCat);
+                //Url des Default Bildes wird erst gespeichert
                 ad.put("imageUrl", DEFAULT_URL);
-                //falls Bild vorhanden: Bild hochladen
+                //falls Bild vorhanden: Bild hochladen, imageUrl updaten
                 if(imageUri!=null){
                     uploadImageToFirebase(imageUri);
                 }
@@ -223,19 +211,17 @@ public class PlacingAd extends AppCompatActivity  {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);                      //Bild aus Galerie
         if (requestCode == 1000) {
             if (resultCode == Activity.RESULT_OK) {
                 imageUri = data.getData();
-
-                //pAdPhoto.setImageURI(imageUri);
                 Picasso.get()
                         .load(imageUri)
                         .fit()
                         .centerCrop()
                         .into(pAdPhoto);
             }
-        } else if (requestCode == 61 && resultCode == Activity.RESULT_OK) {          //Übergabe Foto an pAdPhoto
+        } else if (requestCode == 61 && resultCode == Activity.RESULT_OK) {         //Bild aus Kameraufnahme
             Picasso.get()
                     .load(imageUri)
                     .fit()
@@ -255,8 +241,7 @@ public class PlacingAd extends AppCompatActivity  {
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
-                // Error occurred while creating the File
-
+                Log.d(TAG, "onSuccess: Fehler bei Pfaderstellung!");
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
@@ -267,7 +252,6 @@ public class PlacingAd extends AppCompatActivity  {
                 startActivityForResult(takePictureIntent,61);
             }
         }
-        //return takePictureIntent;
     }
 
 
@@ -312,26 +296,20 @@ public class PlacingAd extends AppCompatActivity  {
         });
     }
 
-    String currentPhotoPath;
-
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
+                imageFileName,  //prefix
+                ".jpg",   //suffix
+                storageDir      //directory
         );
-
-
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
         return image;
     }
- 
-
 
     //Checkboxen: wenn angeklickt, dann füge der ArrayList die entsprechende Kategorie hinzu
     public void selectItem(View view) {

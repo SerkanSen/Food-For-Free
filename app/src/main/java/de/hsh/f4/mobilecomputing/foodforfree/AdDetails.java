@@ -74,13 +74,12 @@ public class AdDetails extends AppCompatActivity {
         fStore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
 
-        //get Intent and adId+imageUrl from clicked itemview
+        //get Intent and adId, imageUrl, offeringUserID from clicked itemview
         Intent intent = getIntent();
         String adId = intent.getStringExtra(EXTRA_ADID);
         String imageUrl = intent.getStringExtra(EXTRA_IMAGEURL);
         offeringUserID = intent.getStringExtra(EXTRA_OFF_USERID);
 
-        //contactBtn nur, wenn es nicht die eigene Anzeige ist
         userId = fAuth.getCurrentUser().getUid();
 
         DocumentReference documentRef = fStore.collection("ads").document(adId);
@@ -90,6 +89,7 @@ public class AdDetails extends AppCompatActivity {
                 adUserId = documentSnapshot.getString("userID");
                 if (adUserId.equals(userId)) {
                     Toast.makeText(AdDetails.this, "Deine Anzeige!", Toast.LENGTH_SHORT).show();
+                    //contactBtn nur sichtbar, wenn es nicht die eigene Anzeige ist
                     contactBtn.setVisibility(View.INVISIBLE);
                     locationBtn.setVisibility(View.INVISIBLE);
                 }
@@ -130,16 +130,10 @@ public class AdDetails extends AppCompatActivity {
         contactBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = getIntent();
-
-                //String adId = intent.getStringExtra(MainActivity.EXTRA_ADID);
-
                 Intent intent = new Intent(AdDetails.this, Contact.class);
                 intent.putExtra(EXTRA_ADID, adId);
                 intent.putExtra(EXTRA_IMAGEURL, imageUrl);
                 intent.putExtra(EXTRA_OFF_USERID, offeringUserID);
-                //Toast.makeText(AdDetails.this,adId, Toast.LENGTH_SHORT).show();
-                //intent.putExtra(EXTRA_ADTITLE, title.getText().toString());
                 startActivity(intent);
             }
         });

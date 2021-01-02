@@ -34,13 +34,12 @@ public class Register extends AppCompatActivity {
     EditText mName,mEMail,mPasswort,mPasswort1,mStadtteil;
     Button mRegistrierenBtn;
     CheckBox mChBoxAccept;
-    TextView mLoginBtn, mDatenschutzBtn, mAgbBtn, errorChBox;
-    FirebaseAuth fireAuth;
+    TextView mLoginBtn, mDatenschutzBtn, mAgbBtn;
+    FirebaseAuth fAuth;
     ProgressBar progressBar;
     FirebaseFirestore fStore;
     String userID;
     public static final String TAG = "TAG";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +50,6 @@ public class Register extends AppCompatActivity {
         mEMail=findViewById(R.id.email);
         mPasswort=findViewById(R.id.passwort);
         mPasswort1=findViewById(R.id.editPasswortKontrolle);
-
         mRegistrierenBtn =findViewById(R.id.registrierenBtn);
         mChBoxAccept = findViewById(R.id.chBoxAccept);
         mLoginBtn= findViewById(R.id.anmeldenTextView);
@@ -62,11 +60,11 @@ public class Register extends AppCompatActivity {
         mDatenschutzBtn.setPaintFlags(mDatenschutzBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         mStadtteil= findViewById(R.id.stadtteil);
 
-        fireAuth =FirebaseAuth.getInstance();
+        fAuth =FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         progressBar = findViewById(R.id.ladebalken);
 
-        if(fireAuth.getCurrentUser() != null){
+        if(fAuth.getCurrentUser() != null){
             startActivity(new Intent(getApplicationContext(),MainActivity.class));
             finish();
         }
@@ -79,7 +77,6 @@ public class Register extends AppCompatActivity {
                 String passwort1= mPasswort1.getText().toString().trim();
                 String name = mName.getText().toString();
                 String stadtteil = mStadtteil.getText().toString();
-
 
                 if(TextUtils.isEmpty(name)){
                     mName.setError("Name wird benötigt.");
@@ -117,14 +114,14 @@ public class Register extends AppCompatActivity {
 
                 progressBar.setVisibility(View.VISIBLE);
 
-
-
-                fireAuth.createUserWithEmailAndPassword(email,passwort).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                fAuth.createUserWithEmailAndPassword(email,passwort).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             Toast.makeText(Register.this, "Neues Konto wurde erstellt.", Toast.LENGTH_SHORT).show();
-                            userID = fireAuth.getCurrentUser().getUid();
+
+                            userID = fAuth.getCurrentUser().getUid();
+
                             DocumentReference documentReference = fStore.collection("users").document(userID);
                             Map<String, Object> user = new HashMap<>();
                             user.put("name", name);
@@ -139,7 +136,7 @@ public class Register extends AppCompatActivity {
                                     Log.d(TAG, "onFailure: " + e.toString());
                                 }
                             });
-                            fireAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            fAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                   if(task.isSuccessful()) {
@@ -147,18 +144,14 @@ public class Register extends AppCompatActivity {
                                   }
                                 }
                             });
-                            //startActivity(new Intent(getApplicationContext(),Datenschutz.class));
                             startActivity(new Intent(getApplicationContext(),MainActivity.class));
-
                         }else{
                             Toast.makeText(Register.this, "Fehler!"+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
                         }
                     }
                 });
-
             }
-
         });
 
         mLoginBtn.setOnClickListener(new View.OnClickListener() {

@@ -28,7 +28,7 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Message, ChatAdapter.C
     protected void onBindViewHolder(@NonNull ChatHolder holder, int position, @NonNull Message model) {
         holder.textViewMessage.setText(model.getMessage());
         holder.textViewUserName.setText(model.getSenderName());
-        holder.textViewTimestamp.setText(model.getTimestamp());
+        holder.textViewMessageTime.setText(model.getMessageTime());
 
         fAuth = FirebaseAuth.getInstance();
         currentUserId = fAuth.getCurrentUser().getUid();
@@ -36,7 +36,7 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Message, ChatAdapter.C
             holder.cardView.setBackgroundResource(R.color.green);
             holder.textViewUserName.setText("");
             holder.textViewMessage.setTextColor(Color.parseColor("white"));
-            holder.textViewTimestamp.setTextColor(Color.parseColor("white"));
+            holder.textViewMessageTime.setTextColor(Color.parseColor("white"));
         }
     }
 
@@ -48,7 +48,7 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Message, ChatAdapter.C
     }
 
     class ChatHolder extends RecyclerView.ViewHolder {
-        TextView textViewMessage, textViewUserName, textViewTimestamp;
+        TextView textViewMessage, textViewUserName, textViewMessageTime;
         CardView cardView;
 
         public ChatHolder(@NonNull View itemView) {
@@ -56,7 +56,7 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Message, ChatAdapter.C
             cardView = itemView.findViewById(R.id.cardViewChat);
             textViewMessage = itemView.findViewById(R.id.show_message);
             textViewUserName = itemView.findViewById(R.id.userName);
-            textViewTimestamp = itemView.findViewById(R.id.timestamp);
+            textViewMessageTime = itemView.findViewById(R.id.timestamp);
         }
     }
 }

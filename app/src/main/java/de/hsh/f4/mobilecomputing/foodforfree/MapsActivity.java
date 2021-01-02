@@ -48,9 +48,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     SupportMapFragment mapFragment;
     SearchView searchView;
 
-    protected static final String EXTRA_LOCATION = "de.hsh.mobilecomputing.foodforfree.LOCATION";
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,15 +56,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         searchView = findViewById(R.id.searchView);
 
-
-            Intent intent = getIntent();
-            String location = intent.getStringExtra(AdDetails.EXTRA_LOCATION);
+        Intent intent = getIntent();
+        String location = intent.getStringExtra(AdDetails.EXTRA_LOCATION);
         if(location !=null){
             searchView.setQuery("Hannover "+location, true);
         }
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
 
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -101,40 +96,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             checkUserLocationPermission();
         }
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED){
-
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
         }
-
-        //Toast.makeText(this,"map loded succesfully",Toast.LENGTH_SHORT).show();
     }
 
     public  boolean checkUserLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION))
-            //return true wenn Benutzer schon mal gefragt wurde und dieser abgelehnt hat; falls wenn nicht beantwortet hat
-            {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, RequestUserLocationCode);
-
             } else {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, RequestUserLocationCode);
             }
@@ -143,7 +123,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return true;
         }
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -155,8 +134,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             buildGoogleApiClient();
                         } mMap.setMyLocationEnabled(true);
                     }
-                }else {//zustimmung abgelehnt
-
+                }else {     //zustimmung abgelehnt
                   Toast.makeText(this,"Zugriff verweigert",Toast.LENGTH_SHORT).show();
                 }
                 return;
@@ -192,8 +170,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-
-
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         locationRequest= new LocationRequest();
@@ -202,21 +178,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED){
-
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient,locationRequest,this);
-
         }
-
-
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
     }
 }

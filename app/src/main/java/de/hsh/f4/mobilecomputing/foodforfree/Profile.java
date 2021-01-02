@@ -18,6 +18,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -71,9 +72,9 @@ public class Profile extends AppCompatActivity {
 
         //Assign variable
         drawerLayout = findViewById(R.id.drawer_layout);
-        tName = findViewById(R.id.tName);
-        tEmail = findViewById(R.id.tEmail);
-        tAdresse = findViewById(R.id.tStadtteil);
+        //tName = findViewById(R.id.tName);
+        //tEmail = findViewById(R.id.tEmail);
+        //tAdresse = findViewById(R.id.tStadtteil);
         name = findViewById(R.id.profileName);
         email = findViewById(R.id.profileMail);
         verfication = findViewById(R.id.emailVerification);
@@ -93,7 +94,6 @@ public class Profile extends AppCompatActivity {
 
         fUser= fAuth.getCurrentUser();
         boolean emailVerify = fUser.isEmailVerified();
-
 
         if(!emailVerify){
             verfication.setText("Email noch nicht verifiziert");
@@ -121,7 +121,6 @@ public class Profile extends AppCompatActivity {
                             public void onSuccess() {
                                 progressBarProfileImage.setVisibility(View.GONE);
                             }
-
                             @Override
                             public void onError(Exception e) {
                                 Toast.makeText(Profile.this, "Profilbild konnte nicht geladen werden.", Toast.LENGTH_SHORT).show();
@@ -140,7 +139,6 @@ public class Profile extends AppCompatActivity {
                             public void onSuccess() {
                                 progressBarProfileImage.setVisibility(View.GONE);
                             }
-
                             @Override
                             public void onError(Exception e) {
 
@@ -150,21 +148,25 @@ public class Profile extends AppCompatActivity {
         });
 
         DocumentReference documentReference = fStore.collection("users").document(userId);
-        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-                name.setText(documentSnapshot.getString("name"));
-                email.setText(documentSnapshot.getString("email"));
-                profileAdress.setText(documentSnapshot.getString("stadtteil"));
-            }
-        });
+        try {
+            documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                    name.setText(documentSnapshot.getString("name"));
+                    email.setText(documentSnapshot.getString("email"));
+                    profileAdress.setText(documentSnapshot.getString("stadtteil"));
+                }
+            });
+        } catch (NullPointerException exception){
+
+        }
+
 
         editProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(profile, EditProfile.class);
                 startActivity(intent);
-                //startActivity(new Intent(getApplicationContext(),EditProfile.class));
             }
         });
 
@@ -175,14 +177,12 @@ public class Profile extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()) {
-                            Toast.makeText(Profile.this, "Verifizierungsemail gesendet.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Profile.this, "Verifizierungsemail gesendet.", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
             }
         });
-
-
     }
 
     public void ClickMenu(View view) {
@@ -256,8 +256,4 @@ public class Profile extends AppCompatActivity {
         //close drawer
         MainActivity.closeDrawer(drawerLayout);
     }
-
-
-
-
 }

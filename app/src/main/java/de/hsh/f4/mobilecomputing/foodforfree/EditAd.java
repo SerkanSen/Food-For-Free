@@ -61,15 +61,11 @@ public class EditAd extends AppCompatActivity  {
     String [] categories = new String[7];
     Button pUpdateAdBtn, pUploadAdPhotoBtn, pMakePic;
     Calendar calendar;
-    String userId, adId, imageUrl;
+    String userId, adId, imageUrl, currentPhotoPath;
     ImageView pAdPhoto;
     Uri imageUri;
     public static final String TAG = "TAG";
-    //Falls man Bild resetten einbaut:
-    //public static final String DEFAULT_URL = "https://firebasestorage.googleapis.com/v0/b/food-for-free-9663f.appspot.com/o/ads%2FDefault%20Bild.jpg?alt=media&token=57a564e3-006c-4146-b793-cf4346a8f07a";
-
     EditText pTitle, pDescription, pIngredients, pAmount;
-    //Spinner pAmount;
     TextView pPickupLocation;
     CheckBox chBoxVeggie, chBoxVegan, chBoxFruitsVegs, chBoxCans, chBoxMeal, chBoxSweets, chBoxSnacks;
 
@@ -80,7 +76,6 @@ public class EditAd extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_ad);
-
 
         pTitle = findViewById(R.id.editTitle);
         pDescription = findViewById(R.id.editDescription);
@@ -99,18 +94,11 @@ public class EditAd extends AppCompatActivity  {
         pAdPhoto = findViewById(R.id.adPhoto);
         pUploadAdPhotoBtn = findViewById(R.id.uploadAdPhotoBtn);
         pMakePic = findViewById(R.id.makePic);
-/*
-        title = findViewById(R.id.adDetails_title);
-        pickupLocation = findViewById(R.id.adDetails_pickupLocation);
-        description = findViewById(R.id.adDetails_description);
-        amount = findViewById(R.id.adDetails_amount);
-        ingredients = findViewById(R.id.adDetails_ingredients);
-        filterOptions = findViewById(R.id.adDetails_filterOptions);*/
-        //image = findViewById(R.id.adDetails_image);
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
+
         userId = fAuth.getCurrentUser().getUid();
 
         //get Intent and adId+imageUrl from clicked itemview
@@ -136,32 +124,9 @@ public class EditAd extends AppCompatActivity  {
                 pAmount.setText(documentSnapshot.getString("amount"));
                 pIngredients.setText(documentSnapshot.getString("ingredients"));
                 pPickupLocation.setText(documentSnapshot.getString("pickupLocation"));
-                //List<String> test = documentSnapshot.get("categories");
-                //Checkboxen evtl. inkludieren
-                //filterOptions = documentSnapshot.get("categories");
-                /*Map<String, Object> map = documentSnapshot.getData();
-                for (Map.Entry<String, Object> entry : map.entrySet()) {
-                    if (entry.getKey().equals("categories")) {
-                        Log.d("TAG", entry.getValue().toString());
-                        Toast.makeText(EditAd.this, "Hallo", Toast.LENGTH_SHORT).show();
-                    }
-                }*/
-
-                //for(int i = 0; i < 7; i++){
-                    /*switch(adRef.whereArrayContains("categories", filterOptions[i])){
-
-                    }*/
-
-
-                    /*if(adRef.whereArrayContains("categories","Vegetarisch")){
-
-                    }*/
-                // }
-
+                //Checkboxen müssen noch inkludiert werden, momentan muss man sie neu anwählen
             }
         });
-
-
 
         pUploadAdPhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,7 +134,6 @@ public class EditAd extends AppCompatActivity  {
                 //open gallery
                 Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(openGalleryIntent, 1000);
-
             }
         });
         pMakePic.setOnClickListener(new View.OnClickListener() {
@@ -191,7 +155,8 @@ public class EditAd extends AppCompatActivity  {
                 List<String> filterCat = Arrays.asList(categories);
 
                 calendar = Calendar.getInstance();
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String timestamp = simpleDateFormat.format(calendar.getTime());
 
                 if(TextUtils.isEmpty(title)){
@@ -237,13 +202,14 @@ public class EditAd extends AppCompatActivity  {
                 ad.put("filterOptions", filterOptions);
                 ad.put("categories", filterCat);
 
-                //falls neues Bild: Bild hochladen
+                //falls neues Bild ausgewählt, wird dieses Bild hochladen
                 if(imageUri!=null){
                     uploadImageToFirebase(imageUri);
                 }
+
                 documentReference.update(ad).addOnSuccessListener((OnSuccessListener) (aVoid) -> {
                     Toast.makeText(EditAd.this,"Anzeige erfolgreich aktualisiert!", Toast.LENGTH_SHORT).show();
-                    //Log.d(TAG, "onSuccess: Anzeige erfolgreich erstellt!");
+                    Log.d(TAG, "onSuccess: Anzeige erfolgreich bearbeitet!");
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
@@ -251,18 +217,14 @@ public class EditAd extends AppCompatActivity  {
                     }
                 });
                 startActivity(new Intent(getApplicationContext(), MyAds.class));
-
             }
-
         });
-
-
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1000) {
+        if (requestCode == 1000) {                                              //Bild aus Galerie
             if (resultCode == Activity.RESULT_OK) {
                 imageUri = data.getData();
                 Picasso.get()
@@ -271,7 +233,7 @@ public class EditAd extends AppCompatActivity  {
                         .centerCrop()
                         .into(pAdPhoto);
             }
-        } else if (requestCode == 61 && resultCode == Activity.RESULT_OK) {          //Übergabe Foto an pAdPhoto
+        } else if (requestCode == 61 && resultCode == Activity.RESULT_OK) {     //Bild aus Kameraaufnahme
             Picasso.get()
                     .load(imageUri)
                     .fit()
@@ -291,8 +253,7 @@ public class EditAd extends AppCompatActivity  {
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
-                // Error occurred while creating the File
-
+                Log.d(TAG, "onSuccess: Fehler bei Pfaderstellung!");
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
@@ -303,10 +264,7 @@ public class EditAd extends AppCompatActivity  {
                 startActivityForResult(takePictureIntent,61);
             }
         }
-        //return takePictureIntent;
     }
-
-    String currentPhotoPath;
 
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -314,12 +272,10 @@ public class EditAd extends AppCompatActivity  {
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
+                imageFileName,  //prefix
+                ".jpg",   //suffix
+                storageDir      //directory
         );
-
-
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
         return image;
@@ -328,8 +284,6 @@ public class EditAd extends AppCompatActivity  {
     public void onBackPressed(){
         return;
     }
-
-
 
     //uploads image to Firebase Storage "ads/adId/adPhoto"
     private void uploadImageToFirebase(Uri imageUri) {
@@ -352,7 +306,7 @@ public class EditAd extends AppCompatActivity  {
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        //Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                        Log.d(TAG, "DocumentSnapshot successfully updated!");
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {

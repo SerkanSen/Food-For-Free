@@ -66,7 +66,7 @@ public class MyAds extends AppCompatActivity {
                 Intent intent = new Intent(MyAds.this, MyAdsDetails.class);
                 String adId = documentSnapshot.getId();
                 String imageUrl = documentSnapshot.getString("imageUrl");
-                //übergeben der adId
+                //übergeben der adId+imageUrl
                 intent.putExtra(EXTRA_AD_ID, adId);
                 intent.putExtra(EXTRA_IMAGE_URL, imageUrl);
                 startActivity(intent);

@@ -5,13 +5,14 @@ public class Message {
     private String offeringUser, offeringUserID;
     private String sender, senderName;
     private String message, lastMessage;
-    private String timestamp, lastTimestamp, imageUrl, adTitle;
+    private String timestamp, lastTimestamp, messageTime, imageUrl, adTitle, adID;
 
     public Message(){
         //empty constructor needed
     }
 
-    public Message(String interestedUser, String interestedUserID, String offeringUser, String offeringUserID, String sender, String senderName, String message, String lastMessage, String timestamp, String lastTimestamp, String imageUrl, String adTitle){
+    public Message(String interestedUser, String interestedUserID, String offeringUser, String offeringUserID, String sender, String senderName,
+                   String message, String lastMessage, String timestamp, String lastTimestamp, String messageTime, String imageUrl, String adTitle, String adID){
         this.interestedUser = interestedUser;
         this.interestedUserID = interestedUserID;
         this.offeringUser = offeringUser;
@@ -20,8 +21,10 @@ public class Message {
         this.lastMessage = lastMessage;
         this.timestamp = timestamp;
         this.lastTimestamp = lastTimestamp;
+        this.messageTime = messageTime;
         this.imageUrl = imageUrl;
         this.adTitle = adTitle;
+        this.adID = adID;
         this.sender = sender;
         this.senderName = senderName;
 
@@ -57,6 +60,10 @@ public class Message {
 
     public String getLastTimestamp() { return lastTimestamp; }
 
+    public String getMessageTime() {
+        return messageTime;
+    }
+
     public String getImageUrl() {
         return imageUrl;
     }
@@ -64,4 +71,6 @@ public class Message {
     public String getAdTitle() {
         return adTitle;
     }
+
+    public String getAdID() { return  adID;}
 }

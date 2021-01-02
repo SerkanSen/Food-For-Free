@@ -90,7 +90,7 @@ public class Chat extends AppCompatActivity {
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
-        //Intent und msgID+interestUserName holen
+        //Intent und msgID holen
         Intent intent = getIntent();
         String messageID = intent.getStringExtra(Messages.EXTRA_MSGID);
 
@@ -109,7 +109,6 @@ public class Chat extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                 offeringUserID = documentSnapshot.getString("offeringUserID");
-                //interestedUserID = documentSnapshot.getString("interestedUserID");
                 offeringUserName = documentSnapshot.getString("offeringUser");
                 interestedUserName = documentSnapshot.getString("interestedUser");
 
@@ -122,6 +121,7 @@ public class Chat extends AppCompatActivity {
         });
 
         setUpRecyclerView(messageID);
+
 
         sendMsgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,14 +174,17 @@ public class Chat extends AppCompatActivity {
         });
     }
 
-
     private void sendMessage(String msgId, String senderName, String message) {
 
         DocumentReference documentReference = db.collection("chats").document();
 
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        //Für die Sortierung
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String timestamp = simpleDateFormat.format(calendar.getTime());
+        //Für die Anzeige der Zeit
+        SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        String messageTime = simpleDateFormat1.format(calendar.getTime());
 
         Map<String, Object> chat = new HashMap<>();
         chat.put("msgID", msgId);
@@ -189,6 +192,7 @@ public class Chat extends AppCompatActivity {
         chat.put("senderName", senderName);
         chat.put("message", message);
         chat.put("timestamp", timestamp);
+        chat.put("messageTime", messageTime);
 
         documentReference.set(chat).addOnSuccessListener((OnSuccessListener) (aVoid) -> {
 
@@ -206,7 +210,7 @@ public class Chat extends AppCompatActivity {
 
         documentReference1.update(chat1);
         chat1.put("lastMessage", message);
-        chat1.put("lastTimestamp", timestamp);
+        chat1.put("lastTimestamp", messageTime);
 
         documentReference1.update(chat1).addOnSuccessListener((OnSuccessListener) (aVoid) -> {
             Log.d(TAG, "onSuccess: erste Nachricht erfolgreich aktualisiert für MessageAdapter!");
@@ -216,7 +220,6 @@ public class Chat extends AppCompatActivity {
                 Log.d(TAG, "onFailure: " + e.toString());
             }
         });
-
     }
 
     private void setUpRecyclerView(String msgId) {
@@ -245,6 +248,7 @@ public class Chat extends AppCompatActivity {
         super.onStop();
         adapter.stopListening();
     }
+
 
     public void ClickBack(View view) {
         startActivity(new Intent(getApplicationContext(), Messages.class));

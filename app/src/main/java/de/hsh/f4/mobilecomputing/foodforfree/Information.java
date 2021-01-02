@@ -29,6 +29,7 @@ public class Information extends AppCompatActivity {
         MainActivity.redirectActivity(this, AGBs.class);
     }
 
+    //Datenschutzerklärung
     public void ClickPrivacyStatement (View view) {
         MainActivity.redirectActivity(this, PrivacyStatement.class);
     }

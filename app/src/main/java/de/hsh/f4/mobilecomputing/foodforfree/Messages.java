@@ -72,43 +72,6 @@ public class Messages extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        /*new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT| ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                //Initialze Alert Dialog
-                AlertDialog.Builder builder =new AlertDialog.Builder(Messages.this);
-                //Set title
-                builder.setTitle("Konversation beenden");
-                //Set message
-                builder.setMessage("Bist Du sicher, dass Du die Konservation beenden und löschen willst?");
-                //positive button
-                builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        try {
-                            adapter.deleteItem(viewHolder.getAdapterPosition());
-                        }catch (Exception e) {
-                            Toast.makeText(Messages.this, "Konversation nicht vorhanden", Toast.LENGTH_SHORT).show();
-                        }
-                       adapter.startListening(); //funktioniert nicht
-                    }
-                });
-                //negative button
-                builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        adapter.startListening();
-                    }
-                });
-                builder.show();
-            }
-        }).attachToRecyclerView(recyclerView);*/
-
         adapter.setOnItemClickListener(new MessageAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {

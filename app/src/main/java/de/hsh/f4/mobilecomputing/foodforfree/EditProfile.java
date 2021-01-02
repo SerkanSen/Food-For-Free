@@ -56,9 +56,9 @@ public class EditProfile extends AppCompatActivity {
         pName = findViewById(R.id.profileName);
         pEmail = findViewById(R.id.profileMail);
         pStadtteil = findViewById(R.id.profileStadtteil);
-        tName = findViewById(R.id.tName);
-        tEmail = findViewById(R.id.tEmail);
-        tStadtteil = findViewById(R.id.tStadtteil);
+        //tName = findViewById(R.id.tName);
+        //tEmail = findViewById(R.id.tEmail);
+        //tStadtteil = findViewById(R.id.tStadtteil);
         profilePhoto = findViewById(R.id.profilePhoto);
         uploadProfilePhotoBtn = findViewById(R.id.uploadProfilePhotoBtn);
         updateProfileBtn = findViewById(R.id.updateProfileBtn);
@@ -115,9 +115,6 @@ public class EditProfile extends AppCompatActivity {
                     pStadtteil.setError("Stadtteil wird benötigt.");
                     return;
                 }else{
-
-
-
                     DocumentReference documentReference = fStore.collection("users").document(userId);
                     documentReference
                             .update("stadtteil", stadtteil)

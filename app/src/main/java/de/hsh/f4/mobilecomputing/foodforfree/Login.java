@@ -27,8 +27,7 @@ public class Login extends AppCompatActivity {
     Button mLoginBtn;
     TextView mRegisterBtn, mAktivitaet, mTitel, mChangePasswordBtn;
     ProgressBar progressBar;
-    FirebaseAuth fireAuth;
-
+    FirebaseAuth fAuth;
     String email;
 
     @Override
@@ -41,12 +40,13 @@ public class Login extends AppCompatActivity {
         mEmail = findViewById(R.id.email);
         mPasswort = findViewById(R.id.passwort);
         progressBar = findViewById(R.id.progressBar);
-        fireAuth = FirebaseAuth.getInstance();
         mLoginBtn = findViewById(R.id.registrierenBtn);
         mRegisterBtn = findViewById(R.id.registerTextView);
         mRegisterBtn.setPaintFlags(mRegisterBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         mChangePasswordBtn= findViewById(R.id.changePasswordTextView);
         mChangePasswordBtn.setPaintFlags(mChangePasswordBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+        fAuth = FirebaseAuth.getInstance();
 
         mLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,11 +63,9 @@ public class Login extends AppCompatActivity {
                     return;
                 }
 
-
-
                 progressBar.setVisibility(View.VISIBLE);
 
-                fireAuth.signInWithEmailAndPassword(email, passwort).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                fAuth.signInWithEmailAndPassword(email, passwort).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
@@ -98,7 +96,7 @@ public class Login extends AppCompatActivity {
                     mEmail.setError("Bitte das Email-Feld ausfüllen für eine Passwortrücksetzung.");
                     return;
                 }else {
-                    fireAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    fAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task task) {
                             if(task.isSuccessful()){

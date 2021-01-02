@@ -84,7 +84,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         drawerLayout = findViewById(R.id.drawer_layout);
         newAdBtn = findViewById(R.id.newAdBtn);
         inputSearch = findViewById(R.id.inputSearch);
-        final Button standort= (Button) findViewById(R.id.standort);
+        //für spätere Sicht auf Anzeigen im Umkreis
+        // final Button standort = (Button) findViewById(R.id.standort);
 
         Spinner spinner = findViewById(R.id.spinnerFilter);
         ArrayAdapter<CharSequence> adapterFilter = ArrayAdapter.createFromResource(this, R.array.filterOptions, android.R.layout.simple_spinner_item);
@@ -95,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         final MainActivity mainActivity = this;
 
         fAuth = FirebaseAuth.getInstance();
+
         try {
             userId = fAuth.getCurrentUser().getUid();
         } catch (NullPointerException e) {
@@ -110,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         }));
 
-        //StandortButton für Anzeige aller Inserate auf der Map für spätere Umkreissuche  , fürs Erste funktionslos umbenannt in "die verfügbaren Anzeigen"
+        //StandortButton für Anzeige aller Inserate auf der Map für spätere Umkreissuche, fürs Erste funktionslos umbenannt in "die verfügbaren Anzeigen"
         /*standort.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,24 +128,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         inputSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
-
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.toString().trim() != null) {
                     String data = s.toString();
-                    //ads werden hier leider alphabetisch und nicht nach Zeit sortiert
+                    //ads werden hier leider alphabetisch und nicht nach Zeit sortiert, orderBy andersrum funktioniert leider nicht
+                    //Lösüng: Kategorie umstellen auf Alles -> wieder zeitliche Sortierung
                     Query querySearch = adRef.orderBy("title").orderBy("timestamp", Query.Direction.DESCENDING).startAt(data).endAt(data+"\uf8ff");
                     setUpRecyclerView(querySearch);
                 } else {
                     //bringt leider nichts in Bezug auf Ordnung nach Zeit
-                    setUpRecyclerView(queryAll);
+                    //setUpRecyclerView(queryAll);
+                    recreate();
                 }
                 adapter.startListening();
             }
@@ -295,10 +295,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Query queryCat;
         String catSelected = parent.getItemAtPosition(position).toString();
-        //Toast.makeText(MainActivity.this, "Startseite aktualisieren...", Toast.LENGTH_SHORT).show();
         if(catSelected.equals("Alles")) {
             queryCat = adRef.orderBy("timestamp", Query.Direction.DESCENDING);
-            //do nothing
         } else {
             queryCat = adRef.whereArrayContains("categories", catSelected).orderBy("timestamp", Query.Direction.DESCENDING);
         }
@@ -308,7 +306,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-        //query = adRef.orderBy("timestamp", Query.Direction.DESCENDING);
         Query queryAll = adRef.orderBy("timestamp", Query.Direction.DESCENDING);
         setUpRecyclerView(queryAll);
     }
