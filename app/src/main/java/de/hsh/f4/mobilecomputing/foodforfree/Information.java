@@ -1,4 +1,4 @@
-//Dieser Code wurde erstellt von Laura Nguyen und Serkan Şen
+//Dieser Code wurde erstellt von Laura Nguyen
 package de.hsh.f4.mobilecomputing.foodforfree;
 
 import androidx.appcompat.app.AppCompatActivity;

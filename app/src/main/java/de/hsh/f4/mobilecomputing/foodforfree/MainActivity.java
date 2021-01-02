@@ -143,8 +143,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     setUpRecyclerView(querySearch);
                 } else {
                     //bringt leider nichts in Bezug auf Ordnung nach Zeit
-                    //setUpRecyclerView(queryAll);
-                    recreate();
+                    setUpRecyclerView(queryAll);
                 }
                 adapter.startListening();
             }

@@ -111,7 +111,6 @@ public class PlacingAd extends AppCompatActivity  {
             public void onClick(View v) {
                 //open gallery
                 Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
                 startActivityForResult(openGalleryIntent, 1000);
             }
         });
@@ -136,7 +135,6 @@ public class PlacingAd extends AppCompatActivity  {
 
                 //Zeitstempel erstellen für Sortierung
                 calendar = Calendar.getInstance();
-                //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String timestamp = simpleDateFormat.format(calendar.getTime());
 
@@ -169,8 +167,6 @@ public class PlacingAd extends AppCompatActivity  {
                 for (String s : sFilterOptions)
                     stringBuilder.append("- ").append(s).append("\n");
                 filterOptions = stringBuilder.toString();
-
-                //userId = fAuth.getCurrentUser().getUid();
 
                 //neues Dokument in Firestore anlegen in der Sammlung "ads/"
                 DocumentReference documentReference = fStore.collection("ads").document();
