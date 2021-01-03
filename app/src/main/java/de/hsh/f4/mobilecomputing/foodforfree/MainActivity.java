@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 if (s.toString().trim() != null) {
                     String data = s.toString();
                     //ads werden hier leider alphabetisch und nicht nach Zeit sortiert, orderBy andersrum funktioniert leider nicht
-                    //Lösüng: Kategorie umstellen auf Alles -> wieder zeitliche Sortierung
+                    //Lösung: Kategorie umstellen auf Alles -> wieder zeitliche Sortierung
                     Query querySearch = adRef.orderBy("title").orderBy("timestamp", Query.Direction.DESCENDING).startAt(data).endAt(data+"\uf8ff");
                     setUpRecyclerView(querySearch);
                 } else {
